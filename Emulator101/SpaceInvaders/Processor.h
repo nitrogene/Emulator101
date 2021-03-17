@@ -8,6 +8,9 @@ struct Registers
 
 class Processor
 {
+private:
+	void addToBuffer(const char* filename);
+
 public:
 	// Registers
 	Registers Registers{};
@@ -20,6 +23,8 @@ public:
 
 	// Load into buffer hopefully valid 8080 assembly code
 	static Processor loadIntoBuffer(const char* filename);
+
+	static Processor loadIntoBuffer(const char* filenames[]);
 
 	// hexDump file
 	static void hexdump(const char* filename);

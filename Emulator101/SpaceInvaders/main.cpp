@@ -1,17 +1,20 @@
 #include "Processor.h"
 
 const static char* roms[] = {
-	"invaders.e",
-	"invaders.f",
+	"invaders.h",
 	"invaders.g",
-	"invaders.h"
+	"invaders.f",
+	"invaders.e"
+	
+	
 };
 
 int main(int /*argc*/, char** /*argv*/)
 {
 	// Processor::hexdump(roms[3]);
 
-	auto processor = Processor::loadIntoBuffer(roms[3]);
+	//auto processor = Processor::loadIntoBuffer(roms);
+	auto processor = Processor::loadIntoBuffer(roms);
 
 	int opbytes = 1;
 
