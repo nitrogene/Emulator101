@@ -38,7 +38,7 @@ private:
 	std::vector<unsigned char> Rom{};
 
 	// dissassemble instruction pointed by PC
-	void disassemble();
+	void disassemble(unsigned short& pc);
 
 	// Load into buffer hopefully valid 8080 assembly code
 	bool TryLoadIntoBuffer(const std::filesystem::path& pathToRomFile);
@@ -56,8 +56,10 @@ public:
 	void hexdump();
 
 	// dissassemble instruction pointed by PC
-	void disassembleRom();
+	void disassembleRom(const unsigned short offset, const unsigned short size);
 
 	// dissassemble instruction pointed by PC
 	void run();
+
+	unsigned short romSize();
 };

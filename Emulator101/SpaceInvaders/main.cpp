@@ -13,7 +13,7 @@ const static std::filesystem::path instructions = "instuctions.set";
 
 int main(int /*argc*/, char** /*argv*/)
 {
-	auto processor = new Processor(instructions);
+	auto processor = std::make_shared<Processor>(instructions);
 
 	//processor->DisplayInstructionSet();
 
@@ -24,7 +24,7 @@ int main(int /*argc*/, char** /*argv*/)
 
 	//processor->hexdump();
 
-	processor->disassembleRom();
+	processor->disassembleRom(0,processor->romSize());
 
 	processor->run();
 

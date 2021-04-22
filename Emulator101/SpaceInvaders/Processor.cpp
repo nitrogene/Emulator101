@@ -146,6 +146,13 @@ bool Processor::TryLoadIntoBuffer(const std::filesystem::path& pathToRomFile)
 	{
 		auto n = (size_t)std::filesystem::file_size(pathToRomFile);
 		auto offset = this->Rom.size();
+		constexpr auto limit = std::numeric_limits<unsigned short>().max();
+
+		if (n + offset > limit)
+		{
+			throw new std::exception("overflow");
+		}
+
 		this->Rom.resize(n+offset);
 		fs.read((char*)this->Rom.data()+offset, n);
 		fs.close();
@@ -169,28 +176,27 @@ bool Processor::TryLoadIntoBuffer(const std::vector<std::filesystem::path>& path
 	return true;
 }
 
-void Processor::disassembleRom()
+void Processor::disassembleRom(const unsigned short offset, const unsigned short size)
 {
-	std::cout << "disassembleRom:\n";
-	PC = 0;
-	while (PC < Rom.size())
+	auto pc= offset;
+	while (pc < offset+size)
 	{
-		disassemble();
+		disassemble(pc);
 	}
 }
 
-void Processor::disassemble()
+void Processor::disassemble(unsigned short& pc)
 {
-	if (PC >= Rom.size())
+	if (pc >= Rom.size())
 	{
 		std::cout << "overflow" << std::endl;
 		return;
 	}
 
-	auto code = &Rom[PC];
+	auto code = &Rom[pc];
 	unsigned short opbytes = 1;
 
-	fmt::print("{0:04x}\t", PC);
+	fmt::print("{0:04x}\t", pc);
 
 	if (InstructionSet[code[0]])
 	{
@@ -219,9 +225,14 @@ void Processor::disassemble()
 		fmt::print("not implemented\n");
 	}
 
-	PC += opbytes;
+	pc += opbytes;
 }
 
 void Processor::run()
 {
+}
+
+unsigned short Processor::romSize()
+{
+	return (unsigned short)Rom.size();
 }
