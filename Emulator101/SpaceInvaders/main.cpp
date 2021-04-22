@@ -1,28 +1,32 @@
+#include <iostream>
 #include "Processor.h"
 
-const static char* roms[] = {
+const static std::vector<std::filesystem::path> roms
+{
 	"invaders.h",
 	"invaders.g",
 	"invaders.f",
 	"invaders.e"
-	
-	
 };
+
+const static std::filesystem::path instructions = "instuctions.set";
 
 int main(int /*argc*/, char** /*argv*/)
 {
-	// Processor::hexdump(roms[3]);
+	auto processor = new Processor(instructions);
 
-	//auto processor = Processor::loadIntoBuffer(roms);
-	auto processor = Processor::loadIntoBuffer(roms);
+	//processor->DisplayInstructionSet();
 
-	int opbytes = 1;
-
-	while (opbytes > 0)
+	if (!processor->TryLoadIntoBuffer(roms))
 	{
-		opbytes=processor.disassemble();
-		processor.PC += opbytes;
+		std::cout << "loading roms has failed\n";
 	}
+
+	//processor->hexdump();
+
+	processor->disassembleRom();
+
+	processor->run();
 
 	return 0;
 }

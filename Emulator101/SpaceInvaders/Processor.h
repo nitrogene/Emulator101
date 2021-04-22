@@ -1,33 +1,63 @@
 #pragma once
 #include <vector>
+#include <string>
+#include <filesystem>
+#include <array>
+#include <memory>
 
 struct Registers
 {
-	char A=0, B=0, C=0, D=0, E=0;
+	// 8 bits registers
+	unsigned char A=0, B=0, C=0, D=0, E=0;
+};
+
+struct InstructionSetLine
+{
+	std::string Mnemonic{};
+	unsigned char Bits[8]{};
+	std::string Periods{};
+	unsigned short Size{};
+	std::string Description;
+
+	bool TryConvertBits(unsigned char& r);
 };
 
 class Processor
 {
 private:
-	void addToBuffer(const char* filename);
+	// Instruction set
+	std::array<std::shared_ptr<InstructionSetLine>,256> InstructionSet{};
 
-public:
 	// Registers
 	Registers Registers{};
 
-	// Program counter
-	size_t PC=0;
+	// 16 bits Program counter
+	unsigned short PC = 0;
 
-	// Buffer
-	std::vector<char> Buffer{};
+	// 8 bits buffer
+	std::vector<unsigned char> Rom{};
+
+	// dissassemble instruction pointed by PC
+	void disassemble();
 
 	// Load into buffer hopefully valid 8080 assembly code
-	static Processor loadIntoBuffer(const char* filename);
+	bool TryLoadIntoBuffer(const std::filesystem::path& pathToRomFile);
 
-	static Processor loadIntoBuffer(const char* filenames[]);
+public:
+	Processor() = delete;
 
-	// hexDump file
-	static void hexdump(const char* filename);
+	Processor(const std::filesystem::path& pathToInstructiosSet);
 
-	int disassemble();
+	void DisplayInstructionSet();
+
+	bool TryLoadIntoBuffer(const std::vector<std::filesystem::path>& pathToRomFiles);
+
+	// Hexadeximal dump of buffer
+	void hexdump();
+
+	// dissassemble instruction pointed by PC
+	void disassembleRom();
+
+	// dissassemble instruction pointed by PC
+	void run();
 };
