@@ -4,6 +4,33 @@
 #include <iomanip>
 #include <filesystem>
 #include <fmt/core.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef max
+
+void clear() 
+{
+	COORD topLeft = { 0, 0 };
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO screen;
+	DWORD written;
+
+	GetConsoleScreenBufferInfo(console, &screen);
+	FillConsoleOutputCharacterA(
+		console, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &written
+	);
+	FillConsoleOutputAttribute(
+		console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
+		screen.dwSize.X * screen.dwSize.Y, topLeft, &written
+	);
+	SetConsoleCursorPosition(console, topLeft);
+}
+
+std::string Registers::toString()
+{
+	return fmt::format("B={0:02x}, C={1:02x}, D={2:02x}, E={3:02x}, H={4:02x}, L={5:02x}, A={6:02x}", B, C, D, E, H, L, A);
+}
+
 
 // To be replaced by using ranges
 std::vector<std::string> split(const std::string& s, char delimiter)
@@ -193,28 +220,28 @@ void Processor::disassemble(unsigned short& pc)
 		return;
 	}
 
-	auto code = &Rom[pc];
+	auto opCode = &Rom[pc];
 	unsigned short opbytes = 1;
 
 	fmt::print("{0:04x}\t", pc);
 
-	if (InstructionSet[code[0]])
+	if (InstructionSet[opCode[0]])
 	{
-		auto isl = InstructionSet[code[0]];
+		auto isl = InstructionSet[opCode[0]];
 		auto instruction = isl->Mnemonic;
 		if (isl->Mnemonic.ends_with("adr"))
 		{
-			unsigned  short d = (code[2] << 8) + code[1];
+			unsigned  short d = (opCode[2] << 8) + opCode[1];
 			instruction = fmt::format("{0}${1:04x}", instruction.substr(0, instruction.size() - 3), d);
 		}
 		else if (isl->Mnemonic.ends_with("D8"))
 		{
-			unsigned  short d = code[1];
+			unsigned  short d = opCode[1];
 			instruction = fmt::format("{0}#${1:02x}", instruction.substr(0, instruction.size() - 2), d);
 		}
 		else if (isl->Mnemonic.ends_with("D16"))
 		{
-			unsigned  short d = (code[2] << 8) + code[1];
+			unsigned  short d = (opCode[2] << 8) + opCode[1];
 			instruction = fmt::format("{0}#${1:02x}", instruction.substr(0, instruction.size() - 3), d);
 		}
 		fmt::print("{0:10}\n", instruction);
@@ -222,17 +249,70 @@ void Processor::disassemble(unsigned short& pc)
 	}
 	else
 	{
-		fmt::print("not implemented\n");
+		fmt::print("-\n");
 	}
 
 	pc += opbytes;
 }
 
-void Processor::run()
-{
+void Processor::run(const unsigned short stackSize)
+{ 
+	PC = 0;
+
+	while (true)
+	{
+		this->showState(stackSize);
+
+		auto opCode = &Rom[PC];
+		auto isl = InstructionSet[opCode[0]];
+		if (isl!=nullptr)
+		{
+			// TODO: replace by script stored in nstruction set ???
+			switch (opCode[0])
+			{
+			case 0x00:
+				// NOP
+				PC += isl->Size;
+				break;
+
+			case 0x06:
+				// MVI B, D8
+				this->Registers.B = opCode[1];
+				PC += isl->Size;
+				break;
+
+			case 0x31:
+				// LXI SP,D16
+				SP = (opCode[2] << 8) + opCode[1];
+				PC += isl->Size;
+				break;
+
+			case 0xc3:
+				// JMP adr
+				PC= (opCode[2] << 8) + opCode[1];
+				//PC += isl->Size;
+				break;
+			default:
+				throw new std::exception("not implemented");
+				break;
+			}
+		}
+		else
+		{
+			throw new std::exception("opCode not in instruction set");
+		}
+	}
 }
 
 unsigned short Processor::romSize()
 {
 	return (unsigned short)Rom.size();
+}
+
+void Processor::showState(const unsigned short stackSize)
+{
+	clear();
+	fmt::print("PC={0:04x}, SP={1:04x}, {2}\n", PC, SP, this->Registers.toString());
+	fmt::print("Next {1} instructions:\n", PC, stackSize);
+	this->disassembleRom(PC, stackSize);
 }

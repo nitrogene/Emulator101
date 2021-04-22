@@ -24,9 +24,9 @@ int main(int /*argc*/, char** /*argv*/)
 
 	//processor->hexdump();
 
-	processor->disassembleRom(0,processor->romSize());
+	//processor->disassembleRom(0,processor->romSize());
 
-	processor->run();
+	processor->run(16);
 
 	return 0;
 }

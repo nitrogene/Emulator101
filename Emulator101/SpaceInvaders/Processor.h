@@ -8,7 +8,9 @@
 struct Registers
 {
 	// 8 bits registers
-	unsigned char A=0, B=0, C=0, D=0, E=0;
+	unsigned char B=0, C=0, D=0, E=0, H=0, L = 0, A = 0;
+
+	std::string toString();
 };
 
 struct InstructionSetLine
@@ -33,6 +35,9 @@ private:
 
 	// 16 bits Program counter
 	unsigned short PC = 0;
+
+	// 16 bits stack pointer
+	unsigned short SP = 0;
 
 	// 8 bits buffer
 	std::vector<unsigned char> Rom{};
@@ -59,7 +64,10 @@ public:
 	void disassembleRom(const unsigned short offset, const unsigned short size);
 
 	// dissassemble instruction pointed by PC
-	void run();
+	void run(const unsigned short stackSize);
+
+	// show processor state (registers, next stackSize instructions)
+	void showState(const unsigned short stackSize);
 
 	unsigned short romSize();
 };
