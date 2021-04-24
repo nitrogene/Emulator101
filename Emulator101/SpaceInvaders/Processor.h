@@ -4,25 +4,10 @@
 #include <filesystem>
 #include <array>
 #include <memory>
+#include "InstructionSetLine.h"
+#include "Registers.h"
+#include "MemoryMap.h"
 
-struct Registers
-{
-	// 8 bits registers
-	unsigned char B=0, C=0, D=0, E=0, H=0, L = 0, A = 0;
-
-	std::string toString();
-};
-
-struct InstructionSetLine
-{
-	std::string Mnemonic{};
-	unsigned char Bits[8]{};
-	std::string Periods{};
-	unsigned short Size{};
-	std::string Description;
-
-	bool TryConvertBits(unsigned char& r);
-};
 
 class Processor
 {
@@ -39,14 +24,14 @@ private:
 	// 16 bits stack pointer
 	unsigned short SP = 0;
 
-	// 8 bits buffer
-	std::vector<unsigned char> Rom{};
+	// MemoryMap
+	std::shared_ptr<MemoryMap> p_MemoryMap;
 
 	// dissassemble instruction pointed by PC
-	void disassemble(unsigned short& pc);
+	void Disassemble(unsigned short& pc);
 
 	// Load into buffer hopefully valid 8080 assembly code
-	bool TryLoadIntoBuffer(const std::filesystem::path& pathToRomFile);
+	static void LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::vector<unsigned char>& buffer);
 
 public:
 	Processor() = delete;
@@ -55,19 +40,17 @@ public:
 
 	void DisplayInstructionSet();
 
-	bool TryLoadIntoBuffer(const std::vector<std::filesystem::path>& pathToRomFiles);
+	void Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const unsigned short totalRam, const unsigned short workRamAddress, const unsigned short videoRamAddress, const unsigned short mirrorRamAddress);
 
 	// Hexadeximal dump of buffer
-	void hexdump();
+	void Hexdump(MemoryMapPart mmPart);
 
-	// dissassemble instruction pointed by PC
-	void disassembleRom(const unsigned short offset, const unsigned short size);
+	// dissassemble stackSize instructions starting at PC=offset
+	void DisassembleRomStacksize(const unsigned short offset, const unsigned short stackSize);
 
-	// dissassemble instruction pointed by PC
-	void run(const unsigned short stackSize);
+	// run and show stackSize instruction at each step
+	void Run(const unsigned short stackSize);
 
 	// show processor state (registers, next stackSize instructions)
-	void showState(const unsigned short stackSize);
-
-	unsigned short romSize();
+	void ShowState(const unsigned short stackSize);
 };

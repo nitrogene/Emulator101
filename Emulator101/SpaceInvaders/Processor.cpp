@@ -1,72 +1,10 @@
-#include "Processor.h"
 #include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <filesystem>
 #include <fmt/core.h>
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#undef max
-
-void clear() 
-{
-	COORD topLeft = { 0, 0 };
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO screen;
-	DWORD written;
-
-	GetConsoleScreenBufferInfo(console, &screen);
-	FillConsoleOutputCharacterA(
-		console, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &written
-	);
-	FillConsoleOutputAttribute(
-		console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
-		screen.dwSize.X * screen.dwSize.Y, topLeft, &written
-	);
-	SetConsoleCursorPosition(console, topLeft);
-}
-
-std::string Registers::toString()
-{
-	return fmt::format("B={0:02x}, C={1:02x}, D={2:02x}, E={3:02x}, H={4:02x}, L={5:02x}, A={6:02x}", B, C, D, E, H, L, A);
-}
-
-
-// To be replaced by using ranges
-std::vector<std::string> split(const std::string& s, char delimiter)
-{
-	std::vector<std::string> tokens;
-	std::string token;
-	std::istringstream tokenStream(s);
-	while (std::getline(tokenStream, token, delimiter))
-	{
-		tokens.push_back(token);
-	}
-	return tokens;
-}
-
-bool InstructionSetLine::TryConvertBits(unsigned char& r)
-{
-	unsigned char base = 1;
-	r = 0;
-	for (auto i = 7; i >= 0; --i)
-	{
-		if (Bits[i] != '1' && Bits[i] != '0')
-		{
-			r = 0;
-			return false;
-		}
-
-		if (Bits[i] == '1')
-		{
-			r += base;
-		}
-
-		base<<=1;
-	}
-
-	return true;
-}
+#include "Processor.h"
+#include "Utilities.h"
 
 Processor::Processor(const std::filesystem::path& pathToInstructiosSet)
 {
@@ -85,7 +23,7 @@ Processor::Processor(const std::filesystem::path& pathToInstructiosSet)
 		{
 			auto isl = std::make_shared<InstructionSetLine>();
 
-			auto t=split(line, ';');
+			auto t= Utilities::Split(line, ';');
 
 			if (t.size() != 12)
 			{
@@ -141,38 +79,19 @@ void Processor::DisplayInstructionSet()
 	}
 }
 
-void Processor::hexdump()
+void Processor::Hexdump(MemoryMapPart mmPart)
 {
-	auto buffer = Rom.data();
-	unsigned int c = 0;
-
-	std::cout << "hexDump:\n";
-
-	while (buffer < Rom.data() + Rom.size())
-	{
-		std::cout << std::setw(7) << std::setfill('0') << std::hex << c << " ";
-
-		auto buffer_ = buffer;
-		while (buffer_ < buffer+16 && buffer_< Rom.data() + Rom.size())
-		{
-			std::cout << std::setw(2) << std::setfill('0') << std::hex << (unsigned int)*buffer_ << " ";
-			++buffer_;
-		}
-
-		buffer = buffer_;
-		std::cout << "\n";
-		c += 16;
-	}
+	p_MemoryMap->Hexdump(mmPart);
 }
 
-bool Processor::TryLoadIntoBuffer(const std::filesystem::path& pathToRomFile)
+void Processor::LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::vector<unsigned char>& buffer)
 {
 	std::ifstream fs(pathToRomFile, std::ios_base::binary);
 
 	if (fs.is_open())
 	{
 		auto n = (size_t)std::filesystem::file_size(pathToRomFile);
-		auto offset = this->Rom.size();
+		auto offset = buffer.size();
 		constexpr auto limit = std::numeric_limits<unsigned short>().max();
 
 		if (n + offset > limit)
@@ -180,47 +99,41 @@ bool Processor::TryLoadIntoBuffer(const std::filesystem::path& pathToRomFile)
 			throw new std::exception("overflow");
 		}
 
-		this->Rom.resize(n+offset);
-		fs.read((char*)this->Rom.data()+offset, n);
+		buffer.resize(n+offset);
+		fs.read((char*)buffer.data()+offset, n);
 		fs.close();
-		return true;
-	}
-	
-	return false;
-}
-
-bool Processor::TryLoadIntoBuffer(const std::vector<std::filesystem::path>& pathToRomFiles)
-{
-
-	for (auto& pathToRomFile : pathToRomFiles)
-	{
-		if (!TryLoadIntoBuffer(pathToRomFile))
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
-void Processor::disassembleRom(const unsigned short offset, const unsigned short size)
-{
-	auto pc= offset;
-	while (pc < offset+size)
-	{
-		disassemble(pc);
-	}
-}
-
-void Processor::disassemble(unsigned short& pc)
-{
-	if (pc >= Rom.size())
-	{
-		std::cout << "overflow" << std::endl;
 		return;
 	}
 
-	auto opCode = &Rom[pc];
+	throw new std::exception("unabe to open file");
+}
+
+void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const unsigned short totalRam, const unsigned short workRamAddress, const unsigned short videoRamAddress, const unsigned short mirrorRamAddress)
+{
+	std::vector<unsigned char> buffer;
+
+	for (auto& pathToRomFile : pathToRomFiles)
+	{
+		LoadIntoBuffer(pathToRomFile, buffer);
+	}
+
+	this->p_MemoryMap = std::make_shared<MemoryMap>(buffer, totalRam, workRamAddress, videoRamAddress, mirrorRamAddress);
+}
+
+void Processor::DisassembleRomStacksize(const unsigned short offset, const unsigned short stackSize)
+{
+	auto pc = offset;
+	auto count = 0;
+	while (count < stackSize)
+	{
+		Disassemble(pc);
+		count++;
+	}
+}
+
+void Processor::Disassemble(unsigned short& pc)
+{
+	auto opCode = &p_MemoryMap->Peek(pc);
 	unsigned short opbytes = 1;
 
 	fmt::print("{0:04x}\t", pc);
@@ -255,15 +168,17 @@ void Processor::disassemble(unsigned short& pc)
 	pc += opbytes;
 }
 
-void Processor::run(const unsigned short stackSize)
+void Processor::Run(const unsigned short stackSize)
 { 
 	PC = 0;
 
 	while (true)
 	{
-		this->showState(stackSize);
+		this->ShowState(stackSize);
 
-		auto opCode = &Rom[PC];
+		// TODO: Create ROM "read only" throw exception whenever we write in rom part or out of ram
+		// Simplify
+		auto opCode = &p_MemoryMap->Peek(PC);
 		auto isl = InstructionSet[opCode[0]];
 		if (isl!=nullptr)
 		{
@@ -287,11 +202,19 @@ void Processor::run(const unsigned short stackSize)
 				PC += isl->Size;
 				break;
 
-			case 0xc3:
+			case 0xCD:
+				// CALL adr
+				p_MemoryMap->Poke(SP - 1, (PC & 0xFF00) >> 8);
+				p_MemoryMap->Poke(SP - 2,PC & 0x00FF);
+				SP -= 2;
+				PC = (opCode[2] << 8) + opCode[1];
+				break;
+
+			case 0xC3:
 				// JMP adr
 				PC= (opCode[2] << 8) + opCode[1];
-				//PC += isl->Size;
 				break;
+
 			default:
 				throw new std::exception("not implemented");
 				break;
@@ -304,15 +227,10 @@ void Processor::run(const unsigned short stackSize)
 	}
 }
 
-unsigned short Processor::romSize()
+void Processor::ShowState(const unsigned short stackSize)
 {
-	return (unsigned short)Rom.size();
-}
-
-void Processor::showState(const unsigned short stackSize)
-{
-	clear();
+	Utilities::ClearScreen();
 	fmt::print("PC={0:04x}, SP={1:04x}, {2}\n", PC, SP, this->Registers.toString());
-	fmt::print("Next {1} instructions:\n", PC, stackSize);
-	this->disassembleRom(PC, stackSize);
+	fmt::print("Next {1} instructions in rom:\n", PC, stackSize);
+	this->DisassembleRomStacksize(PC, stackSize);
 }

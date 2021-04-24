@@ -3,9 +3,17 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Processor.cpp" />
+    <ClCompile Include="InstructionSetLine.cpp" />
+    <ClCompile Include="Registers.cpp" />
+    <ClCompile Include="MemoryMap.cpp" />
+    <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Processor.h" />
+    <ClInclude Include="InstructionSetLine.h" />
+    <ClInclude Include="Registers.h" />
+    <ClInclude Include="MemoryMap.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

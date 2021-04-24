@@ -15,18 +15,9 @@ int main(int /*argc*/, char** /*argv*/)
 {
 	auto processor = std::make_shared<Processor>(instructions);
 
-	//processor->DisplayInstructionSet();
+	processor->Initialize(roms, 0xFFFF, 0x2000, 0x2400, 0x4000);
 
-	if (!processor->TryLoadIntoBuffer(roms))
-	{
-		std::cout << "loading roms has failed\n";
-	}
-
-	//processor->hexdump();
-
-	//processor->disassembleRom(0,processor->romSize());
-
-	processor->run(16);
+	processor->Run(16);
 
 	return 0;
 }
