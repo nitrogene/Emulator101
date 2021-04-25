@@ -1,8 +1,19 @@
+#include <fmt/core.h>
 #include "InstructionSetLine.h"
 
-bool InstructionSetLine::TryConvertBits(unsigned char& r)
+std::string ClockCycle::toString()
 {
-	unsigned char base = 1;
+	if (B != 0)
+	{
+		return fmt::format("{0}/{1}", A,B);
+	}
+
+	return fmt::format("{0}", A);
+}
+
+bool InstructionSetLine::TryConvertBits(uint8_t& r)
+{
+	uint8_t base = 1;
 	r = 0;
 	for (auto i = 7; i >= 0; --i)
 	{

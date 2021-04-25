@@ -24,9 +24,11 @@
     <ClCompile Include="Processor.cpp" />
     <ClCompile Include="InstructionSetLine.cpp" />
     <ClCompile Include="Registers.cpp" />
+    <ClCompile Include="Flags.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Flags.h" />
     <ClInclude Include="MemoryMap.h" />
     <ClInclude Include="Registers.h" />
     <ClInclude Include="InstructionSetLine.h" />

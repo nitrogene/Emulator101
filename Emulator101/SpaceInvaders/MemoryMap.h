@@ -15,18 +15,18 @@ class MemoryMap
 {
 private:
 	// 8 bits buffer
-	std::vector<unsigned char> m_MemoryBuffer{};
-	const unsigned short m_RomSize = 0;
-	const unsigned short m_WorkRamAddress = 0;
-	const unsigned short m_VideoRamAddress = 0;
-	const unsigned short m_MirrorRamAddress = 0;
+	std::vector<uint8_t> m_MemoryBuffer{};
+	const uint16_t m_RomSize = 0;
+	const uint16_t m_WorkRamAddress = 0;
+	const uint16_t m_VideoRamAddress = 0;
+	const uint16_t m_MirrorRamAddress = 0;
 
 public:
-	MemoryMap(const std::vector<unsigned char>& rom, const unsigned short totalRam,
-		const unsigned short workRamAddress, const unsigned short videoRamAddress, const unsigned short mirrorRamAddress);
+	MemoryMap(const std::vector<uint8_t>& rom, const uint16_t totalRam,
+		const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress);
 
 	void Hexdump(const MemoryMapPart mmPart);
 
-	const unsigned char& Peek(const unsigned short idx) const;
-	void Poke(const unsigned short idx, const unsigned char value);
+	const uint8_t& Peek(const uint16_t idx) const;
+	void Poke(const uint16_t idx, const uint8_t value);
 };

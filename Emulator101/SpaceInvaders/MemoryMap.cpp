@@ -2,9 +2,9 @@
 #include <iomanip>
 #include "MemoryMap.h"
 
-MemoryMap::MemoryMap(const std::vector<unsigned char>& rom, const unsigned short totalRam,
-	const unsigned short workRamAddress, const unsigned short videoRamAddress, const unsigned short mirrorRamAddress) :m_MemoryBuffer(rom), m_WorkRamAddress(workRamAddress), m_VideoRamAddress(videoRamAddress), m_MirrorRamAddress(mirrorRamAddress),
-	m_RomSize((unsigned short)rom.size())
+MemoryMap::MemoryMap(const std::vector<uint8_t>& rom, const uint16_t totalRam,
+	const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress) :m_MemoryBuffer(rom), m_WorkRamAddress(workRamAddress), m_VideoRamAddress(videoRamAddress), m_MirrorRamAddress(mirrorRamAddress),
+	m_RomSize((uint16_t)rom.size())
 {
 	// TODO:
 	// Check size and addresses coherence
@@ -16,8 +16,8 @@ MemoryMap::MemoryMap(const std::vector<unsigned char>& rom, const unsigned short
 
 void MemoryMap::Hexdump(const MemoryMapPart mmPart)
 {
-	unsigned char* buffer = nullptr;
-	unsigned short size = 0;
+	uint8_t* buffer = nullptr;
+	uint16_t size = 0;
 
 	switch (mmPart)
 	{
@@ -38,16 +38,16 @@ void MemoryMap::Hexdump(const MemoryMapPart mmPart)
 
 	case MemoryMapPart::MIRROR_RAM:
 		buffer = m_MemoryBuffer.data() + m_MirrorRamAddress;
-		size = (unsigned short)m_MemoryBuffer.size() - m_MirrorRamAddress;
+		size = (uint16_t)m_MemoryBuffer.size() - m_MirrorRamAddress;
 		break;
 
 	case MemoryMapPart::FULL:
 		buffer = m_MemoryBuffer.data();
-		size = (unsigned short)m_MemoryBuffer.size();
+		size = (uint16_t)m_MemoryBuffer.size();
 		break;
 	}
 
-	unsigned short c = 0;
+	uint16_t c = 0;
 	auto limit = buffer + size;
 
 	std::cout << "hexDump:\n";
@@ -59,7 +59,7 @@ void MemoryMap::Hexdump(const MemoryMapPart mmPart)
 		auto buffer_ = buffer;
 		while (buffer_ < buffer + 16 && buffer_ < limit)
 		{
-			std::cout << std::setw(2) << std::setfill('0') << std::hex << (unsigned short)*buffer_ << " ";
+			std::cout << std::setw(2) << std::setfill('0') << std::hex << (uint16_t)*buffer_ << " ";
 			++buffer_;
 		}
 
@@ -70,12 +70,12 @@ void MemoryMap::Hexdump(const MemoryMapPart mmPart)
 }
 
 
-const unsigned char& MemoryMap::Peek(const unsigned short idx) const
+const uint8_t& MemoryMap::Peek(const uint16_t idx) const
 {
 	return m_MemoryBuffer[idx];
 }
 
-void MemoryMap::Poke(const unsigned short idx, const unsigned char value)
+void MemoryMap::Poke(const uint16_t idx, const uint8_t value)
 {
 	if (idx < m_RomSize)
 	{

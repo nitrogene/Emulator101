@@ -17,7 +17,11 @@ int main(int /*argc*/, char** /*argv*/)
 
 	processor->Initialize(roms, 0xFFFF, 0x2000, 0x2400, 0x4000);
 
-	processor->Run(16);
+	// processor->Hexdump(MemoryMapPart::ROM);
+
+	// processor->DisplayInstructionSet();
+
+	processor->Run(16,100);
 
 	return 0;
 }
