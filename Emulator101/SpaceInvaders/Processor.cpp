@@ -176,20 +176,20 @@ void Processor::Disassemble(uint16_t& pc)
 
 void Processor::Run(const uint16_t stackSize, const uint64_t n)
 { 
-	PC = 0;
+	m_State.PC = 0;
 
 	while (true)
 	{
-		if (Steps % n==0)
+		if (m_State.Steps % n==0)
 		{
 			this->ShowState(stackSize);
 		}
 		// TODO: Create ROM "read only" throw exception whenever we write in rom part or out of ram
 		// Simplify
-		auto opCode = &p_MemoryMap->Peek(PC);
+		auto opCode = &p_MemoryMap->Peek(m_State.PC);
 		auto isl = InstructionSet[opCode[0]];
-		this->Cycles += isl->ClockCycle.A;
-		this->Steps++;
+		this->m_State.Cycles += isl->ClockCycle.A;
+		this->m_State.Steps++;
 
 
 		if (isl!=nullptr)
@@ -200,191 +200,191 @@ void Processor::Run(const uint16_t stackSize, const uint64_t n)
 			case 0x00:
 			{
 				// NOP
-				PC += isl->Size;
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x01:
 			{
 				// LXI B,D16 
-				this->Registers.B = opCode[2];
-				this->Registers.C = opCode[1];
-				PC += isl->Size;
+				this->m_State.B = opCode[2];
+				this->m_State.C = opCode[1];
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x02:
 			{
 				// STAX B 
-				uint16_t adr = (this->Registers.B << 8) + this->Registers.C;
-				p_MemoryMap->Poke(adr, this->Registers.A);
-				PC += isl->Size;
+				uint16_t adr = (this->m_State.B << 8) + this->m_State.C;
+				p_MemoryMap->Poke(adr, this->m_State.A);
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x03:
 			{
 				// INX B
-				this->Registers.C += 1;
-				if (this->Registers.C == 0)
+				this->m_State.C += 1;
+				if (this->m_State.C == 0)
 				{
-					this->Registers.B += 1;
+					this->m_State.B += 1;
 				}
 				
-				PC += isl->Size;
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x05:
 			{
 				// DCR B
-				this->Registers.B = Flags.DCR(this->Registers.B);
-				PC += isl->Size;
+				Utilities::DCR(this->m_State.B, this->m_State);
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x06:
 				// MVI B, D8
-				this->Registers.B = opCode[1];
-				PC += isl->Size;
+				this->m_State.B = opCode[1];
+				m_State.PC += isl->Size;
 				break;
 
 			case 0x0d:
 			{
 				// DCR C
-				this->Registers.C = Flags.DCR(this->Registers.C);
-				PC += isl->Size;
+				Utilities::DCR(this->m_State.C, this->m_State);
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x11:
 				// LXI D,16
-				this->Registers.D = opCode[2];
-				this->Registers.E = opCode[1];
-				PC += isl->Size;
+				this->m_State.D = opCode[2];
+				this->m_State.E = opCode[1];
+				m_State.PC += isl->Size;
 				break;
 
 			case 0x13:
 			{
 				// INX D
-				this->Registers.E += 1;
-				if (this->Registers.E == 0)
+				this->m_State.E += 1;
+				if (this->m_State.E == 0)
 				{
-					this->Registers.D += 1;
+					this->m_State.D += 1;
 				}
-				PC += isl->Size;
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x15:
 			{
 				// DCR D
-				this->Registers.D = Flags.DCR(this->Registers.D);
-				PC += isl->Size;
+				Utilities::DCR(this->m_State.D, this->m_State);
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x1A:
 			{
 				// LDAX D
-				uint16_t adr = (this->Registers.D << 8) + this->Registers.E;
-				this->Registers.A = p_MemoryMap->Peek(adr);
-				PC += isl->Size;
+				uint16_t adr = (this->m_State.D << 8) + this->m_State.E;
+				this->m_State.A = p_MemoryMap->Peek(adr);
+				m_State.PC += isl->Size;
 			}
 				break;
 
 			case 0x1D:
 			{
 				// DCR E
-				this->Registers.E = Flags.DCR(this->Registers.E);
-				PC += isl->Size;
+				Utilities::DCR(this->m_State.E, this->m_State);
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x21:
 				// LXI H,16
-				this->Registers.H = opCode[2];
-				this->Registers.L = opCode[1];
-				PC += isl->Size;
+				this->m_State.H = opCode[2];
+				this->m_State.L = opCode[1];
+				m_State.PC += isl->Size;
 				break;
 
 			case 0x23:
 			{
 				// INX H
-				this->Registers.L += 1;
-				if (this->Registers.L == 0)
+				this->m_State.L += 1;
+				if (this->m_State.L == 0)
 				{
-					this->Registers.H += 1;
+					this->m_State.H += 1;
 				}
-				PC += isl->Size;
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x25:
 			{
 				// DCR H
-				this->Registers.H = Flags.DCR(this->Registers.H);
-				PC += isl->Size;
+				Utilities::DCR(this->m_State.H,this->m_State);
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x2D:
 			{
 				// DCR L
-				this->Registers.L = Flags.DCR(this->Registers.L);
-				PC += isl->Size;
+				Utilities::DCR(this->m_State.L, this->m_State);
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x31:
 				// LXI SP,D16
-				SP = (opCode[2] << 8) + opCode[1];
-				PC += isl->Size;
+				m_State.SP = (opCode[2] << 8) + opCode[1];
+				m_State.PC += isl->Size;
 				break;
 
 			case 0x33:
 			{
 				// INX SP
-				SP += 1;
-				PC += isl->Size;
+				m_State.SP += 1;
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x3D:
 			{
 				// DCR A
-				this->Registers.A = Flags.DCR(this->Registers.A);
-				PC += isl->Size;
+				Utilities::DCR(this->m_State.A,this->m_State);
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0x77:
 			{
 				// MOV M,A
-				uint16_t adr= (Registers.H << 8) + Registers.L;
-				p_MemoryMap->Poke(adr, Registers.A);
-				PC += isl->Size;
+				uint16_t adr= (m_State.H << 8) + m_State.L;
+				p_MemoryMap->Poke(adr, m_State.A);
+				m_State.PC += isl->Size;
 				break;
 			}
 
 			case 0xCD:
 				// CALL adr
-				p_MemoryMap->Poke(SP - 1, (PC & 0xFF00) >> 8);
-				p_MemoryMap->Poke(SP - 2,PC & 0x00FF);
-				SP -= 2;
-				PC = (opCode[2] << 8) + opCode[1];
+				p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+				p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+				m_State.SP -= 2;
+				m_State.PC = (opCode[2] << 8) + opCode[1];
 				break;
 
 			case 0xC2:
 			{
 				// JNZ adr
-				if(Flags.Value&Flags::ZERO_CHECK)
+				if(m_State.Z)
 				{ 
-					PC += isl->Size;
+					m_State.PC += isl->Size;
 				}
 				else
 				{
-					PC = (opCode[2] << 8) + opCode[1];
+					m_State.PC = (opCode[2] << 8) + opCode[1];
 				}
 				break;
 			}
@@ -392,17 +392,17 @@ void Processor::Run(const uint16_t stackSize, const uint64_t n)
 			case 0xC3:
 			{
 				// JMP adr
-				PC = (opCode[2] << 8) + opCode[1];
+				m_State.PC = (opCode[2] << 8) + opCode[1];
 				break;
 			}
 
 			case 0xC9:
 			{
 				// RET
-				auto spc = p_MemoryMap->Peek(SP);
-				auto spc1 = p_MemoryMap->Peek(SP+1);
-				PC = (spc1 << 8) + spc;
-				SP += 2;
+				auto spc = p_MemoryMap->Peek(m_State.SP);
+				auto spc1 = p_MemoryMap->Peek(m_State.SP+1);
+				m_State.PC = (spc1 << 8) + spc;
+				m_State.SP += 2;
 				break;
 			}
 
@@ -422,8 +422,7 @@ void Processor::Run(const uint16_t stackSize, const uint64_t n)
 void Processor::ShowState(const uint16_t stackSize)
 {
 	Utilities::ClearScreen();
-	fmt::print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\n","af   bc   de   hl", "pc  ", "sp  ", "flags", "cycles", "steps");
-	fmt::print("{0}\t{1:04x}\t{2:04x}\t{3}\t{4}\t{5}\n", this->Registers.toString(this->Flags.Value), this->PC, this->SP,this->Flags.toString(),this->Cycles, this->Steps);
-	fmt::print("Next {1} instructions in rom:\n", PC, stackSize);
-	this->DisassembleRomStacksize(PC, stackSize);
+	fmt::print("{0}", m_State.toString());
+	fmt::print("Next {0} instructions in rom:\n", stackSize);
+	this->DisassembleRomStacksize(m_State.PC, stackSize);
 }

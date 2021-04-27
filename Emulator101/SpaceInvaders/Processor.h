@@ -5,32 +5,17 @@
 #include <array>
 #include <memory>
 #include "InstructionSetLine.h"
-#include "Registers.h"
+#include "State.h"
 #include "MemoryMap.h"
-#include "Flags.h"
-
 
 class Processor
 {
 private:
 	// Instruction set
-	std::array<std::shared_ptr<InstructionSetLine>,256> InstructionSet{};
+	std::array<std::shared_ptr<InstructionSetLine>, 256> InstructionSet{};
 
 	// Registers
-	Registers Registers{};
-
-	// Flags
-	Flags Flags{};
-
-	// 16 bits Program counter
-	uint16_t PC = 0;
-
-	// 16 bits stack pointer
-	uint16_t SP = 0;
-
-	uint64_t Cycles = 0;
-
-	uint64_t Steps = 0;
+	State m_State{};
 
 	// MemoryMap
 	std::shared_ptr<MemoryMap> p_MemoryMap;

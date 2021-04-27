@@ -19,18 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Intel-8080-Emulator\i8080.c" />
+    <ClCompile Include="..\Intel-8080-Emulator\MachineTemplate.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MemoryMap.cpp" />
     <ClCompile Include="Processor.cpp" />
     <ClCompile Include="InstructionSetLine.cpp" />
-    <ClCompile Include="Registers.cpp" />
-    <ClCompile Include="Flags.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Flags.h" />
+    <ClInclude Include="..\Intel-8080-Emulator\i8080.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="MemoryMap.h" />
-    <ClInclude Include="Registers.h" />
     <ClInclude Include="InstructionSetLine.h" />
     <ClInclude Include="Processor.h" />
     <ClInclude Include="Utilities.h" />

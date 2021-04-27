@@ -1,20 +1,9 @@
 #pragma once
 #include <string>
 
-struct Flags
+struct State
 {
-private:
-	static bool isOddParity(const uint8_t value);
-
-public:
-	static const uint8_t CARRY_CHECK			= 0b00000001;
-	static const uint8_t PARITY_CHECK			= 0b00000100;
-	static const uint8_t AUXILIARY_CARRY_CHECK	= 0b00010000;
-	static const uint8_t ZERO_CHECK				= 0b01000000;
-	static const uint8_t SIGN_CHECK				= 0b10000000;
-
-	uint8_t Value = 0b00000010;
-
+	// Flags
 	/*
 	If register pair PSW is specified, the first byte of information
 	saved holds the contents of the A register; the
@@ -34,8 +23,33 @@ public:
 	1  always 1
 	C  State of Carry bit
 	*/
+	bool S = false;
+	bool Z = false;
+	bool AC = false;
+	bool P = false;
+	bool CY = false;
+
+	// Registers
+	// 8 bits registers
+	uint8_t B = 0;
+	uint8_t C = 0;
+	uint8_t D = 0;
+	uint8_t E = 0;
+	uint8_t H = 0;
+	uint8_t L = 0;
+	uint8_t A = 0;
+
+	// 16 bits Program counter
+	uint16_t PC = 0;
+
+	// 16 bits stack pointer
+	uint16_t SP = 0;
+
+	// Number of cpu cycles
+	uint64_t Cycles = 0;
+
+	// Number of cpu steps
+	uint64_t Steps = 0;
 
 	std::string toString();
-
-	uint8_t DCR(const uint8_t value);
 };
