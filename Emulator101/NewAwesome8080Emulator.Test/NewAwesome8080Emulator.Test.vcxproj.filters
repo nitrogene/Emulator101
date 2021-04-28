@@ -18,5 +18,8 @@
     <ClInclude Include="Intel-8080-Emulator\i8080.h">
       <Filter>Intel-8080-Emulator</Filter>
     </ClInclude>
+    <ClInclude Include="Intel-8080-Emulator\MachineTemplate.h">
+      <Filter>Intel-8080-Emulator</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

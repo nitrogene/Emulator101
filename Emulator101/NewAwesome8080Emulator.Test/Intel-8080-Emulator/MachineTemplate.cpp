@@ -7,53 +7,17 @@ This Template is a general start and guiding outline to complete the Space Invad
 
 -- gcc -o a MachineTemplate.cpp i8080.c
 */
+#include "MachineTemplate.h"
 
-extern "C" {
-#include "i8080.h"
-}
-
-#include <chrono>
-
-//REMINDER
-//When implementing a specific machine
-//execute CPU and platform window (graphics) on separate threads
-//appropriately sleep the CPU thread to have it run at 2MHz
-class MachineTemplate
-{
-    //TODO
-    //Define machine specific input and output ports
-
-  private:
-    //CPU
-    State8080 *state;
-
-    //Timer & Interrupt variables
-    long long now;
-    long long lastTimer;
-    double nextInterrupt;
-    double sinceLastCycle;
-    int whichInterrupt;
-
-  public:
-    //Set to True if you want CPU to output trace of execution
-    bool printTrace;
-    MachineTemplate(bool printTraceSet);
-
-    void *FrameBuffer();
-    void MachineOUT(uint8_t port, uint8_t value);
-    uint8_t MachineIN(uint8_t port);
-    long long timeusec();
-    void doCPU();
-};
 
 //Constructor
 MachineTemplate::MachineTemplate(bool printTraceSet)
 {
     state = Init8080();
-    ReadFileIntoMemory(state, "./rom/invaders.h", 0);
-    ReadFileIntoMemory(state, "./rom/invaders.g", 0x800);
-    ReadFileIntoMemory(state, "./rom/invaders.f", 0x1000);
-    ReadFileIntoMemory(state, "./rom/invaders.e", 0x1800);
+    ReadFileIntoMemory(state, "invaders.h", 0);
+    ReadFileIntoMemory(state, "invaders.g", 0x800);
+    ReadFileIntoMemory(state, "invaders.f", 0x1000);
+    ReadFileIntoMemory(state, "invaders.e", 0x1800);
     printTrace = printTraceSet;
 }
 
@@ -87,6 +51,38 @@ long long MachineTemplate::timeusec()
    static std::chrono::high_resolution_clock::time_point epoch;
 
    return  std::chrono::duration_cast<std::chrono::microseconds>(now_-epoch).count();
+}
+
+void MachineTemplate::doCPUStep(int& cycles)
+{
+    unsigned char* opcode;
+    opcode = &state->memory[state->pc];
+
+    //Need to define machine specific functions to handle IN and OUT depending on the use of the CPU
+    if (*opcode == 0xdb) //machine specific handling for IN
+    {
+        uint8_t port = opcode[1];
+        state->a = MachineIN(port);
+        state->pc += 1;
+        cycles += 3;
+    }
+    else if (*opcode == 0xd3) //machine specific handling for OUT
+    {
+        uint8_t port = opcode[1];
+        uint8_t value = state->a;
+        MachineOUT(port, value);
+        state->pc += 1;
+        cycles += 3;
+    }
+    else
+    {
+        cycles += Emulate(state, printTrace);
+    }
+}
+
+const State8080& MachineTemplate::getState() const
+{
+    return *state;
 }
 
 //runs CPU at a steady 2MHz
@@ -126,29 +122,7 @@ void MachineTemplate::doCPU()
 
         while (cycles_to_catch_up > cycles)
         {
-            unsigned char *opcode;
-            opcode = &state->memory[state->pc];
-
-            //Need to define machine specific functions to handle IN and OUT depending on the use of the CPU
-            if (*opcode == 0xdb) //machine specific handling for IN
-            {
-                uint8_t port = opcode[1];
-                state->a = MachineIN(port);
-                state->pc += 1;
-                cycles += 3;
-            }
-            else if (*opcode == 0xd3) //machine specific handling for OUT
-            {
-                uint8_t port = opcode[1];
-                uint8_t value = state->a;
-                MachineOUT(port, value);
-                state->pc += 1;
-                cycles += 3;
-            }
-            else
-            {
-                cycles += Emulate(state, printTrace);
-            }
+            doCPUStep(cycles);
         }
         lastTimer = now;
     }

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Intel-8080-Emulator\i8080.h" />
+    <ClInclude Include="Intel-8080-Emulator\MachineTemplate.h" />
     <ClInclude Include="test.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
