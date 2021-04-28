@@ -41,9 +41,15 @@ public:
 	// dissassemble stackSize instructions starting at PC=offset
 	void DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize);
 
-	// run and show stackSize instruction at each step
+	// run for ever and show stackSize instruction at each step
 	void Run(const uint16_t stackSize, const uint64_t n=1);
+
+	// run one step and return
+	void RunStep();
 
 	// show processor state (registers, next stackSize instructions)
 	void ShowState(const uint16_t stackSize);
+
+	// Return current step
+	const State& getState() const;
 };

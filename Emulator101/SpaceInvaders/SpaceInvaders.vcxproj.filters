@@ -2,34 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Processor.cpp" />
-    <ClCompile Include="InstructionSetLine.cpp" />
-    <ClCompile Include="MemoryMap.cpp" />
-    <ClCompile Include="Utilities.cpp" />
-    <ClCompile Include="..\Intel-8080-Emulator\i8080.c">
-      <Filter>Intel-8080-Emulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Intel-8080-Emulator\MachineTemplate.cpp">
-      <Filter>Intel-8080-Emulator</Filter>
-    </ClCompile>
-    <ClCompile Include="State.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Processor.h" />
-    <ClInclude Include="InstructionSetLine.h" />
-    <ClInclude Include="MemoryMap.h" />
-    <ClInclude Include="Utilities.h" />
-    <ClInclude Include="State.h" />
-    <ClInclude Include="..\Intel-8080-Emulator\i8080.h">
-      <Filter>Intel-8080-Emulator</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Intel-8080-Emulator">
-      <UniqueIdentifier>{2fa88b64-564e-4c04-a3e0-fb4935f04d5f}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

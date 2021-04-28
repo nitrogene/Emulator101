@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpaceInvaders", "SpaceInvaders\SpaceInvaders.vcxproj", "{3AC4776A-2F92-4438-A9BB-8EA7A388EA41}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NewAwesome8080Emulator", "NewAwesome8080Emulator\NewAwesome8080Emulator.vcxproj", "{80DA3B96-8D45-4060-B254-FE34EC90BAD4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NewAwesome8080Emulator.Test", "NewAwesome8080Emulator.Test\NewAwesome8080Emulator.Test.vcxproj", "{5E0EAB60-E8D8-44DC-BE71-CAF2F3EB4120}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +25,22 @@ Global
 		{3AC4776A-2F92-4438-A9BB-8EA7A388EA41}.Release|x64.Build.0 = Release|x64
 		{3AC4776A-2F92-4438-A9BB-8EA7A388EA41}.Release|x86.ActiveCfg = Release|Win32
 		{3AC4776A-2F92-4438-A9BB-8EA7A388EA41}.Release|x86.Build.0 = Release|Win32
+		{80DA3B96-8D45-4060-B254-FE34EC90BAD4}.Debug|x64.ActiveCfg = Debug|x64
+		{80DA3B96-8D45-4060-B254-FE34EC90BAD4}.Debug|x64.Build.0 = Debug|x64
+		{80DA3B96-8D45-4060-B254-FE34EC90BAD4}.Debug|x86.ActiveCfg = Debug|Win32
+		{80DA3B96-8D45-4060-B254-FE34EC90BAD4}.Debug|x86.Build.0 = Debug|Win32
+		{80DA3B96-8D45-4060-B254-FE34EC90BAD4}.Release|x64.ActiveCfg = Release|x64
+		{80DA3B96-8D45-4060-B254-FE34EC90BAD4}.Release|x64.Build.0 = Release|x64
+		{80DA3B96-8D45-4060-B254-FE34EC90BAD4}.Release|x86.ActiveCfg = Release|Win32
+		{80DA3B96-8D45-4060-B254-FE34EC90BAD4}.Release|x86.Build.0 = Release|Win32
+		{5E0EAB60-E8D8-44DC-BE71-CAF2F3EB4120}.Debug|x64.ActiveCfg = Debug|x64
+		{5E0EAB60-E8D8-44DC-BE71-CAF2F3EB4120}.Debug|x64.Build.0 = Debug|x64
+		{5E0EAB60-E8D8-44DC-BE71-CAF2F3EB4120}.Debug|x86.ActiveCfg = Debug|Win32
+		{5E0EAB60-E8D8-44DC-BE71-CAF2F3EB4120}.Debug|x86.Build.0 = Debug|Win32
+		{5E0EAB60-E8D8-44DC-BE71-CAF2F3EB4120}.Release|x64.ActiveCfg = Release|x64
+		{5E0EAB60-E8D8-44DC-BE71-CAF2F3EB4120}.Release|x64.Build.0 = Release|x64
+		{5E0EAB60-E8D8-44DC-BE71-CAF2F3EB4120}.Release|x86.ActiveCfg = Release|Win32
+		{5E0EAB60-E8D8-44DC-BE71-CAF2F3EB4120}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

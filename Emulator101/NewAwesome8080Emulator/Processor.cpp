@@ -174,6 +174,242 @@ void Processor::Disassemble(uint16_t& pc)
 	pc += opbytes;
 }
 
+void Processor::RunStep()
+{
+	// TODO: Create ROM "read only" throw exception whenever we write in rom part or out of ram
+		// Simplify
+	auto opCode = &p_MemoryMap->Peek(m_State.PC);
+	auto isl = InstructionSet[opCode[0]];
+	this->m_State.Cycles += isl->ClockCycle.A;
+	this->m_State.Steps++;
+
+
+	if (isl != nullptr)
+	{
+		// TODO: replace by script stored in nstruction set ???
+		switch (opCode[0])
+		{
+		case 0x00:
+		{
+			// NOP
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x01:
+		{
+			// LXI B,D16 
+			this->m_State.B = opCode[2];
+			this->m_State.C = opCode[1];
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x02:
+		{
+			// STAX B 
+			uint16_t adr = (this->m_State.B << 8) + this->m_State.C;
+			p_MemoryMap->Poke(adr, this->m_State.A);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x03:
+		{
+			// INX B
+			this->m_State.C += 1;
+			if (this->m_State.C == 0)
+			{
+				this->m_State.B += 1;
+			}
+
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x05:
+		{
+			// DCR B
+			Utilities::DCR(this->m_State.B, this->m_State);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x06:
+			// MVI B, D8
+			this->m_State.B = opCode[1];
+			m_State.PC += isl->Size;
+			break;
+
+		case 0x0d:
+		{
+			// DCR C
+			Utilities::DCR(this->m_State.C, this->m_State);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x11:
+			// LXI D,16
+			this->m_State.D = opCode[2];
+			this->m_State.E = opCode[1];
+			m_State.PC += isl->Size;
+			break;
+
+		case 0x13:
+		{
+			// INX D
+			this->m_State.E += 1;
+			if (this->m_State.E == 0)
+			{
+				this->m_State.D += 1;
+			}
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x15:
+		{
+			// DCR D
+			Utilities::DCR(this->m_State.D, this->m_State);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x1A:
+		{
+			// LDAX D
+			uint16_t adr = (this->m_State.D << 8) + this->m_State.E;
+			this->m_State.A = p_MemoryMap->Peek(adr);
+			m_State.PC += isl->Size;
+		}
+		break;
+
+		case 0x1D:
+		{
+			// DCR E
+			Utilities::DCR(this->m_State.E, this->m_State);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x21:
+			// LXI H,16
+			this->m_State.H = opCode[2];
+			this->m_State.L = opCode[1];
+			m_State.PC += isl->Size;
+			break;
+
+		case 0x23:
+		{
+			// INX H
+			this->m_State.L += 1;
+			if (this->m_State.L == 0)
+			{
+				this->m_State.H += 1;
+			}
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x25:
+		{
+			// DCR H
+			Utilities::DCR(this->m_State.H, this->m_State);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x2D:
+		{
+			// DCR L
+			Utilities::DCR(this->m_State.L, this->m_State);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x31:
+			// LXI SP,D16
+			m_State.SP = (opCode[2] << 8) + opCode[1];
+			m_State.PC += isl->Size;
+			break;
+
+		case 0x33:
+		{
+			// INX SP
+			m_State.SP += 1;
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x3D:
+		{
+			// DCR A
+			Utilities::DCR(this->m_State.A, this->m_State);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0x77:
+		{
+			// MOV M,A
+			uint16_t adr = (m_State.H << 8) + m_State.L;
+			p_MemoryMap->Poke(adr, m_State.A);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0xCD:
+			// CALL adr
+			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_State.SP -= 2;
+			m_State.PC = (opCode[2] << 8) + opCode[1];
+			break;
+
+		case 0xC2:
+		{
+			// JNZ adr
+			if (m_State.Z)
+			{
+				m_State.PC += isl->Size;
+			}
+			else
+			{
+				m_State.PC = (opCode[2] << 8) + opCode[1];
+			}
+			break;
+		}
+
+		case 0xC3:
+		{
+			// JMP adr
+			m_State.PC = (opCode[2] << 8) + opCode[1];
+			break;
+		}
+
+		case 0xC9:
+		{
+			// RET
+			auto spc = p_MemoryMap->Peek(m_State.SP);
+			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+			m_State.PC = (spc1 << 8) + spc;
+			m_State.SP += 2;
+			break;
+		}
+
+
+		default:
+			throw new std::exception("not implemented");
+			break;
+		}
+	}
+	else
+	{
+		throw new std::exception("opCode not in instruction set");
+	}
+}
+
 void Processor::Run(const uint16_t stackSize, const uint64_t n)
 { 
 	m_State.PC = 0;
@@ -184,239 +420,14 @@ void Processor::Run(const uint16_t stackSize, const uint64_t n)
 		{
 			this->ShowState(stackSize);
 		}
-		// TODO: Create ROM "read only" throw exception whenever we write in rom part or out of ram
-		// Simplify
-		auto opCode = &p_MemoryMap->Peek(m_State.PC);
-		auto isl = InstructionSet[opCode[0]];
-		this->m_State.Cycles += isl->ClockCycle.A;
-		this->m_State.Steps++;
-
-
-		if (isl!=nullptr)
-		{
-			// TODO: replace by script stored in nstruction set ???
-			switch (opCode[0])
-			{
-			case 0x00:
-			{
-				// NOP
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x01:
-			{
-				// LXI B,D16 
-				this->m_State.B = opCode[2];
-				this->m_State.C = opCode[1];
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x02:
-			{
-				// STAX B 
-				uint16_t adr = (this->m_State.B << 8) + this->m_State.C;
-				p_MemoryMap->Poke(adr, this->m_State.A);
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x03:
-			{
-				// INX B
-				this->m_State.C += 1;
-				if (this->m_State.C == 0)
-				{
-					this->m_State.B += 1;
-				}
-				
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x05:
-			{
-				// DCR B
-				Utilities::DCR(this->m_State.B, this->m_State);
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x06:
-				// MVI B, D8
-				this->m_State.B = opCode[1];
-				m_State.PC += isl->Size;
-				break;
-
-			case 0x0d:
-			{
-				// DCR C
-				Utilities::DCR(this->m_State.C, this->m_State);
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x11:
-				// LXI D,16
-				this->m_State.D = opCode[2];
-				this->m_State.E = opCode[1];
-				m_State.PC += isl->Size;
-				break;
-
-			case 0x13:
-			{
-				// INX D
-				this->m_State.E += 1;
-				if (this->m_State.E == 0)
-				{
-					this->m_State.D += 1;
-				}
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x15:
-			{
-				// DCR D
-				Utilities::DCR(this->m_State.D, this->m_State);
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x1A:
-			{
-				// LDAX D
-				uint16_t adr = (this->m_State.D << 8) + this->m_State.E;
-				this->m_State.A = p_MemoryMap->Peek(adr);
-				m_State.PC += isl->Size;
-			}
-				break;
-
-			case 0x1D:
-			{
-				// DCR E
-				Utilities::DCR(this->m_State.E, this->m_State);
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x21:
-				// LXI H,16
-				this->m_State.H = opCode[2];
-				this->m_State.L = opCode[1];
-				m_State.PC += isl->Size;
-				break;
-
-			case 0x23:
-			{
-				// INX H
-				this->m_State.L += 1;
-				if (this->m_State.L == 0)
-				{
-					this->m_State.H += 1;
-				}
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x25:
-			{
-				// DCR H
-				Utilities::DCR(this->m_State.H,this->m_State);
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x2D:
-			{
-				// DCR L
-				Utilities::DCR(this->m_State.L, this->m_State);
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x31:
-				// LXI SP,D16
-				m_State.SP = (opCode[2] << 8) + opCode[1];
-				m_State.PC += isl->Size;
-				break;
-
-			case 0x33:
-			{
-				// INX SP
-				m_State.SP += 1;
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x3D:
-			{
-				// DCR A
-				Utilities::DCR(this->m_State.A,this->m_State);
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0x77:
-			{
-				// MOV M,A
-				uint16_t adr= (m_State.H << 8) + m_State.L;
-				p_MemoryMap->Poke(adr, m_State.A);
-				m_State.PC += isl->Size;
-				break;
-			}
-
-			case 0xCD:
-				// CALL adr
-				p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-				p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
-				m_State.SP -= 2;
-				m_State.PC = (opCode[2] << 8) + opCode[1];
-				break;
-
-			case 0xC2:
-			{
-				// JNZ adr
-				if(m_State.Z)
-				{ 
-					m_State.PC += isl->Size;
-				}
-				else
-				{
-					m_State.PC = (opCode[2] << 8) + opCode[1];
-				}
-				break;
-			}
-
-			case 0xC3:
-			{
-				// JMP adr
-				m_State.PC = (opCode[2] << 8) + opCode[1];
-				break;
-			}
-
-			case 0xC9:
-			{
-				// RET
-				auto spc = p_MemoryMap->Peek(m_State.SP);
-				auto spc1 = p_MemoryMap->Peek(m_State.SP+1);
-				m_State.PC = (spc1 << 8) + spc;
-				m_State.SP += 2;
-				break;
-			}
-
-
-			default:
-				throw new std::exception("not implemented");
-				break;
-			}
-		}
-		else
-		{
-			throw new std::exception("opCode not in instruction set");
-		}
+		
+		this->RunStep();
 	}
+}
+
+const State& Processor::getState() const
+{
+	return m_State;
 }
 
 void Processor::ShowState(const uint16_t stackSize)
