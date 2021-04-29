@@ -21,7 +21,7 @@ int main(int /*argc*/, char** /*argv*/)
 
 	// processor->DisplayInstructionSet();
 
-	processor->Run(16,100);
+	processor->Run(16,1);
 
 	return 0;
 }
