@@ -16,5 +16,5 @@ public:
 
 	bool TryConvertBits(uint8_t& r);
 
-	std::function<void(State, MemoryMap)> exec;
+	std::function<void(State&, MemoryMap&, const uint8_t*)> exec;
 };

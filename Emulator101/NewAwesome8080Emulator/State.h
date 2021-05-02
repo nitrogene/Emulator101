@@ -56,12 +56,7 @@ struct State
 	// ToString
 	std::string toString();
 
-	// State affecting operations
-	void DCR(uint8_t& value);
-	void ANI(uint8_t& value, const uint8_t& opCode1);
-	void ADI(const uint8_t& opCode1);
-	void CPI(const uint8_t& opCode1);
-	void ACI(const uint8_t& opCode1);
+
 
 	void setF();
 };

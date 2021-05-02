@@ -36,6 +36,7 @@
     <ClCompile Include="CPUDIAGTest.cpp" />
     <ClCompile Include="Intel-8080-Emulator\i8080.c" />
     <ClCompile Include="Intel-8080-Emulator\MachineTemplate.cpp" />
+    <ClCompile Include="InstructionSetTest.cpp" />
     <ClCompile Include="SpaceInvadersTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPUDIAGTest.h" />
+    <ClInclude Include="InstructionSetTest.h" />
     <ClInclude Include="Intel-8080-Emulator\i8080.h" />
     <ClInclude Include="Intel-8080-Emulator\MachineTemplate.h" />
     <ClInclude Include="SpaceInvadersTest.h" />

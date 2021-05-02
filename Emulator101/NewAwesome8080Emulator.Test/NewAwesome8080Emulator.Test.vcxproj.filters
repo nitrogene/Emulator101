@@ -9,6 +9,7 @@
       <Filter>Intel-8080-Emulator</Filter>
     </ClCompile>
     <ClCompile Include="CPUDIAGTest.cpp" />
+    <ClCompile Include="InstructionSetTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Intel-8080-Emulator">
@@ -24,6 +25,7 @@
     </ClInclude>
     <ClInclude Include="SpaceInvadersTest.h" />
     <ClInclude Include="CPUDIAGTest.h" />
+    <ClInclude Include="InstructionSetTest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
