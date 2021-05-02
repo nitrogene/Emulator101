@@ -14,7 +14,6 @@ public:
 
 	static void ClearScreen();
 	static std::vector<std::string> Split(const std::string& s, char delimiter);
-	static void DCR(uint8_t& value, State& state);
 	static bool isOddParity(const uint8_t value);
 };
 

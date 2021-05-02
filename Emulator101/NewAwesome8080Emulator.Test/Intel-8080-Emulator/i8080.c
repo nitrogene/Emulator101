@@ -175,7 +175,7 @@ void DCR(State8080 *state, uint8_t *reg)
 
 	state->cc.z = (result == 0);
 	state->cc.s = (0x80 == (result & 0x80));
-	state->cc.p = parity(result, 8);
+	state->cc.p = !parity(result, 8);
 
 	*reg = (result & 0xff);
 }

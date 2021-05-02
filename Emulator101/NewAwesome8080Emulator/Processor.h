@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <array>
 #include <memory>
-#include "InstructionSetLine.h"
+#include "InstructionSet.h"
 #include "State.h"
 #include "MemoryMap.h"
 
@@ -12,7 +12,7 @@ class Processor
 {
 private:
 	// Instruction set
-	std::array<std::shared_ptr<InstructionSetLine>, 256> InstructionSet{};
+	InstructionSet m_InstructionSet;
 
 	// Registers
 	State m_State{};
@@ -33,7 +33,8 @@ public:
 
 	void DisplayInstructionSet();
 
-	void Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress);
+	// Load rom files into memory map
+	void Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const std::vector<uint8_t>& bytes = {});
 
 	// Hexadeximal dump of buffer
 	void Hexdump(MemoryMapPart mmPart);
@@ -51,5 +52,12 @@ public:
 	void ShowState(const uint16_t stackSize);
 
 	// Return current step
-	const State& getState() const;
+	State& getState();
+
+	void setPC(const uint16_t pc);
+
+	// Return the memory content at address =idx
+	const uint8_t& Peek(const uint16_t idx) const;
+
+	const InstructionSetLine& getIsl(const uint8_t idx) const;
 };

@@ -6,12 +6,17 @@
     <ClCompile Include="Processor.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="InstructionSet.cpp" />
+    <ClCompile Include="ClockCycle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InstructionSetLine.h" />
     <ClInclude Include="Processor.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="MemoryMap.h" />
+    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="InstructionSet.h" />
+    <ClInclude Include="ClockCycle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

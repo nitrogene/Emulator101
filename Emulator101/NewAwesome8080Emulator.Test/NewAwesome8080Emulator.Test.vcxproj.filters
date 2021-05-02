@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="SpaceInvadersTest.cpp" />
     <ClCompile Include="Intel-8080-Emulator\i8080.c">
       <Filter>Intel-8080-Emulator</Filter>
     </ClCompile>
     <ClCompile Include="Intel-8080-Emulator\MachineTemplate.cpp">
       <Filter>Intel-8080-Emulator</Filter>
     </ClCompile>
+    <ClCompile Include="CPUDIAGTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Intel-8080-Emulator">
@@ -21,5 +22,10 @@
     <ClInclude Include="Intel-8080-Emulator\MachineTemplate.h">
       <Filter>Intel-8080-Emulator</Filter>
     </ClInclude>
+    <ClInclude Include="SpaceInvadersTest.h" />
+    <ClInclude Include="CPUDIAGTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

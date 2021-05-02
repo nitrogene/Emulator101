@@ -1,13 +1,9 @@
 #pragma once
 #include <string>
-
-struct ClockCycle
-{
-	uint8_t A;
-	uint8_t B;
-
-	std::string toString();
-};
+#include <functional>
+#include "MemoryMap.h"
+#include "State.h"
+#include "ClockCycle.h"
 
 class InstructionSetLine
 {
@@ -19,4 +15,6 @@ public:
 	std::string Description;
 
 	bool TryConvertBits(uint8_t& r);
+
+	std::function<void(State, MemoryMap)> exec;
 };

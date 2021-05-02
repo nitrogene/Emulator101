@@ -22,14 +22,19 @@
     <ClCompile Include="InstructionSetLine.cpp" />
     <ClCompile Include="MemoryMap.cpp" />
     <ClCompile Include="Processor.cpp" />
+    <ClCompile Include="InstructionSet.cpp" />
+    <ClCompile Include="ClockCycle.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClockCycle.h" />
+    <ClInclude Include="InstructionSet.h" />
     <ClInclude Include="InstructionSetLine.h" />
     <ClInclude Include="MemoryMap.h" />
     <ClInclude Include="Processor.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

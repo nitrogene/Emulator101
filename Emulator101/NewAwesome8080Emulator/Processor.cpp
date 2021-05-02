@@ -6,83 +6,15 @@
 #include "Processor.h"
 #include "Utilities.h"
 
-Processor::Processor(const std::filesystem::path& pathToInstructiosSet)
+Processor::Processor(const std::filesystem::path& pathToInstructiosSet):m_InstructionSet(InstructionSet(pathToInstructiosSet))
 {
-	std::ifstream fs(pathToInstructiosSet);
-
-	if (fs.is_open())
-	{
-		std::string line;
-		std::getline(fs, line);
-		// skip header row
-
-		InstructionSet.fill(nullptr);
-
-		// read line by line
-		for (line; std::getline(fs, line); ) 
-		{
-			auto isl = std::make_shared<InstructionSetLine>();
-
-			auto t= Utilities::Split(line, ';');
-
-			if (t.size() != 12)
-			{
-				throw new std::exception("bad instruction set format");
-			}
-
-			isl->Mnemonic = t[0];
-			isl->Description = t[1];
-
-			for (auto i = 0; i < 8; ++i)
-			{
-				isl->Bits[i] = t[i + 2][0];
-			}
-
-			auto periods= Utilities::Split(t[10], '/');
-			isl->ClockCycle.A = (uint8_t)std::atoi(periods[0].c_str());
-			if (periods.size() > 1)
-			{
-				isl->ClockCycle.B = (uint8_t)std::atoi(periods[1].c_str());
-			}
-			isl->Size = (uint8_t)atoi(t[11].c_str());
-
-			uint8_t r;
-			if (isl->TryConvertBits(r))
-			{
-				if (InstructionSet[r]!=nullptr)
-				{
-					throw new std::exception("instruction already in map");
-				}
-				InstructionSet[r] = isl;
-			}
-		}
-
-		fs.close();
-		return;
-	}
-
-	throw new std::exception("Unable to load instruction set");
 }
 
 void Processor::DisplayInstructionSet()
 {
 	std::cout << "formatted instruction set\n";
 
-	std::cout << "Opcode\tInstruction\tsize\tflags\tfunction\tclock cycle\n";
-
-	// not uint8_t otherwise, infinite loop
-	for (unsigned int i = 0; i < 256; ++i)
-	{
-		if (InstructionSet[i] == nullptr)
-		{
-			fmt::print("{0:#02x}\t{1:10}\n", i,'-');
-			continue;
-		}
-
-
-		auto isl = InstructionSet[i];
-		fmt::print("{0:#02x}\t{1:10}\t{2}\t\t\t{3}\n",i,isl->Mnemonic,isl->Size,isl->ClockCycle.toString());
-	}
+	std::cout << this->m_InstructionSet.DisplayInstructionSet();
 }
 
 void Processor::Hexdump(MemoryMapPart mmPart)
@@ -114,9 +46,9 @@ void Processor::LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::
 	throw new std::exception("unabe to open file");
 }
 
-void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress)
+void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const std::vector<uint8_t>& bytes)
 {
-	std::vector<uint8_t> buffer;
+	std::vector<uint8_t> buffer(bytes);
 
 	for (auto& pathToRomFile : pathToRomFiles)
 	{
@@ -144,9 +76,9 @@ void Processor::Disassemble(uint16_t& pc)
 
 	fmt::print("{0:04x}\t", pc);
 
-	if (InstructionSet[opCode[0]])
+	if (m_InstructionSet[opCode[0]]!=nullptr)
 	{
-		auto isl = InstructionSet[opCode[0]];
+		auto isl = m_InstructionSet[opCode[0]];
 		auto instruction = isl->Mnemonic;
 		if (isl->Mnemonic.ends_with("adr"))
 		{
@@ -179,7 +111,7 @@ void Processor::RunStep()
 	// TODO: Create ROM "read only" throw exception whenever we write in rom part or out of ram
 		// Simplify
 	auto opCode = &p_MemoryMap->Peek(m_State.PC);
-	auto isl = InstructionSet[opCode[0]];
+	auto isl = m_InstructionSet[opCode[0]];
 	this->m_State.Cycles += isl->ClockCycle.A;
 	this->m_State.Steps++;
 
@@ -230,7 +162,7 @@ void Processor::RunStep()
 		case 0x05:
 		{
 			// DCR B
-			Utilities::DCR(this->m_State.B, this->m_State);
+			this->m_State.DCR(this->m_State.B);
 			m_State.PC += isl->Size;
 			break;
 		}
@@ -244,7 +176,7 @@ void Processor::RunStep()
 		case 0x0d:
 		{
 			// DCR C
-			Utilities::DCR(this->m_State.C, this->m_State);
+			this->m_State.DCR(this->m_State.C);
 			m_State.PC += isl->Size;
 			break;
 		}
@@ -271,7 +203,7 @@ void Processor::RunStep()
 		case 0x15:
 		{
 			// DCR D
-			Utilities::DCR(this->m_State.D, this->m_State);
+			this->m_State.DCR(this->m_State.D);
 			m_State.PC += isl->Size;
 			break;
 		}
@@ -288,7 +220,7 @@ void Processor::RunStep()
 		case 0x1D:
 		{
 			// DCR E
-			Utilities::DCR(this->m_State.E, this->m_State);
+			this->m_State.DCR(this->m_State.E);
 			m_State.PC += isl->Size;
 			break;
 		}
@@ -315,7 +247,7 @@ void Processor::RunStep()
 		case 0x25:
 		{
 			// DCR H
-			Utilities::DCR(this->m_State.H, this->m_State);
+			this->m_State.DCR(this->m_State.H);
 			m_State.PC += isl->Size;
 			break;
 		}
@@ -323,7 +255,7 @@ void Processor::RunStep()
 		case 0x2D:
 		{
 			// DCR L
-			Utilities::DCR(this->m_State.L, this->m_State);
+			this->m_State.DCR(this->m_State.L);
 			m_State.PC += isl->Size;
 			break;
 		}
@@ -345,7 +277,7 @@ void Processor::RunStep()
 		case 0x3D:
 		{
 			// DCR A
-			Utilities::DCR(this->m_State.A, this->m_State);
+			this->m_State.DCR(this->m_State.A);
 			m_State.PC += isl->Size;
 			break;
 		}
@@ -358,14 +290,6 @@ void Processor::RunStep()
 			m_State.PC += isl->Size;
 			break;
 		}
-
-		case 0xCD:
-			// CALL adr
-			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
-			m_State.SP -= 2;
-			m_State.PC = (opCode[2] << 8) + opCode[1];
-			break;
 
 		case 0xC2:
 		{
@@ -388,6 +312,16 @@ void Processor::RunStep()
 			break;
 		}
 
+		case 0xC5:
+		{
+			// PUSH B
+			p_MemoryMap->Poke(this->m_State.SP - 1, this->m_State.B);
+			p_MemoryMap->Poke(this->m_State.SP - 2, this->m_State.C);
+			m_State.PC += isl->Size;
+			m_State.SP -= 2;
+			break;
+		}
+
 		case 0xC9:
 		{
 			// RET
@@ -395,6 +329,186 @@ void Processor::RunStep()
 			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
 			m_State.PC = (spc1 << 8) + spc;
 			m_State.SP += 2;
+			break;
+		}
+
+		case 0xC6:
+		{
+			// ADI D8
+			m_State.ADI(opCode[1]);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0xCA:
+		{
+			// JZ adr
+			if (m_State.Z)
+			{
+				m_State.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				m_State.PC += isl->Size;
+			}
+			break;
+		}
+
+		case 0xCD:
+		{
+			// CALL adr
+			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_State.SP -= 2;
+			m_State.PC = (opCode[2] << 8) + opCode[1];
+			break;
+		}
+
+		case 0xCE:
+		{
+			// ACI D8
+			m_State.ACI(opCode[1]);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0xD2:
+		{
+			// JNC adr
+			if (m_State.C)
+			{
+				m_State.PC += isl->Size;
+			}
+			else
+			{
+				m_State.PC = (opCode[2] << 8) + opCode[1];
+			}
+			break;
+		}
+
+		case 0xD5:
+		{
+			// PUSH D 
+			p_MemoryMap->Poke(this->m_State.SP-1, this->m_State.D);
+			p_MemoryMap->Poke(this->m_State.SP-2, this->m_State.E);
+			m_State.PC += isl->Size;
+			m_State.SP -= 2;
+			break;
+		}
+
+		case 0xDA:
+		{
+			// JC adr
+			if (m_State.C)
+			{
+				m_State.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				m_State.PC += isl->Size;
+				
+			}
+			break;
+		}
+
+		case 0xE5:
+		{
+			// PUSH H
+			p_MemoryMap->Poke(this->m_State.SP - 1, this->m_State.H);
+			p_MemoryMap->Poke(this->m_State.SP - 2, this->m_State.L);
+			m_State.PC += isl->Size;
+			m_State.SP -= 2;
+			break;
+		}
+
+		case 0xE6:
+		{
+			// ANI D8
+			this->m_State.ANI(this->m_State.H, opCode[1]);
+			m_State.PC += isl->Size;
+			break;
+		}
+
+		case 0xE9:
+		{
+			// PCHL
+			m_State.PC = (this->m_State.H << 8) + this->m_State.L;
+			break;
+		}
+
+		case 0xEA:
+		{
+			// JPE adr
+			if (m_State.P)
+			{
+				m_State.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				m_State.PC += isl->Size;
+
+			}
+			break;
+		}
+
+		case 0xE2:
+		{
+			// JPO adr
+			if (m_State.P)
+			{
+				m_State.PC += isl->Size;
+			}
+			else
+			{
+				m_State.PC = (opCode[2] << 8) + opCode[1];
+			}
+			break;
+		}
+
+		case 0xF2:
+		{
+			// JP adr
+			if (m_State.S)
+			{
+				m_State.PC += isl->Size;
+			}
+			else
+			{
+				m_State.PC = (opCode[2] << 8) + opCode[1];
+			}
+			break;
+		}
+
+		case 0xF5:
+		{
+			// PUSH PSW
+			p_MemoryMap->Poke(this->m_State.SP - 1, this->m_State.A);
+			p_MemoryMap->Poke(this->m_State.SP - 2, this->m_State.F);
+			m_State.PC += isl->Size;
+			m_State.SP -= 2;
+			break;
+		}
+
+		case 0xFA:
+		{
+			// JM adr
+			if (m_State.S)
+			{
+				m_State.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				m_State.PC += isl->Size;
+
+			}
+			break;
+		}
+
+		case 0xFE:
+		{
+			// CPI D8
+			m_State.CPI(opCode[1]);
+			m_State.PC += isl->Size;
 			break;
 		}
 
@@ -425,7 +539,7 @@ void Processor::Run(const uint16_t stackSize, const uint64_t n)
 	}
 }
 
-const State& Processor::getState() const
+State& Processor::getState()
 {
 	return m_State;
 }
@@ -436,4 +550,19 @@ void Processor::ShowState(const uint16_t stackSize)
 	fmt::print("{0}", m_State.toString());
 	fmt::print("Next {0} instructions in rom:\n", stackSize);
 	this->DisassembleRomStacksize(m_State.PC, stackSize);
+}
+
+void Processor::setPC(const uint16_t pc)
+{
+	this->m_State.PC = pc;
+}
+
+const uint8_t& Processor::Peek(const uint16_t idx) const
+{
+	return p_MemoryMap->Peek(idx);
+}
+
+const InstructionSetLine& Processor::getIsl(const uint8_t idx) const
+{
+	return *m_InstructionSet[idx];
 }

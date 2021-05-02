@@ -14,14 +14,14 @@ const static std::vector<std::filesystem::path> roms
 
 const static std::filesystem::path instructions = "instuctions.set";
 
-class ProcessorTest : public ::testing::Test {
+class SpaceInvadersTest : public ::testing::Test {
 protected:
     // You can remove any or all of the following functions if their bodies would
     // be empty.
     std::shared_ptr<Processor> p_Processor;
     std::shared_ptr<MachineTemplate> p_MachineTemplate;
 
-    ProcessorTest() 
+    SpaceInvadersTest()
     {
         // You can do set-up work for each test here.
         p_Processor = std::make_shared<Processor>(instructions);
@@ -30,7 +30,7 @@ protected:
         p_MachineTemplate = std::make_shared<MachineTemplate>(false);
     }
 
-    ~ProcessorTest() override {
+    ~SpaceInvadersTest() override {
         // You can do clean-up work that doesn't throw exceptions here.
     }
 

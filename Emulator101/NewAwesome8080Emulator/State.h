@@ -38,6 +38,8 @@ struct State
 	uint8_t H = 0;
 	uint8_t L = 0;
 	uint8_t A = 0;
+	uint8_t F = 0;  // this "register" reflects flags state
+
 
 	// 16 bits Program counter
 	uint16_t PC = 0;
@@ -51,5 +53,15 @@ struct State
 	// Number of cpu steps
 	uint64_t Steps = 0;
 
+	// ToString
 	std::string toString();
+
+	// State affecting operations
+	void DCR(uint8_t& value);
+	void ANI(uint8_t& value, const uint8_t& opCode1);
+	void ADI(const uint8_t& opCode1);
+	void CPI(const uint8_t& opCode1);
+	void ACI(const uint8_t& opCode1);
+
+	void setF();
 };

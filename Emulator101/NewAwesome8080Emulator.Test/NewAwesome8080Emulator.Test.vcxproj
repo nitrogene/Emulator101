@@ -33,9 +33,10 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="CPUDIAGTest.cpp" />
     <ClCompile Include="Intel-8080-Emulator\i8080.c" />
     <ClCompile Include="Intel-8080-Emulator\MachineTemplate.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="SpaceInvadersTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NewAwesome8080Emulator\NewAwesome8080Emulator.vcxproj">
@@ -46,9 +47,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CPUDIAGTest.h" />
     <ClInclude Include="Intel-8080-Emulator\i8080.h" />
     <ClInclude Include="Intel-8080-Emulator\MachineTemplate.h" />
-    <ClInclude Include="test.h" />
+    <ClInclude Include="SpaceInvadersTest.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
@@ -74,6 +76,7 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /Y /I /R $(SolutionDir)docs\8080\invaders\* $(OutDir)
+xcopy /E /Y /I /R $(SolutionDir)docs\8080\cpudiag\* $(OutDir)
 xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -96,6 +99,7 @@ xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /Y /I /R $(SolutionDir)docs\8080\invaders\* $(OutDir)
+xcopy /E /Y /I /R $(SolutionDir)docs\8080\cpudiag\* $(OutDir)
 xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -119,6 +123,7 @@ xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /Y /I /R $(SolutionDir)docs\8080\invaders\* $(OutDir)
+xcopy /E /Y /I /R $(SolutionDir)docs\8080\cpudiag\* $(OutDir)
 xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -142,6 +147,7 @@ xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /Y /I /R $(SolutionDir)docs\8080\invaders\* $(OutDir)
+xcopy /E /Y /I /R $(SolutionDir)docs\8080\cpudiag\* $(OutDir)
 xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
