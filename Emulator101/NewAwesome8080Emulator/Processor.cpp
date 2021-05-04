@@ -120,7 +120,7 @@ void Processor::RunStep()
 	{
 		if (isl->exec != nullptr)
 		{
-			isl->exec(this->m_State, *this->p_MemoryMap, opCode);
+			isl->exec(this->m_State, *this->p_MemoryMap, opCode,isl->Size, isl->ClockCycle);
 		}
 		else
 		{	

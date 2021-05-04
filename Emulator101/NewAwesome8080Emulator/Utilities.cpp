@@ -42,5 +42,5 @@ bool Utilities::isOddParity(const uint8_t value)
 	y = y ^ (y >> 2);
 	y = y ^ (y >> 4);
 
-	return (y & 1) == 1;
+	return (y & 1) == 0;
 }
