@@ -246,6 +246,17 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			};
 		}
 
+		// RAL
+		{
+			m_InstructionSet[0x17]->exec = [](State& state, MemoryMap&, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
+			{
+				RAL(state);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
 		// LDAX D
 		{
 			m_InstructionSet[0x1A]->exec = [](State& state, MemoryMap& map, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
@@ -274,6 +285,17 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			m_InstructionSet[0x1D]->exec = [](State& state, MemoryMap&, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
 			{
 				DCR(state, state.E);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// RAR
+		{
+			m_InstructionSet[0x1F]->exec = [](State& state, MemoryMap&, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
+			{
+				RAR(state);
 				state.PC += size;
 				state.Steps++;
 				state.Cycles += cycle.A;
@@ -960,6 +982,9 @@ void InstructionSet::RLC(State& state)
 	// CARRY BIT
 	state.CY = state.A & 0x80;
 	state.A = std::rotl(state.A,1);
+
+	// change F 
+	state.setF();
 }
 
 void InstructionSet::RRC(State& state)
@@ -973,4 +998,48 @@ void InstructionSet::RRC(State& state)
 	// CARRY BIT
 	state.CY = state.A & 0x01;
 	state.A = std::rotr(state.A, 1);
+
+	// change F 
+	state.setF();
+}
+
+void InstructionSet::RAL(State& state)
+{
+	/*
+	RAL (Rotate left through carry / rotate arithmetically left)
+	0	0	0	1	0	1	1	1		Ai+1<-Ai, A0<-CY, CY<-A7 Bits in A shifted left,
+										CY copied to youngest bit, oldest bit copied to CY,
+										flags affected: CY
+	*/
+
+	uint8_t oldCarry = state.CY ? 1 : 0;
+
+	state.A = std::rotl(state.A, 1);
+
+	// CARRY BIT
+	state.CY = state.A & 0b00000001;
+	state.A = state.A & 0b11111110 | oldCarry;
+
+	// change F 
+	state.setF();
+}
+
+void InstructionSet::RAR(State& state)
+{
+	/*
+	RAR (Rotate right through carry / rotate arithmetically right)
+	0	0	0	1	0	1	1	1		Ai<-Ai+1, A7<-CY, CY-<A0 Bits in A shifted right,
+										CY copied to oldest bit, youngest bit copied to CY,
+										flags affected: CY
+	*/
+	uint8_t oldCarry = state.CY ? 1 : 0;
+
+	state.A = std::rotr(state.A, 1);
+	
+	// CARRY BIT
+	state.CY = state.A & 0b10000000;
+	state.A = state.A & 0b01111111 | oldCarry<<7;
+
+	// change F 
+	state.setF();
 }

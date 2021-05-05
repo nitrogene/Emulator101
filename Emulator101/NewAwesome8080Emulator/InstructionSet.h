@@ -11,6 +11,8 @@ private:
 
 	// State affecting operations
 	static void RLC(State& state);
+	static void RAL(State& state);
+	static void RAR(State& state);
 	static void RRC(State& state);
 	static void DCR(State& state, uint8_t& value);
 	static void INR(State& state, uint8_t& value);
