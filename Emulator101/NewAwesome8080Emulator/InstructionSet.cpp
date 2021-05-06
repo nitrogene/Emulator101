@@ -151,6 +151,29 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			};
 		}
 
+		// DAD B
+		{
+			m_InstructionSet[0x09]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				DAD(state, state.B, state.C);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// LDAX B
+		{
+			m_InstructionSet[0x0A]->exec = [](State& state, MemoryMap& map, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
+			{
+				uint16_t adr = (state.B << 8) + state.C;
+				state.A = map.Peek(adr);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
 		// INR C
 		{
 			m_InstructionSet[0x0c]->exec = [](State& state, MemoryMap&, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
@@ -257,6 +280,17 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			};
 		}
 
+		// DAD D
+		{
+			m_InstructionSet[0x19]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				DAD(state, state.D, state.E);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
 		// LDAX D
 		{
 			m_InstructionSet[0x1A]->exec = [](State& state, MemoryMap& map, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
@@ -346,6 +380,17 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			m_InstructionSet[0x25]->exec = [](State& state, MemoryMap&, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
 			{
 				DCR(state, state.H);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// DAD H
+		{
+			m_InstructionSet[0x29]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				DAD(state, state.H, state.L);
 				state.PC += size;
 				state.Steps++;
 				state.Cycles += cycle.A;
@@ -1042,4 +1087,23 @@ void InstructionSet::RAR(State& state)
 
 	// change F 
 	state.setF();
+}
+
+void InstructionSet::DAD(State& state, uint8_t& rh, uint8_t& rl)
+{
+	/*
+	DAD P (Decrement register pair)
+	0 0 p p 1 0 0 1						HL<-HL + P Data in register pair P is added to HL
+										flags affected: CY (from higher byte)
+	*/
+
+	uint16_t p = ((uint16_t)rh) << 8 | ((uint16_t)rl);
+	uint16_t hl = ((uint16_t)state.H) << 8 | ((uint16_t)state.L);
+
+	uint32_t value = ((uint32_t)p)+ ((uint32_t)hl);
+
+	// CARRY BIT
+	state.CY = value & 0b10000000000000000;
+	state.H = (value & 0b1111111100000000) >> 8;
+	state.L = value & 0b0000000011111111;
 }

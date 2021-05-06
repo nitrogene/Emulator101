@@ -37,7 +37,7 @@ int parity(int x, int size)
 		parity += x & 1;
 		x = x >> 1;
 	}
-	return (parity % 2 == 0);
+	return (parity % 2 == 1);
 }
 
 void LogicFlags(State8080 *state)
