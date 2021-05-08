@@ -10,6 +10,7 @@ private:
 	std::array<std::shared_ptr<InstructionSetLine>, std::numeric_limits<uint8_t>::max()+1> m_InstructionSet{};
 
 	// State affecting operations
+	static void DAA(State& state);
 	static void RLC(State& state);
 	static void RAL(State& state);
 	static void RAR(State& state);
