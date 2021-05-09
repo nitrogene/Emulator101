@@ -57,6 +57,7 @@ struct State
 	std::string toString();
 
 
+	bool HLT = false;
 
 	void setF();
 };

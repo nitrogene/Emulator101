@@ -108,13 +108,8 @@ void Processor::Disassemble(uint16_t& pc)
 
 void Processor::RunStep()
 {
-	// TODO: Create ROM "read only" throw exception whenever we write in rom part or out of ram
-		// Simplify
 	auto opCode = &p_MemoryMap->Peek(m_State.PC);
 	auto isl = m_InstructionSet[opCode[0]];
-	this->m_State.Cycles += isl->ClockCycle.A;
-	this->m_State.Steps++;
-
 
 	if (isl != nullptr)
 	{
@@ -137,12 +132,12 @@ void Processor::Run(const uint16_t stackSize, const uint64_t n)
 { 
 	m_State.PC = 0;
 
-	while (true)
+	while (!m_State.HLT)
 	{
-		if (m_State.Steps % n==0)
-		{
-			this->ShowState(stackSize);
-		}
+		//if (m_State.Steps % n==0)
+		//{
+		//	this->ShowState(stackSize);
+		//}
 		
 		this->RunStep();
 	}
