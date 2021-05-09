@@ -43,7 +43,8 @@ public:
 	void DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize);
 
 	// run for ever and show stackSize instruction at each step
-	void Run(const uint16_t stackSize, const uint64_t n=1);
+	void Run(const uint16_t stackSize, const uint64_t n = 1);
+	void Run();
 
 	// run one step and return
 	void RunStep();
@@ -60,4 +61,6 @@ public:
 	const uint8_t& Peek(const uint16_t idx) const;
 
 	const InstructionSetLine& getIsl(const uint8_t idx) const;
+
+	const MemoryMap& getMemoryMap();
 };

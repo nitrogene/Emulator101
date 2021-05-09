@@ -3,6 +3,8 @@
 #include <iomanip>
 #include <filesystem>
 #include <fmt/core.h>
+#include <thread>
+#include <chrono>
 #include "Processor.h"
 #include "Utilities.h"
 
@@ -134,12 +136,24 @@ void Processor::Run(const uint16_t stackSize, const uint64_t n)
 
 	while (!m_State.HLT)
 	{
-		//if (m_State.Steps % n==0)
-		//{
-		//	this->ShowState(stackSize);
-		//}
+		if (m_State.Steps % n==0)
+		{
+			this->ShowState(stackSize);
+		}
 		
 		this->RunStep();
+	}
+}
+
+void Processor::Run()
+{
+	m_State.PC = 0;
+
+	while (!m_State.HLT)
+	{
+		this->RunStep();
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 }
 
@@ -169,4 +183,9 @@ const uint8_t& Processor::Peek(const uint16_t idx) const
 const InstructionSetLine& Processor::getIsl(const uint8_t idx) const
 {
 	return *m_InstructionSet[idx];
+}
+
+const MemoryMap& Processor::getMemoryMap()
+{
+	return *p_MemoryMap;
 }
