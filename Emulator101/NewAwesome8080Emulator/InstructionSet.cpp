@@ -487,6 +487,19 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			};
 		}
 
+		// LHLD adr
+		{
+			m_InstructionSet[0x2A]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				auto adr = (opCode[2] << 8) + opCode[1];
+				state.L = map.Peek(adr);
+				state.H = map.Peek(adr+1);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
 		// DCX H
 		{
 			m_InstructionSet[0x2B]->exec = [](State& state, MemoryMap& map, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
@@ -534,11 +547,34 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			};
 		}
 
+		// CMA
+		{
+			m_InstructionSet[0x2F]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				state.A = ~state.A;
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
 		// LXI SP,D16
 		{
 			m_InstructionSet[0x31]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
 			{
 				state.SP = (opCode[2] << 8) + opCode[1];
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// STA adr
+		{
+			m_InstructionSet[0x32]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				auto adr= (opCode[2] << 8) + opCode[1];
+				map.Poke(adr, state.A);
 				state.PC += size;
 				state.Steps++;
 				state.Cycles += cycle.A;
@@ -564,6 +600,20 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 				auto value = map.Peek(adr);
 				INR(state, value);
 				map.Poke(adr,value);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// DCR M
+		{
+			m_InstructionSet[0x35]->exec = [](State& state, MemoryMap& map, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
+			{
+				uint16_t adr = (state.H << 8) + state.L;
+				auto value = map.Peek(adr);
+				DCR(state, value);
+				map.Poke(adr, value);
 				state.PC += size;
 				state.Steps++;
 				state.Cycles += cycle.A;
