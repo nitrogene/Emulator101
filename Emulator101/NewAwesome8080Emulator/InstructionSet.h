@@ -22,6 +22,7 @@ private:
 	static void CPI(State& state, const uint8_t& opCode1);
 	static void ACI(State& state, const uint8_t& opCode1);
 	static void DAD(State&, uint8_t& rh, uint8_t& rl);
+	static void ADD(State&, const uint8_t value);
 
 public:
 	InstructionSet(const std::filesystem::path& pathToInstructionSet);

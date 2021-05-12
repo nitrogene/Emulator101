@@ -1344,6 +1344,183 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			};
 		}
 
+		// MOV A,B
+		{
+			m_InstructionSet[0x78]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				state.A = state.B;
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// MOV A,C
+		{
+			m_InstructionSet[0x79]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				state.A = state.C;
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// MOV A,D
+		{
+			m_InstructionSet[0x7A]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				state.A = state.D;
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// MOV A,E
+		{
+			m_InstructionSet[0x7B]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				state.A = state.E;
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// MOV A,H
+		{
+			m_InstructionSet[0x7C]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				state.A = state.H;
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// MOV A,L
+		{
+			m_InstructionSet[0x7D]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				state.A = state.L;
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// MOV A,M
+		{
+			m_InstructionSet[0x7E]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				uint16_t adr = (state.H << 8) + state.L;
+				state.A = map.Peek(adr);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// MOV A,A
+		{
+			m_InstructionSet[0x7F]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ADD B
+		{
+			m_InstructionSet[0x80]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				ADD(state, state.B);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ADD C
+		{
+			m_InstructionSet[0x81]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				ADD(state, state.C);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ADD D
+		{
+			m_InstructionSet[0x82]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				ADD(state, state.D);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ADD E
+		{
+			m_InstructionSet[0x83]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				ADD(state, state.E);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ADD H
+		{
+			m_InstructionSet[0x84]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				ADD(state, state.H);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ADD L
+		{
+			m_InstructionSet[0x85]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				ADD(state, state.L);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ADD M
+		{
+			m_InstructionSet[0x86]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				uint16_t adr = (state.H << 8) + state.L;
+				ADD(state, map.Peek(adr));
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ADD A
+		{
+			m_InstructionSet[0x87]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				ADD(state, state.A);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
 		// JNZ adr
 		{
 			m_InstructionSet[0xC2]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
@@ -2006,4 +2183,41 @@ void InstructionSet::DAA(State& state)
 	state.S = state.A & 0x80;
 
 	state.P = Utilities::isOddParity(state.A);
+}
+
+void InstructionSet::ADD(State& state, const uint8_t value)
+{
+	/*
+	ADD R (Add register)
+	1	0	0	0	0	r	r	r	A <-A + R data from R is added to data in A
+									flags affected: Z, S, P, CY, AC
+	*/
+	// Perform operation in higher precision
+	uint16_t a = ((uint16_t)state.A);
+	uint16_t b = ((uint16_t)value);
+	uint16_t chp = a + b;
+
+	// get result in normal precision
+	state.A = chp & 0xFF;
+
+	// ZERO CHECK
+	state.Z = value == 0;
+
+	// SIGN CHECK
+	state.S = chp & 0x80;
+
+	// PARITY CHECK
+	state.P = Utilities::isOddParity(state.A);
+
+	// CARRY BIT
+	state.CY = chp & 0x100;
+
+	// AUXILIARY CARRY
+	uint8_t a_ = a & 0x0F;
+	uint8_t b_ = b & 0x0F;
+	uint8_t c_ = a_ + b_;
+	state.AC = c_ & 0x10;
+
+	// change F 
+	state.setF();
 }

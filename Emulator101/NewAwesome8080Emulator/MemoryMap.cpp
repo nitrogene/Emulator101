@@ -82,17 +82,13 @@ void MemoryMap::Poke(const uint16_t idx, const uint8_t value)
 		throw new std::exception("Writing to ROM!!!!");
 	}
 #ifdef _DEBUG
-	else if (idx >= m_RomSize && idx < m_WorkRamAddress)
+	else if (idx >= m_RomSize && idx < m_VideoRamAddress)
 	{
 		std::cout << "writing to work ram" << std::endl;
 	}
-	else if (idx >= m_WorkRamAddress && idx < m_VideoRamAddress)
+	else if (idx >= m_VideoRamAddress && idx < m_MirrorRamAddress)
 	{
 		std::cout << "writing to video ram" << std::endl;
-	}
-	else if (idx >= m_WorkRamAddress && idx << m_MirrorRamAddress)
-	{
-		std::cout << "writing to mirror ram" << std::endl;
 	}
 	else
 	{

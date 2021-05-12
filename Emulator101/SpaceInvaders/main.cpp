@@ -34,58 +34,60 @@ int main(int /*argc*/, char** /*argv*/)
 
 	// processor->DisplayInstructionSet();
 
-	SDL_Event event{};
-	SDL_Renderer* renderer=nullptr;
-	SDL_Window* window = nullptr;
+	//SDL_Event event{};
+	//SDL_Renderer* renderer=nullptr;
+	//SDL_Window* window = nullptr;
 
-	SDL_Init(SDL_INIT_VIDEO);
-	SDL_CreateWindowAndRenderer(256, 224, 0, &window, &renderer);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
+	//SDL_Init(SDL_INIT_VIDEO);
+	//SDL_CreateWindowAndRenderer(256, 224, 0, &window, &renderer);
+	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+	//SDL_RenderClear(renderer);
+	//SDL_RenderPresent(renderer);
 
-	auto map = processor->getMemoryMap();
+	//auto& map = processor->getMemoryMap();
 
-	std::function<void()> refreshScreen = [&map, &renderer]()
-	{
-		for (uint16_t y = 0; y < 224; ++y)
-		{
-			// 
-			for (uint16_t x = 0; x < 256; x += 8)
-			{
-				// 8 pixels per byte
-				auto pixel=map.Peek((y + x * 224) / 8 + 0x2400);
+	//std::function<void()> refreshScreen = [&map, &renderer]()
+	//{
+	//	auto fb = &map.Peek(0x2400);
 
-				for (uint16_t i = 0; i < 8; ++i) 
-				{
-					uint8_t value = pixel & (1 << i);
-					
-					if (value != 0) {
-						value = 255;
-					}
+	//	for (uint16_t y = 0; y < 224; ++y)
+	//	{
+	//		// 
+	//		for (uint16_t x = 0; x < 256; x += 8)
+	//		{
+	//			// 8 pixels per byte
+	//			auto pixel=*(fb+y/8 + x * 28);
 
+	//			for (uint16_t i = 0; i < 8; ++i) 
+	//			{
+	//				uint8_t value = pixel & (1 << i);
+	//				
+	//				if (value != 0) {
+	//					value = 255;
+	//				}
 
-					SDL_SetRenderDrawColor(renderer, value, value, value, 255);
-					SDL_RenderDrawPoint(renderer, x, y);
-				}
-			}
-		}
-	};
+	//				SDL_SetRenderDrawColor(renderer, value, value, value, 255);
+	//				SDL_RenderDrawPoint(renderer, x, y+i);
+	//			}
+	//		}
+	//	}
+	//};
 
-	timer_start(refreshScreen, 16666);
+	//timer_start(refreshScreen, 16666);
 
 	processor->Run();
 
-	while (1) 
-	{
-		if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
-		{
-			break;
-		}
-	}
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
+	//while (1) 
+	//{
+	//	if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+	//	{
+	//		break;
+	//	}
+	//}
+
+	//SDL_DestroyRenderer(renderer);
+	//SDL_DestroyWindow(window);
+	//SDL_Quit();
 
 	return EXIT_SUCCESS;
 }
