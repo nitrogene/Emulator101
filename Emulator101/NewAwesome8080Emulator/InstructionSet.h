@@ -25,6 +25,10 @@ private:
 	static void ADD(State&, const uint8_t value);
 	static void ADC(State&, const uint8_t value);
 	static void SUB(State&, const uint8_t value);
+	static void SBB(State&, const uint8_t value);
+	static void ANA(State&, const uint8_t value);
+	static void XRA(State&, const uint8_t value);
+	static void ORA(State&, const uint8_t value);
 
 public:
 	InstructionSet(const std::filesystem::path& pathToInstructionSet);
