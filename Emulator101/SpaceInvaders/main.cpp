@@ -75,7 +75,7 @@ int main(int /*argc*/, char** /*argv*/)
 
 	//timer_start(refreshScreen, 16666);
 
-	processor->Run();
+	processor->Run(16,1000);
 
 	//while (1) 
 	//{
