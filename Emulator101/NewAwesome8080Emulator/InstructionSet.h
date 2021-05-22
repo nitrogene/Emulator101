@@ -32,6 +32,8 @@ private:
 	static void CMP(State&, const uint8_t value);
 	static void SUI(State&, const uint8_t value);
 	static void SBI(State&, const uint8_t value);
+	static void ORI(State&, const uint8_t value);
+	static void XRI(State&, const uint8_t value);
 
 public:
 	InstructionSet(const std::filesystem::path& pathToInstructionSet);

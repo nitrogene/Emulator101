@@ -2389,63 +2389,13 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			};
 		}
 
+
 		// SBI D8
 		{
 			m_InstructionSet[0xDE]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
 			{
 				SBI(state, opCode[1]);
 				state.PC += size;
-				state.Steps++;
-				state.Cycles += cycle.A;
-			};
-		}
-
-		// PUSH H
-		{
-			m_InstructionSet[0xE5]->exec = [](State& state, MemoryMap& map, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
-			{
-				map.Poke(state.SP - 1, state.H);
-				map.Poke(state.SP - 2, state.L);
-				state.PC += size;
-				state.SP -= 2;
-				state.Steps++;
-				state.Cycles += cycle.A;
-			};
-		}
-
-		// ANI D8
-		{
-			m_InstructionSet[0xE6]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
-			{
-				ANI(state,state.H, opCode[1]);
-				state.PC += size;
-				state.Steps++;
-				state.Cycles += cycle.A;
-			};
-		}
-
-		// PCHL
-		{
-			m_InstructionSet[0xE9]->exec = [](State& state, MemoryMap&, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
-			{
-				state.PC = (state.H << 8) + state.L;
-				state.Steps++;
-				state.Cycles += cycle.A;
-			};
-		}
-
-		// JPE adr
-		{
-			m_InstructionSet[0xEA]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
-			{
-				if (state.P)
-				{
-					state.PC = (opCode[2] << 8) + opCode[1];
-				}
-				else
-				{
-					state.PC += size;
-				}
 				state.Steps++;
 				state.Cycles += cycle.A;
 			};
@@ -2488,6 +2438,30 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 			};
 		}
 
+		// PUSH H
+		{
+			m_InstructionSet[0xE5]->exec = [](State& state, MemoryMap& map, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
+			{
+				map.Poke(state.SP - 1, state.H);
+				map.Poke(state.SP - 2, state.L);
+				state.PC += size;
+				state.SP -= 2;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ANI D8
+		{
+			m_InstructionSet[0xE6]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				ANI(state,state.H, opCode[1]);
+				state.PC += size;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
 		// RPE
 		{
 			m_InstructionSet[0xE8]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
@@ -2503,6 +2477,44 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 					state.PC = (spc1 << 8) + spc;
 					state.SP += 2;
 				}
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// PCHL
+		{
+			m_InstructionSet[0xE9]->exec = [](State& state, MemoryMap&, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
+			{
+				state.PC = (state.H << 8) + state.L;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// JPE adr
+		{
+			m_InstructionSet[0xEA]->exec = [](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				if (state.P)
+				{
+					state.PC = (opCode[2] << 8) + opCode[1];
+				}
+				else
+				{
+					state.PC += size;
+				}
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// XRI D8
+		{
+			m_InstructionSet[0xEE]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				XRI(state, opCode[1]);
+				state.PC += size;
 				state.Steps++;
 				state.Cycles += cycle.A;
 			};
@@ -2553,6 +2565,17 @@ InstructionSet::InstructionSet(const std::filesystem::path& pathToInstructionSet
 				map.Poke(state.SP - 2, state.F);
 				state.PC += size;
 				state.SP -= 2;
+				state.Steps++;
+				state.Cycles += cycle.A;
+			};
+		}
+
+		// ORI D8
+		{
+			m_InstructionSet[0xF6]->exec = [](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+			{
+				ORI(state, opCode[1]);
+				state.PC += size;
 				state.Steps++;
 				state.Cycles += cycle.A;
 			};
@@ -3332,6 +3355,64 @@ void InstructionSet::SBI(State& state, const uint8_t value)
 	uint8_t b_ = b & 0x0F;
 	uint8_t c_ = a_ + b_;
 	state.AC = c_ & 0x10;
+
+	// change F 
+	state.setF();
+}
+
+void InstructionSet::ORI(State& state, const uint8_t value)
+{
+	// Perform operation in higher precision
+	uint16_t a = ((uint16_t)state.A);
+	uint16_t b = ((uint16_t)value);
+	uint16_t chp = a | b;
+
+	// get result in normal precision 
+	state.A = chp & 0xFF;
+
+	// ZERO CHECK
+	state.Z = state.A == 0;
+
+	// SIGN CHECK
+	state.S = chp & 0x80;
+
+	// PARITY CHECK
+	state.P = Utilities::isOddParity(state.A);
+
+	// CARRY BIT
+	state.CY = false;
+
+	// AUXILIARY CARRY
+	state.AC = false;
+
+	// change F 
+	state.setF();
+}
+
+void InstructionSet::XRI(State& state, const uint8_t value)
+{
+	// Perform operation in higher precision
+	uint16_t a = ((uint16_t)state.A);
+	uint16_t b = ((uint16_t)value);
+	uint16_t chp = a ^ b;
+
+	// get result in normal precision 
+	state.A = chp & 0xFF;
+
+	// ZERO CHECK
+	state.Z = state.A == 0;
+
+	// SIGN CHECK
+	state.S = chp & 0x80;
+
+	// PARITY CHECK
+	state.P = Utilities::isOddParity(state.A);
+
+	// CARRY BIT
+	state.CY = false;
+
+	// AUXILIARY CARRY
+	state.AC = false;
 
 	// change F 
 	state.setF();
