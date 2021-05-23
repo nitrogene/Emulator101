@@ -182,7 +182,7 @@ const uint8_t& Processor::Peek(const uint16_t idx) const
 
 const InstructionSetLine& Processor::getIsl(const uint8_t idx) const
 {
-	return *m_InstructionSet[idx];
+	return *m_InstructionSet[idx].get();
 }
 
 const MemoryMap& Processor::getMemoryMap()

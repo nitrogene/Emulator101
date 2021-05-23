@@ -8,6 +8,7 @@
     <ClCompile Include="Utilities.cpp" />
     <ClCompile Include="InstructionSet.cpp" />
     <ClCompile Include="ClockCycle.cpp" />
+    <ClCompile Include="Flags.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InstructionSetLine.h" />
@@ -17,6 +18,7 @@
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="InstructionSet.h" />
     <ClInclude Include="ClockCycle.h" />
+    <ClInclude Include="Flags.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

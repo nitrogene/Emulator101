@@ -11,7 +11,7 @@ TEST_F(InstructionSetTest, NOP)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -21,14 +21,14 @@ TEST_F(InstructionSetTest, NOP)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps,1);
 }
 
@@ -45,7 +45,7 @@ TEST_F(InstructionSetTest, LXI_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0x01);
@@ -55,14 +55,14 @@ TEST_F(InstructionSetTest, LXI_B)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -79,7 +79,7 @@ TEST_F(InstructionSetTest, LXI_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -89,14 +89,14 @@ TEST_F(InstructionSetTest, LXI_D)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -113,7 +113,7 @@ TEST_F(InstructionSetTest, LXI_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -123,14 +123,14 @@ TEST_F(InstructionSetTest, LXI_H)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0x01);
 	EXPECT_EQ(state.L, 0x03);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -147,7 +147,7 @@ TEST_F(InstructionSetTest, LXI_SP)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -157,14 +157,14 @@ TEST_F(InstructionSetTest, LXI_SP)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0x03ABC);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -182,7 +182,7 @@ TEST_F(InstructionSetTest, STAX_B)
 	state.C = 0x16;
 	state.A = 0xAC;
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	auto value=pMemoryMap->Peek(0x03F16);
 
@@ -195,14 +195,14 @@ TEST_F(InstructionSetTest, STAX_B)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -220,7 +220,7 @@ TEST_F(InstructionSetTest, STAX_D)
 	state.E = 0x16;
 	state.A = 0xAC;
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	auto value = pMemoryMap->Peek(0x03F16);
 
@@ -233,14 +233,14 @@ TEST_F(InstructionSetTest, STAX_D)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -257,7 +257,7 @@ TEST_F(InstructionSetTest, INX_B)
 	state.B = 0x38;
 	state.C = 0xFF;
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0x39);
@@ -267,14 +267,14 @@ TEST_F(InstructionSetTest, INX_B)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 5);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -291,7 +291,7 @@ TEST_F(InstructionSetTest, INX_D)
 	state.D = 0x38;
 	state.E = 0xFF;
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -301,14 +301,14 @@ TEST_F(InstructionSetTest, INX_D)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 5);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -325,7 +325,7 @@ TEST_F(InstructionSetTest, INX_H)
 	state.H = 0x38;
 	state.L = 0xFF;
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -335,14 +335,14 @@ TEST_F(InstructionSetTest, INX_H)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0x39);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 5);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -358,7 +358,7 @@ TEST_F(InstructionSetTest, INX_SP)
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	state.SP = 0xFFFF;
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -368,14 +368,14 @@ TEST_F(InstructionSetTest, INX_SP)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 5);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -398,7 +398,7 @@ TEST_F(InstructionSetTest, INR_B)
 	opCode = &pMemoryMap->Peek(state.PC);
 	isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0x03);
@@ -408,14 +408,14 @@ TEST_F(InstructionSetTest, INR_B)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 15);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 3);
 }
 
@@ -438,7 +438,7 @@ TEST_F(InstructionSetTest, INR_C)
 	opCode = &pMemoryMap->Peek(state.PC);
 	isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -448,14 +448,14 @@ TEST_F(InstructionSetTest, INR_C)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 15);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 3);
 }
 
@@ -478,7 +478,7 @@ TEST_F(InstructionSetTest, INR_D)
 	opCode = &pMemoryMap->Peek(state.PC);
 	isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -488,14 +488,14 @@ TEST_F(InstructionSetTest, INR_D)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 15);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 3);
 }
 
@@ -518,7 +518,7 @@ TEST_F(InstructionSetTest, INR_E)
 	opCode = &pMemoryMap->Peek(state.PC);
 	isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -528,14 +528,14 @@ TEST_F(InstructionSetTest, INR_E)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 15);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 3);
 }
 
@@ -558,7 +558,7 @@ TEST_F(InstructionSetTest, INR_H)
 	opCode = &pMemoryMap->Peek(state.PC);
 	isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -568,14 +568,14 @@ TEST_F(InstructionSetTest, INR_H)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0x03);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 15);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 3);
 }
 
@@ -598,7 +598,7 @@ TEST_F(InstructionSetTest, INR_L)
 	opCode = &pMemoryMap->Peek(state.PC);
 	isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -608,14 +608,14 @@ TEST_F(InstructionSetTest, INR_L)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x03);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 15);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 3);
 }
 
@@ -640,7 +640,7 @@ TEST_F(InstructionSetTest, INR_M)
 	opCode = &pMemoryMap->Peek(state.PC);
 	isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	uint16_t adr = (state.H << 8) + state.L;
 	auto value = pMemoryMap->Peek(adr);
@@ -653,14 +653,14 @@ TEST_F(InstructionSetTest, INR_M)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0x25);
 	EXPECT_EQ(state.L, 0x34);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 30);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 3);
 }
 
@@ -683,7 +683,7 @@ TEST_F(InstructionSetTest, INR_A)
 	opCode = &pMemoryMap->Peek(state.PC);
 	isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x03);
 	EXPECT_EQ(state.B, 0);
@@ -693,14 +693,14 @@ TEST_F(InstructionSetTest, INR_A)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 15);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 3);
 }
 
@@ -717,7 +717,7 @@ TEST_F(InstructionSetTest, RLC)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xE5);
 	EXPECT_EQ(state.B, 0);
@@ -727,14 +727,14 @@ TEST_F(InstructionSetTest, RLC)
 	EXPECT_EQ(state.F, 1);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -751,7 +751,7 @@ TEST_F(InstructionSetTest, RRC)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x79);
 	EXPECT_EQ(state.B, 0);
@@ -761,14 +761,14 @@ TEST_F(InstructionSetTest, RRC)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -785,7 +785,7 @@ TEST_F(InstructionSetTest, RAL)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x6A);
 	EXPECT_EQ(state.B, 0);
@@ -795,14 +795,14 @@ TEST_F(InstructionSetTest, RAL)
 	EXPECT_EQ(state.F, 1);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -814,13 +814,13 @@ TEST_F(InstructionSetTest, RAR)
 
 	State state{};
 	state.A = 0x6A;
-	state.CY = 1;
+	state.Flags.Carry = 1;
 
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xB5);
 	EXPECT_EQ(state.B, 0);
@@ -830,14 +830,14 @@ TEST_F(InstructionSetTest, RAR)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -857,7 +857,7 @@ TEST_F(InstructionSetTest, DAD_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, (0x339F & 0b1111111100000000) >> 8);
@@ -867,14 +867,14 @@ TEST_F(InstructionSetTest, DAD_B)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0xD5);
 	EXPECT_EQ(state.L, 0x1A);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -894,7 +894,7 @@ TEST_F(InstructionSetTest, DAD_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -904,14 +904,14 @@ TEST_F(InstructionSetTest, DAD_D)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0xD5);
 	EXPECT_EQ(state.L, 0x1A);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -929,7 +929,7 @@ TEST_F(InstructionSetTest, DAD_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -939,14 +939,14 @@ TEST_F(InstructionSetTest, DAD_H)
 	EXPECT_EQ(state.F, 1);
 	EXPECT_EQ(state.H, (0x42F6 & 0b1111111100000000) >> 8);
 	EXPECT_EQ(state.L, 0x42F6 & 0b0000000011111111);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -966,7 +966,7 @@ TEST_F(InstructionSetTest, LDAX_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xAA);
 	EXPECT_EQ(state.B, 0x93);
@@ -976,14 +976,14 @@ TEST_F(InstructionSetTest, LDAX_B)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1003,7 +1003,7 @@ TEST_F(InstructionSetTest, LDAX_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xAA);
 	EXPECT_EQ(state.B, 0);
@@ -1013,14 +1013,14 @@ TEST_F(InstructionSetTest, LDAX_D)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1036,7 +1036,7 @@ TEST_F(InstructionSetTest, MVI_A)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x3C);
 	EXPECT_EQ(state.B, 0);
@@ -1046,14 +1046,14 @@ TEST_F(InstructionSetTest, MVI_A)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1069,7 +1069,7 @@ TEST_F(InstructionSetTest, MVI_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0x3C);
@@ -1079,14 +1079,14 @@ TEST_F(InstructionSetTest, MVI_B)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1102,7 +1102,7 @@ TEST_F(InstructionSetTest, MVI_C)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1112,14 +1112,14 @@ TEST_F(InstructionSetTest, MVI_C)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1135,7 +1135,7 @@ TEST_F(InstructionSetTest, MVI_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1145,14 +1145,14 @@ TEST_F(InstructionSetTest, MVI_D)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1168,7 +1168,7 @@ TEST_F(InstructionSetTest, MVI_E)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1178,14 +1178,14 @@ TEST_F(InstructionSetTest, MVI_E)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1201,7 +1201,7 @@ TEST_F(InstructionSetTest, MVI_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1211,14 +1211,14 @@ TEST_F(InstructionSetTest, MVI_H)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0x3C);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1234,7 +1234,7 @@ TEST_F(InstructionSetTest, MVI_L)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1244,14 +1244,14 @@ TEST_F(InstructionSetTest, MVI_L)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x3C);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1270,7 +1270,7 @@ TEST_F(InstructionSetTest, MVI_M)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	auto value= pMemoryMap->Peek(0x3CF4);
 	EXPECT_EQ(value, 0xFF);
@@ -1283,14 +1283,14 @@ TEST_F(InstructionSetTest, MVI_M)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0x3C);
 	EXPECT_EQ(state.L, 0xF4);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1307,7 +1307,7 @@ TEST_F(InstructionSetTest, DCX_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0x97);
@@ -1317,14 +1317,14 @@ TEST_F(InstructionSetTest, DCX_B)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 5);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1341,7 +1341,7 @@ TEST_F(InstructionSetTest, DCX_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1351,14 +1351,14 @@ TEST_F(InstructionSetTest, DCX_D)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 5);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1375,7 +1375,7 @@ TEST_F(InstructionSetTest, DCX_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1385,14 +1385,14 @@ TEST_F(InstructionSetTest, DCX_H)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0x97);
 	EXPECT_EQ(state.L, 0xFF);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 5);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1408,7 +1408,7 @@ TEST_F(InstructionSetTest, DCX_SP)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1418,14 +1418,14 @@ TEST_F(InstructionSetTest, DCX_SP)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 5);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0xFE);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1444,7 +1444,7 @@ TEST_F(InstructionSetTest, SHLD_adr)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	auto value1 = pMemoryMap->Peek(0x010A);
 	auto value2 = pMemoryMap->Peek(0x010B);
@@ -1461,14 +1461,14 @@ TEST_F(InstructionSetTest, SHLD_adr)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0xAE);
 	EXPECT_EQ(state.L, 0x29);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 16);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1484,7 +1484,7 @@ TEST_F(InstructionSetTest, DAA)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 1);
 	EXPECT_EQ(state.B, 0);
@@ -1494,14 +1494,14 @@ TEST_F(InstructionSetTest, DAA)
 	EXPECT_EQ(state.F, 0b00010001);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1520,7 +1520,7 @@ TEST_F(InstructionSetTest, LHLD_adr)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1530,14 +1530,14 @@ TEST_F(InstructionSetTest, LHLD_adr)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0x03);
 	EXPECT_EQ(state.L, 0xFF);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 16);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1553,7 +1553,7 @@ TEST_F(InstructionSetTest, CMA)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0b10101110);
 	EXPECT_EQ(state.B, 0);
@@ -1563,14 +1563,14 @@ TEST_F(InstructionSetTest, CMA)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1588,7 +1588,7 @@ TEST_F(InstructionSetTest, STA_adr)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	auto value = pMemoryMap->Peek(0x05B3);
 
@@ -1601,14 +1601,14 @@ TEST_F(InstructionSetTest, STA_adr)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 13);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1626,7 +1626,7 @@ TEST_F(InstructionSetTest, DCR_M)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	auto value = pMemoryMap->Peek(0x3A7C);
 
@@ -1639,14 +1639,14 @@ TEST_F(InstructionSetTest, DCR_M)
 	EXPECT_EQ(state.F, 4);
 	EXPECT_EQ(state.H, 0x3A);
 	EXPECT_EQ(state.L, 0x7C);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1661,7 +1661,7 @@ TEST_F(InstructionSetTest, STC)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1671,14 +1671,14 @@ TEST_F(InstructionSetTest, STC)
 	EXPECT_EQ(state.F, 1);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1697,7 +1697,7 @@ TEST_F(InstructionSetTest, LDA_adr)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x34);
 	EXPECT_EQ(state.B, 0);
@@ -1707,14 +1707,14 @@ TEST_F(InstructionSetTest, LDA_adr)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 13);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 3);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1730,7 +1730,7 @@ TEST_F(InstructionSetTest, DAD_SP)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1740,14 +1740,14 @@ TEST_F(InstructionSetTest, DAD_SP)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0xA1);
 	EXPECT_EQ(state.L, 0x7B);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0xA17B);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1762,7 +1762,7 @@ TEST_F(InstructionSetTest, CMC)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -1772,14 +1772,14 @@ TEST_F(InstructionSetTest, CMC)
 	EXPECT_EQ(state.F, 1);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1796,7 +1796,7 @@ TEST_F(InstructionSetTest, ADD_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x9A);
 	EXPECT_EQ(state.B, 0x2E);
@@ -1806,14 +1806,14 @@ TEST_F(InstructionSetTest, ADD_B)
 	EXPECT_EQ(state.F, 0x94);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1830,7 +1830,7 @@ TEST_F(InstructionSetTest, ADD_C)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x9A);
 	EXPECT_EQ(state.B, 0);
@@ -1840,14 +1840,14 @@ TEST_F(InstructionSetTest, ADD_C)
 	EXPECT_EQ(state.F, 0x94);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1864,7 +1864,7 @@ TEST_F(InstructionSetTest, ADD_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x9A);
 	EXPECT_EQ(state.B, 0);
@@ -1874,14 +1874,14 @@ TEST_F(InstructionSetTest, ADD_D)
 	EXPECT_EQ(state.F, 0x94);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1898,7 +1898,7 @@ TEST_F(InstructionSetTest, ADD_E)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x9A);
 	EXPECT_EQ(state.B, 0);
@@ -1908,14 +1908,14 @@ TEST_F(InstructionSetTest, ADD_E)
 	EXPECT_EQ(state.F, 0x94);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1932,7 +1932,7 @@ TEST_F(InstructionSetTest, ADD_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x9A);
 	EXPECT_EQ(state.B, 0);
@@ -1942,14 +1942,14 @@ TEST_F(InstructionSetTest, ADD_H)
 	EXPECT_EQ(state.F, 0x94);
 	EXPECT_EQ(state.H, 0x2E);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -1966,7 +1966,7 @@ TEST_F(InstructionSetTest, ADD_L)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x9A);
 	EXPECT_EQ(state.B, 0);
@@ -1976,14 +1976,14 @@ TEST_F(InstructionSetTest, ADD_L)
 	EXPECT_EQ(state.F, 0x94);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x2E);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2003,7 +2003,7 @@ TEST_F(InstructionSetTest, ADD_M)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x9A);
 	EXPECT_EQ(state.B, 0);
@@ -2013,14 +2013,14 @@ TEST_F(InstructionSetTest, ADD_M)
 	EXPECT_EQ(state.F, 0x94);
 	EXPECT_EQ(state.H, 0x2E);
 	EXPECT_EQ(state.L, 0x2E);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2036,7 +2036,7 @@ TEST_F(InstructionSetTest, ADD_A)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xD8);
 	EXPECT_EQ(state.B, 0);
@@ -2046,14 +2046,14 @@ TEST_F(InstructionSetTest, ADD_A)
 	EXPECT_EQ(state.F, 0x94);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2070,7 +2070,7 @@ TEST_F(InstructionSetTest, ADC_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x7F);
 	EXPECT_EQ(state.B, 0x3D);
@@ -2080,14 +2080,14 @@ TEST_F(InstructionSetTest, ADC_B)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2100,12 +2100,12 @@ TEST_F(InstructionSetTest, ADC_B2)
 	State state{};
 	state.B = 0x3D;
 	state.A = 0x42;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x80);
 	EXPECT_EQ(state.B, 0x3D);
@@ -2115,14 +2115,14 @@ TEST_F(InstructionSetTest, ADC_B2)
 	EXPECT_EQ(state.F, 0x90);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2139,7 +2139,7 @@ TEST_F(InstructionSetTest, ADC_C)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x7F);
 	EXPECT_EQ(state.B, 0);
@@ -2149,14 +2149,14 @@ TEST_F(InstructionSetTest, ADC_C)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2169,12 +2169,12 @@ TEST_F(InstructionSetTest, ADC_C2)
 	State state{};
 	state.C = 0x3D;
 	state.A = 0x42;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x80);
 	EXPECT_EQ(state.B, 0);
@@ -2184,14 +2184,14 @@ TEST_F(InstructionSetTest, ADC_C2)
 	EXPECT_EQ(state.F, 0x90);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2208,7 +2208,7 @@ TEST_F(InstructionSetTest, ADC_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x7F);
 	EXPECT_EQ(state.B, 0);
@@ -2218,14 +2218,14 @@ TEST_F(InstructionSetTest, ADC_D)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2238,12 +2238,12 @@ TEST_F(InstructionSetTest, ADC_D2)
 	State state{};
 	state.D = 0x3D;
 	state.A = 0x42;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x80);
 	EXPECT_EQ(state.B, 0);
@@ -2253,14 +2253,14 @@ TEST_F(InstructionSetTest, ADC_D2)
 	EXPECT_EQ(state.F, 0x90);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2277,7 +2277,7 @@ TEST_F(InstructionSetTest, ADC_E)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x7F);
 	EXPECT_EQ(state.B, 0);
@@ -2287,14 +2287,14 @@ TEST_F(InstructionSetTest, ADC_E)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2307,12 +2307,12 @@ TEST_F(InstructionSetTest, ADC_E2)
 	State state{};
 	state.E = 0x3D;
 	state.A = 0x42;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x80);
 	EXPECT_EQ(state.B, 0);
@@ -2322,14 +2322,14 @@ TEST_F(InstructionSetTest, ADC_E2)
 	EXPECT_EQ(state.F, 0x90);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2346,7 +2346,7 @@ TEST_F(InstructionSetTest, ADC_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x7F);
 	EXPECT_EQ(state.B, 0);
@@ -2356,14 +2356,14 @@ TEST_F(InstructionSetTest, ADC_H)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0x3D);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2376,12 +2376,12 @@ TEST_F(InstructionSetTest, ADC_H2)
 	State state{};
 	state.H = 0x3D;
 	state.A = 0x42;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x80);
 	EXPECT_EQ(state.B, 0);
@@ -2391,14 +2391,14 @@ TEST_F(InstructionSetTest, ADC_H2)
 	EXPECT_EQ(state.F, 0x90);
 	EXPECT_EQ(state.H, 0x3D);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2415,7 +2415,7 @@ TEST_F(InstructionSetTest, ADC_L)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x7F);
 	EXPECT_EQ(state.B, 0);
@@ -2425,14 +2425,14 @@ TEST_F(InstructionSetTest, ADC_L)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x3D);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2445,12 +2445,12 @@ TEST_F(InstructionSetTest, ADC_L2)
 	State state{};
 	state.L = 0x3D;
 	state.A = 0x42;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x80);
 	EXPECT_EQ(state.B, 0);
@@ -2460,14 +2460,14 @@ TEST_F(InstructionSetTest, ADC_L2)
 	EXPECT_EQ(state.F, 0x90);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x3D);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2483,7 +2483,7 @@ TEST_F(InstructionSetTest, ADC_A)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x84);
 	EXPECT_EQ(state.B, 0);
@@ -2493,14 +2493,14 @@ TEST_F(InstructionSetTest, ADC_A)
 	EXPECT_EQ(state.F, 0x84);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2521,7 +2521,7 @@ TEST_F(InstructionSetTest, ADC_M)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x7F);
 	EXPECT_EQ(state.B, 0);
@@ -2531,14 +2531,14 @@ TEST_F(InstructionSetTest, ADC_M)
 	EXPECT_EQ(state.F, 0);
 	EXPECT_EQ(state.H, 0x2E);
 	EXPECT_EQ(state.L, 0x2E);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2552,14 +2552,14 @@ TEST_F(InstructionSetTest, ADC_M2)
 	state.A = 0x42;
 	state.H = 0x2E;
 	state.L = 0x2E;
-	state.CY = true;
+	state.Flags.Carry = true;
 	uint16_t adr = (state.H << 8) + state.L;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	pMemoryMap->Poke(adr, 0x3D);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x80);
 	EXPECT_EQ(state.B, 0);
@@ -2569,14 +2569,14 @@ TEST_F(InstructionSetTest, ADC_M2)
 	EXPECT_EQ(state.F, 0x90);
 	EXPECT_EQ(state.H, 0x2E);
 	EXPECT_EQ(state.L, 0x2E);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2593,7 +2593,7 @@ TEST_F(InstructionSetTest, SUB_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x05);
 	EXPECT_EQ(state.B, 0x3D);
@@ -2603,14 +2603,14 @@ TEST_F(InstructionSetTest, SUB_B)
 	EXPECT_EQ(state.F, 4);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2627,7 +2627,7 @@ TEST_F(InstructionSetTest, SUB_C)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x05);
 	EXPECT_EQ(state.B, 0);
@@ -2637,14 +2637,14 @@ TEST_F(InstructionSetTest, SUB_C)
 	EXPECT_EQ(state.F, 4);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2661,7 +2661,7 @@ TEST_F(InstructionSetTest, SUB_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x05);
 	EXPECT_EQ(state.B, 0);
@@ -2671,14 +2671,14 @@ TEST_F(InstructionSetTest, SUB_D)
 	EXPECT_EQ(state.F, 4);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2695,7 +2695,7 @@ TEST_F(InstructionSetTest, SUB_E)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x05);
 	EXPECT_EQ(state.B, 0);
@@ -2705,14 +2705,14 @@ TEST_F(InstructionSetTest, SUB_E)
 	EXPECT_EQ(state.F, 4);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2729,7 +2729,7 @@ TEST_F(InstructionSetTest, SUB_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x05);
 	EXPECT_EQ(state.B, 0);
@@ -2739,14 +2739,14 @@ TEST_F(InstructionSetTest, SUB_H)
 	EXPECT_EQ(state.F, 4);
 	EXPECT_EQ(state.H, 0x3D);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2763,7 +2763,7 @@ TEST_F(InstructionSetTest, SUB_L)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x05);
 	EXPECT_EQ(state.B, 0);
@@ -2773,14 +2773,14 @@ TEST_F(InstructionSetTest, SUB_L)
 	EXPECT_EQ(state.F, 4);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x3D);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2796,7 +2796,7 @@ TEST_F(InstructionSetTest, SUB_A)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0);
 	EXPECT_EQ(state.B, 0);
@@ -2806,14 +2806,14 @@ TEST_F(InstructionSetTest, SUB_A)
 	EXPECT_EQ(state.F, 0x54);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_TRUE(state.Z);
+	EXPECT_TRUE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2833,7 +2833,7 @@ TEST_F(InstructionSetTest, SUB_M)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x05);
 	EXPECT_EQ(state.B, 0);
@@ -2843,14 +2843,14 @@ TEST_F(InstructionSetTest, SUB_M)
 	EXPECT_EQ(state.F, 4);
 	EXPECT_EQ(state.H, 0x12);
 	EXPECT_EQ(state.L, 0x12);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2863,12 +2863,12 @@ TEST_F(InstructionSetTest, SBB_B)
 	State state{};
 	state.A = 0x04;
 	state.B = 0x02;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x01);
 	EXPECT_EQ(state.B, 0x02);
@@ -2878,14 +2878,14 @@ TEST_F(InstructionSetTest, SBB_B)
 	EXPECT_EQ(state.F, 0x10);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2898,12 +2898,12 @@ TEST_F(InstructionSetTest, SBB_C)
 	State state{};
 	state.A = 0x04;
 	state.C = 0x02;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x01);
 	EXPECT_EQ(state.B, 0);
@@ -2913,14 +2913,14 @@ TEST_F(InstructionSetTest, SBB_C)
 	EXPECT_EQ(state.F, 0x10);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2933,12 +2933,12 @@ TEST_F(InstructionSetTest, SBB_D)
 	State state{};
 	state.A = 0x04;
 	state.D = 0x02;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x01);
 	EXPECT_EQ(state.B, 0);
@@ -2948,14 +2948,14 @@ TEST_F(InstructionSetTest, SBB_D)
 	EXPECT_EQ(state.F, 0x10);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -2968,12 +2968,12 @@ TEST_F(InstructionSetTest, SBB_E)
 	State state{};
 	state.A = 0x04;
 	state.E = 0x02;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x01);
 	EXPECT_EQ(state.B, 0);
@@ -2983,14 +2983,14 @@ TEST_F(InstructionSetTest, SBB_E)
 	EXPECT_EQ(state.F, 0x10);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3003,12 +3003,12 @@ TEST_F(InstructionSetTest, SBB_H)
 	State state{};
 	state.A = 0x04;
 	state.H = 0x02;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x01);
 	EXPECT_EQ(state.B, 0);
@@ -3018,14 +3018,14 @@ TEST_F(InstructionSetTest, SBB_H)
 	EXPECT_EQ(state.F, 0x10);
 	EXPECT_EQ(state.H, 0x02);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3038,12 +3038,12 @@ TEST_F(InstructionSetTest, SBB_L)
 	State state{};
 	state.A = 0x04;
 	state.L = 0x02;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x01);
 	EXPECT_EQ(state.B, 0);
@@ -3053,14 +3053,14 @@ TEST_F(InstructionSetTest, SBB_L)
 	EXPECT_EQ(state.F, 0x10);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x02);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3074,14 +3074,14 @@ TEST_F(InstructionSetTest, SBB_M)
 	state.A = 0x04;
 	state.H = 0x12;
 	state.L = 0x12;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	uint16_t adr = (state.H << 8) + state.L;
 	pMemoryMap->Poke(adr, 0x02);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x01);
 	EXPECT_EQ(state.B, 0);
@@ -3091,14 +3091,14 @@ TEST_F(InstructionSetTest, SBB_M)
 	EXPECT_EQ(state.F, 0x10);
 	EXPECT_EQ(state.H, 0x12);
 	EXPECT_EQ(state.L, 0x12);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3110,12 +3110,12 @@ TEST_F(InstructionSetTest, SBB_A)
 
 	State state{};
 	state.A = 0x04;
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xFF);
 	EXPECT_EQ(state.B, 0);
@@ -3125,14 +3125,14 @@ TEST_F(InstructionSetTest, SBB_A)
 	EXPECT_EQ(state.F, 0x85);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3149,7 +3149,7 @@ TEST_F(InstructionSetTest, ANA_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0C);
 	EXPECT_EQ(state.B, 0x0F);
@@ -3159,14 +3159,14 @@ TEST_F(InstructionSetTest, ANA_B)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3183,7 +3183,7 @@ TEST_F(InstructionSetTest, ANA_C)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0C);
 	EXPECT_EQ(state.B, 0);
@@ -3193,14 +3193,14 @@ TEST_F(InstructionSetTest, ANA_C)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3217,7 +3217,7 @@ TEST_F(InstructionSetTest, ANA_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0C);
 	EXPECT_EQ(state.B, 0);
@@ -3227,14 +3227,14 @@ TEST_F(InstructionSetTest, ANA_D)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3251,7 +3251,7 @@ TEST_F(InstructionSetTest, ANA_E)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0C);
 	EXPECT_EQ(state.B, 0);
@@ -3261,14 +3261,14 @@ TEST_F(InstructionSetTest, ANA_E)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3286,7 +3286,7 @@ TEST_F(InstructionSetTest, ANA_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0C);
 	EXPECT_EQ(state.B, 0);
@@ -3296,14 +3296,14 @@ TEST_F(InstructionSetTest, ANA_H)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0x0F);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3320,7 +3320,7 @@ TEST_F(InstructionSetTest, ANA_L)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0C);
 	EXPECT_EQ(state.B, 0);
@@ -3330,14 +3330,14 @@ TEST_F(InstructionSetTest, ANA_L)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x0F);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3357,7 +3357,7 @@ TEST_F(InstructionSetTest, ANA_M)
 	pMemoryMap->Poke(adr, 0x0F);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0C);
 	EXPECT_EQ(state.B, 0);
@@ -3367,14 +3367,14 @@ TEST_F(InstructionSetTest, ANA_M)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0x12);
 	EXPECT_EQ(state.L, 0x12);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3390,7 +3390,7 @@ TEST_F(InstructionSetTest, ANA_A)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xFC);
 	EXPECT_EQ(state.B, 0);
@@ -3400,14 +3400,14 @@ TEST_F(InstructionSetTest, ANA_A)
 	EXPECT_EQ(state.F, 0x84);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3424,24 +3424,24 @@ TEST_F(InstructionSetTest, XRA_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xF3);
 	EXPECT_EQ(state.B, 0x0F);
 	EXPECT_EQ(state.C, 0);
 	EXPECT_EQ(state.D, 0);
 	EXPECT_EQ(state.E, 0);
-	EXPECT_EQ(state.F, 0x94);
+	EXPECT_EQ(state.F, 0x84);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3458,24 +3458,24 @@ TEST_F(InstructionSetTest, XRA_C)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xF3);
 	EXPECT_EQ(state.B, 0);
 	EXPECT_EQ(state.C, 0x0F);
 	EXPECT_EQ(state.D, 0);
 	EXPECT_EQ(state.E, 0);
-	EXPECT_EQ(state.F, 0x94);
+	EXPECT_EQ(state.F, 0x84);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3492,24 +3492,24 @@ TEST_F(InstructionSetTest, XRA_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xF3);
 	EXPECT_EQ(state.B, 0);
 	EXPECT_EQ(state.C, 0);
 	EXPECT_EQ(state.D, 0x0F);
 	EXPECT_EQ(state.E, 0);
-	EXPECT_EQ(state.F, 0x94);
+	EXPECT_EQ(state.F, 0x84);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3526,24 +3526,24 @@ TEST_F(InstructionSetTest, XRA_E)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xF3);
 	EXPECT_EQ(state.B, 0);
 	EXPECT_EQ(state.C, 0);
 	EXPECT_EQ(state.D, 0);
 	EXPECT_EQ(state.E, 0x0F);
-	EXPECT_EQ(state.F, 0x94);
+	EXPECT_EQ(state.F, 0x84);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3560,24 +3560,24 @@ TEST_F(InstructionSetTest, XRA_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xF3);
 	EXPECT_EQ(state.B, 0);
 	EXPECT_EQ(state.C, 0);
 	EXPECT_EQ(state.D, 0);
 	EXPECT_EQ(state.E, 0);
-	EXPECT_EQ(state.F, 0x94);
+	EXPECT_EQ(state.F, 0x84);
 	EXPECT_EQ(state.H, 0x0F);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3594,24 +3594,24 @@ TEST_F(InstructionSetTest, XRA_L)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xF3);
 	EXPECT_EQ(state.B, 0);
 	EXPECT_EQ(state.C, 0);
 	EXPECT_EQ(state.D, 0);
 	EXPECT_EQ(state.E, 0);
-	EXPECT_EQ(state.F, 0x94);
+	EXPECT_EQ(state.F, 0x84);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x0F);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3631,24 +3631,24 @@ TEST_F(InstructionSetTest, XRA_M)
 	pMemoryMap->Poke(adr, 0x0F);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xF3);
 	EXPECT_EQ(state.B, 0);
 	EXPECT_EQ(state.C, 0);
 	EXPECT_EQ(state.D, 0);
 	EXPECT_EQ(state.E, 0);
-	EXPECT_EQ(state.F, 0x94);
+	EXPECT_EQ(state.F, 0x84);
 	EXPECT_EQ(state.H, 0x12);
 	EXPECT_EQ(state.L, 0x12);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3665,7 +3665,7 @@ TEST_F(InstructionSetTest, ORA_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x3F);
 	EXPECT_EQ(state.B, 0x0F);
@@ -3675,14 +3675,14 @@ TEST_F(InstructionSetTest, ORA_B)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3699,7 +3699,7 @@ TEST_F(InstructionSetTest, ORA_C)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x3F);
 	EXPECT_EQ(state.B, 0);
@@ -3709,14 +3709,14 @@ TEST_F(InstructionSetTest, ORA_C)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3733,7 +3733,7 @@ TEST_F(InstructionSetTest, ORA_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x3F);
 	EXPECT_EQ(state.B, 0);
@@ -3743,14 +3743,14 @@ TEST_F(InstructionSetTest, ORA_D)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3767,7 +3767,7 @@ TEST_F(InstructionSetTest, ORA_E)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x3F);
 	EXPECT_EQ(state.B, 0);
@@ -3777,14 +3777,14 @@ TEST_F(InstructionSetTest, ORA_E)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3801,7 +3801,7 @@ TEST_F(InstructionSetTest, ORA_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x3F);
 	EXPECT_EQ(state.B, 0);
@@ -3811,14 +3811,14 @@ TEST_F(InstructionSetTest, ORA_H)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0x0F);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3835,7 +3835,7 @@ TEST_F(InstructionSetTest, ORA_L)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x3F);
 	EXPECT_EQ(state.B, 0);
@@ -3845,14 +3845,14 @@ TEST_F(InstructionSetTest, ORA_L)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x0F);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3872,7 +3872,7 @@ TEST_F(InstructionSetTest, ORA_M)
 	pMemoryMap->Poke(adr, 0x0F);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x3F);
 	EXPECT_EQ(state.B, 0);
@@ -3882,14 +3882,14 @@ TEST_F(InstructionSetTest, ORA_M)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0x12);
 	EXPECT_EQ(state.L, 0x12);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3905,7 +3905,7 @@ TEST_F(InstructionSetTest, ORA_A)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x33);
 	EXPECT_EQ(state.B, 0);
@@ -3915,14 +3915,14 @@ TEST_F(InstructionSetTest, ORA_A)
 	EXPECT_EQ(state.F, 0x04);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3939,7 +3939,7 @@ TEST_F(InstructionSetTest, CMP_B)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0A);
 	EXPECT_EQ(state.B, 0x05);
@@ -3949,14 +3949,14 @@ TEST_F(InstructionSetTest, CMP_B)
 	EXPECT_EQ(state.F, 0x14);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -3973,7 +3973,7 @@ TEST_F(InstructionSetTest, CMP_B2)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x02);
 	EXPECT_EQ(state.B, 0x05);
@@ -3983,14 +3983,14 @@ TEST_F(InstructionSetTest, CMP_B2)
 	EXPECT_EQ(state.F, 0x81);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4007,7 +4007,7 @@ TEST_F(InstructionSetTest, CMP_C)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0A);
 	EXPECT_EQ(state.B, 0);
@@ -4017,14 +4017,14 @@ TEST_F(InstructionSetTest, CMP_C)
 	EXPECT_EQ(state.F, 0x14);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4041,7 +4041,7 @@ TEST_F(InstructionSetTest, CMP_C2)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x02);
 	EXPECT_EQ(state.B, 0);
@@ -4051,14 +4051,14 @@ TEST_F(InstructionSetTest, CMP_C2)
 	EXPECT_EQ(state.F, 0x81);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4075,7 +4075,7 @@ TEST_F(InstructionSetTest, CMP_D)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0A);
 	EXPECT_EQ(state.B, 0);
@@ -4085,14 +4085,14 @@ TEST_F(InstructionSetTest, CMP_D)
 	EXPECT_EQ(state.F, 0x14);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4109,7 +4109,7 @@ TEST_F(InstructionSetTest, CMP_D2)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x02);
 	EXPECT_EQ(state.B, 0);
@@ -4119,14 +4119,14 @@ TEST_F(InstructionSetTest, CMP_D2)
 	EXPECT_EQ(state.F, 0x81);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4143,7 +4143,7 @@ TEST_F(InstructionSetTest, CMP_E)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0A);
 	EXPECT_EQ(state.B, 0);
@@ -4153,14 +4153,14 @@ TEST_F(InstructionSetTest, CMP_E)
 	EXPECT_EQ(state.F, 0x14);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4177,7 +4177,7 @@ TEST_F(InstructionSetTest, CMP_E2)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x02);
 	EXPECT_EQ(state.B, 0);
@@ -4187,14 +4187,14 @@ TEST_F(InstructionSetTest, CMP_E2)
 	EXPECT_EQ(state.F, 0x81);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4211,7 +4211,7 @@ TEST_F(InstructionSetTest, CMP_H)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0A);
 	EXPECT_EQ(state.B, 0);
@@ -4221,14 +4221,14 @@ TEST_F(InstructionSetTest, CMP_H)
 	EXPECT_EQ(state.F, 0x14);
 	EXPECT_EQ(state.H, 0x05);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4245,7 +4245,7 @@ TEST_F(InstructionSetTest, CMP_H2)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x02);
 	EXPECT_EQ(state.B, 0);
@@ -4255,14 +4255,14 @@ TEST_F(InstructionSetTest, CMP_H2)
 	EXPECT_EQ(state.F, 0x81);
 	EXPECT_EQ(state.H, 0x05);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4279,7 +4279,7 @@ TEST_F(InstructionSetTest, CMP_L)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0A);
 	EXPECT_EQ(state.B, 0);
@@ -4289,14 +4289,14 @@ TEST_F(InstructionSetTest, CMP_L)
 	EXPECT_EQ(state.F, 0x14);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x05);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4313,7 +4313,7 @@ TEST_F(InstructionSetTest, CMP_L2)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x02);
 	EXPECT_EQ(state.B, 0);
@@ -4323,14 +4323,14 @@ TEST_F(InstructionSetTest, CMP_L2)
 	EXPECT_EQ(state.F, 0x81);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0x05);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4350,7 +4350,7 @@ TEST_F(InstructionSetTest, CMP_M)
 	pMemoryMap->Poke(adr, 0x05);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0A);
 	EXPECT_EQ(state.B, 0);
@@ -4360,14 +4360,14 @@ TEST_F(InstructionSetTest, CMP_M)
 	EXPECT_EQ(state.F, 0x14);
 	EXPECT_EQ(state.H, 0x12);
 	EXPECT_EQ(state.L, 0x12);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4387,7 +4387,7 @@ TEST_F(InstructionSetTest, CMP_M2)
 	pMemoryMap->Poke(adr, 0x05);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x02);
 	EXPECT_EQ(state.B, 0);
@@ -4397,14 +4397,14 @@ TEST_F(InstructionSetTest, CMP_M2)
 	EXPECT_EQ(state.F, 0x81);
 	EXPECT_EQ(state.H, 0x12);
 	EXPECT_EQ(state.L, 0x12);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4420,7 +4420,7 @@ TEST_F(InstructionSetTest, CMP_A)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x0A);
 	EXPECT_EQ(state.B, 0);
@@ -4430,14 +4430,14 @@ TEST_F(InstructionSetTest, CMP_A)
 	EXPECT_EQ(state.F, 0x54);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_TRUE(state.Z);
+	EXPECT_TRUE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4453,7 +4453,7 @@ TEST_F(InstructionSetTest, CMP_A2)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0x02);
 	EXPECT_EQ(state.B, 0);
@@ -4463,14 +4463,14 @@ TEST_F(InstructionSetTest, CMP_A2)
 	EXPECT_EQ(state.F, 0x54);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_TRUE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_TRUE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 4);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
-	EXPECT_FALSE(state.S);
+	EXPECT_FALSE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_TRUE(state.Z);
+	EXPECT_TRUE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4486,7 +4486,7 @@ TEST_F(InstructionSetTest, SUI_D8)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xFF);
 	EXPECT_EQ(state.B, 0);
@@ -4496,14 +4496,14 @@ TEST_F(InstructionSetTest, SUI_D8)
 	EXPECT_EQ(state.F, 0x85);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4519,7 +4519,7 @@ TEST_F(InstructionSetTest, SBI_D8)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xFF);
 	EXPECT_EQ(state.B, 0);
@@ -4529,14 +4529,14 @@ TEST_F(InstructionSetTest, SBI_D8)
 	EXPECT_EQ(state.F, 0x85);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_TRUE(state.P);
+	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4548,12 +4548,12 @@ TEST_F(InstructionSetTest, SBI_D8_2)
 	};
 
 	State state{};
-	state.CY = true;
+	state.Flags.Carry = true;
 	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xFE);
 	EXPECT_EQ(state.B, 0);
@@ -4563,14 +4563,14 @@ TEST_F(InstructionSetTest, SBI_D8_2)
 	EXPECT_EQ(state.F, 0x81);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_TRUE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4587,7 +4587,7 @@ TEST_F(InstructionSetTest, ORI_D8)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xBF);
 	EXPECT_EQ(state.B, 0);
@@ -4597,14 +4597,14 @@ TEST_F(InstructionSetTest, ORI_D8)
 	EXPECT_EQ(state.F, 0x80);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
 
@@ -4621,7 +4621,7 @@ TEST_F(InstructionSetTest, XRI_D8)
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
-	state.setF();
+	state.F=state.Flags.getF();
 
 	EXPECT_EQ(state.A, 0xBA);
 	EXPECT_EQ(state.B, 0);
@@ -4631,13 +4631,13 @@ TEST_F(InstructionSetTest, XRI_D8)
 	EXPECT_EQ(state.F, 0x80);
 	EXPECT_EQ(state.H, 0);
 	EXPECT_EQ(state.L, 0);
-	EXPECT_FALSE(state.AC);
-	EXPECT_FALSE(state.CY);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 7);
-	EXPECT_FALSE(state.P);
+	EXPECT_FALSE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 2);
-	EXPECT_TRUE(state.S);
+	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
-	EXPECT_FALSE(state.Z);
+	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
