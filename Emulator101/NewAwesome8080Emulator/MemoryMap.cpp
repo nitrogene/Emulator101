@@ -11,7 +11,7 @@ MemoryMap::MemoryMap(const std::vector<uint8_t>& rom, const uint16_t totalRam,
 	// Split ROM and RAM ??
 	// Check get / set
 	// How to simulate a part of memory read only, another part writable, while providing pointer 
-	m_MemoryBuffer.resize(totalRam);
+	m_MemoryBuffer.resize(totalRam+1);
 }
 
 void MemoryMap::Hexdump(const MemoryMapPart mmPart)

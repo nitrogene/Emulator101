@@ -45,7 +45,7 @@ void Processor::LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::
 		return;
 	}
 
-	throw new std::exception("unabe to open file");
+	throw new std::exception("unable to open file");
 }
 
 void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const std::vector<uint8_t>& bytes)

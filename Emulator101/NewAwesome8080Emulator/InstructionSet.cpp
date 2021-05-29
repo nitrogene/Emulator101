@@ -2399,6 +2399,20 @@ void InstructionSet::setInstructions()
 		}
 	);
 
+	// POP B
+	setInstruction(
+		0xC1,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			state.B = map.Peek(state.SP + 1);
+			state.C = map.Peek(state.SP);
+			state.SP += 2;
+			state.PC += size;
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
 	// JNZ adr
 	setInstruction(
 		0xC2,
@@ -2512,6 +2526,7 @@ void InstructionSet::setInstructions()
 		0xCD,
 		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
 		{
+			state.PC += 3;
 			map.Poke(state.SP - 1, (state.PC & 0xFF00) >> 8);
 			map.Poke(state.SP - 2, state.PC & 0x00FF);
 			state.SP -= 2;
@@ -2549,6 +2564,20 @@ void InstructionSet::setInstructions()
 				state.PC = (spc1 << 8) + spc;
 				state.SP += 2;
 			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// POP D
+	setInstruction(
+		0xD1,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			state.D = map.Peek(state.SP + 1);
+			state.E = map.Peek(state.SP);
+			state.SP += 2;
+			state.PC += size;
 			state.Steps++;
 			state.Cycles += cycle.A;
 		}
@@ -2670,6 +2699,19 @@ void InstructionSet::setInstructions()
 		}
 	);
 
+	// XCHG
+	setInstruction(
+		0xEB,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			std::swap(state.H, state.D);
+			std::swap(state.L, state.E);
+			state.PC += size;
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
 	// RPO
 	setInstruction(
 		0xE0,
@@ -2686,6 +2728,20 @@ void InstructionSet::setInstructions()
 				state.PC = (spc1 << 8) + spc;
 				state.SP += 2;
 			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// POP H
+	setInstruction(
+		0xE1,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			state.H = map.Peek(state.SP + 1);
+			state.L = map.Peek(state.SP);
+			state.SP += 2;
+			state.PC += size;
 			state.Steps++;
 			state.Cycles += cycle.A;
 		}

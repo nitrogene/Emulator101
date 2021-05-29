@@ -139,17 +139,10 @@ TEST_F(SpaceInvadersTest, Step1500)
 		p_Processor->RunStep();
 		auto map = p_Processor->getMemoryMap();
 		const auto& state = p_Processor->getState();
-		auto adr = &map.Peek(0);
-
+		
 		int cycles = 0;
 		p_MachineTemplate->doCPUStep(cycles);
 		const auto& state8080 = p_MachineTemplate->getState();
-		auto adr8080 = state8080.memory;
-
-		for (uint32_t j = 0; j < 0xFFFF; ++j)
-		{
-			EXPECT_EQ(*(adr + j), *(adr8080 + j)) << "memory @" + std::to_string(j);
-		}
 
 		// Registers
 		EXPECT_EQ(state.B, state8080.b);
@@ -159,7 +152,6 @@ TEST_F(SpaceInvadersTest, Step1500)
 		EXPECT_EQ(state.H, state8080.h);
 		EXPECT_EQ(state.L, state8080.l);
 		EXPECT_EQ(state.A, state8080.a);
-
 
 
 		// Flags
@@ -178,34 +170,45 @@ TEST_F(SpaceInvadersTest, Step1500)
 
 TEST_F(SpaceInvadersTest, Step2000)
 {
+	int cycles = 0;
+	const auto& state = p_Processor->getState();
+	const auto& state8080 = p_MachineTemplate->getState();
+	auto& map = p_Processor->getMemoryMap();
+	auto adr = &map.Peek(0);
+	auto adr8080 = state8080.memory;
+
+	memcpy(adr8080, adr, map.size() * sizeof(uint8_t));
+
 	for (auto i = 0; i < 2000; ++i)
 	{
-		p_Processor->RunStep();
-		const auto& state = p_Processor->getState();
-
-		int cycles = 0;
+		p_Processor->RunStep();		
 		p_MachineTemplate->doCPUStep(cycles);
-		const auto& state8080 = p_MachineTemplate->getState();
+
+		// Test work ram
+		auto it=std::mismatch(adr + 0x2000, adr + 0x23FF, adr8080 + 0x2000);
+
+		EXPECT_EQ(it, std::make_pair(adr + 0x23FF, adr8080 + 0x23FF)) << "Step " << std::to_string(i) << " " << it.first - adr - 0x2000;
 
 		// Registers
-		EXPECT_EQ(state.B, state8080.b);
-		EXPECT_EQ(state.C, state8080.c);
-		EXPECT_EQ(state.D, state8080.d);
-		EXPECT_EQ(state.E, state8080.e);
-		EXPECT_EQ(state.H, state8080.h);
-		EXPECT_EQ(state.L, state8080.l);
-		EXPECT_EQ(state.A, state8080.a);
+		EXPECT_EQ(state.B, state8080.b) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.C, state8080.c) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.D, state8080.d) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.E, state8080.e) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.H, state8080.h) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.L, state8080.l) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.A, state8080.a) << "Step " << std::to_string(i);
 
 		// Flags
-		//EXPECT_EQ(state.Flags.Sign, state8080.cc.s);
-		//EXPECT_EQ(state.Flags.Zero, state8080.cc.z);
-		//EXPECT_EQ(state.Flags.AuxiliaryCarry, state8080.cc.ac);
-		//EXPECT_EQ(state.Flags.Parity, state8080.cc.p);
-		//EXPECT_EQ(state.Flags.Carry, state8080.cc.cy);
+		EXPECT_EQ(state.Flags.Sign, state8080.cc.s) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.Flags.Zero, state8080.cc.z) << "Step " << std::to_string(i);
+		//EXPECT_EQ(state.Flags.AuxiliaryCarry, state8080.cc.ac) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.Flags.Parity, state8080.cc.p) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.Flags.Carry, state8080.cc.cy) << "Step " << std::to_string(i);
 
 		// Program counter
-		EXPECT_EQ(state.PC, state8080.pc);
-		EXPECT_EQ(state.SP, state8080.sp);
+		EXPECT_EQ(state.PC, state8080.pc) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.SP, state8080.sp) << "Step " << std::to_string(i);
+		EXPECT_EQ(state.Cycles, cycles) << "Step " << std::to_string(i);
 	}
 
 }

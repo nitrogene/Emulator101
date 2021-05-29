@@ -7,7 +7,7 @@ uint8_t Flags::getF()
 	|S|Z|0|C|0|P|1|C|
 	*/
 
-	uint8_t f = 0b00000000;
+	uint8_t f = 0b00000010;
 
 	if (this->Carry)
 	{

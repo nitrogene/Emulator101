@@ -1612,6 +1612,204 @@ TEST_F(InstructionSetTest, STA_adr)
 	EXPECT_EQ(state.Steps, 1);
 }
 
+TEST_F(InstructionSetTest, DCR_B)
+{
+	const std::vector<uint8_t> rom = {
+		0x05
+	};
+
+	State state{};
+	state.B = 0X40;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0x3F);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 4);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 5);
+	EXPECT_TRUE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, DCR_C)
+{
+	const std::vector<uint8_t> rom = {
+		0x0D
+	};
+
+	State state{};
+	state.C = 0X40;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0x3F);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 4);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 5);
+	EXPECT_TRUE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, DCR_D)
+{
+	const std::vector<uint8_t> rom = {
+		0x15
+	};
+
+	State state{};
+	state.D = 0X40;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0x3F);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 4);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 5);
+	EXPECT_TRUE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, DCR_E)
+{
+	const std::vector<uint8_t> rom = {
+		0x1D
+	};
+
+	State state{};
+	state.E = 0X40;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0x3F);
+	EXPECT_EQ(state.F, 4);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 5);
+	EXPECT_TRUE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, DCR_H)
+{
+	const std::vector<uint8_t> rom = {
+		0x25
+	};
+
+	State state{};
+	state.H = 0X40;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 4);
+	EXPECT_EQ(state.H, 0x3F);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 5);
+	EXPECT_TRUE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, DCR_L)
+{
+	const std::vector<uint8_t> rom = {
+		0x2D
+	};
+
+	State state{};
+	state.L = 0X40;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 4);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0x3F);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 5);
+	EXPECT_TRUE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
 TEST_F(InstructionSetTest, DCR_M)
 {
 	const std::vector<uint8_t> rom = {
@@ -1642,6 +1840,39 @@ TEST_F(InstructionSetTest, DCR_M)
 	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(state.Flags.Carry);
 	EXPECT_EQ(state.Cycles, 10);
+	EXPECT_TRUE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, DCR_A)
+{
+	const std::vector<uint8_t> rom = {
+		0x3D
+	};
+
+	State state{};
+	state.A = 0X40;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(state.A, 0x3F);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 4);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 5);
 	EXPECT_TRUE(state.Flags.Parity);
 	EXPECT_EQ(state.PC, 1);
 	EXPECT_FALSE(state.Flags.Sign);
@@ -4638,6 +4869,348 @@ TEST_F(InstructionSetTest, XRI_D8)
 	EXPECT_EQ(state.PC, 2);
 	EXPECT_TRUE(state.Flags.Sign);
 	EXPECT_EQ(state.SP, 0);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, PUSH_B)
+{
+	const std::vector<uint8_t> rom = {
+		0xC5
+	};
+
+	State state{};
+	state.B = 0x8F;
+	state.C = 0x9D;
+	state.SP = 0x3A2C;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(pMemoryMap->Peek(0x3A2A), 0x9D);
+	EXPECT_EQ(pMemoryMap->Peek(0x3A2B), 0x8F);
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0x8F);
+	EXPECT_EQ(state.C, 0x9D);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 11);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0x3A2A);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, PUSH_D)
+{
+	const std::vector<uint8_t> rom = {
+		0xD5
+	};
+
+	State state{};
+	state.D = 0x8F;
+	state.E = 0x9D;
+	state.SP = 0x3A2C;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(pMemoryMap->Peek(0x3A2A), 0x9D);
+	EXPECT_EQ(pMemoryMap->Peek(0x3A2B), 0x8F);
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0x8F);
+	EXPECT_EQ(state.E, 0x9D);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 11);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0x3A2A);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, PUSH_H)
+{
+	const std::vector<uint8_t> rom = {
+		0xE5
+	};
+
+	State state{};
+	state.H = 0x8F;
+	state.L = 0x9D;
+	state.SP = 0x3A2C;
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	state.F = state.Flags.getF();
+
+	EXPECT_EQ(pMemoryMap->Peek(0x3A2A), 0x9D);
+	EXPECT_EQ(pMemoryMap->Peek(0x3A2B), 0x8F);
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0x8F);
+	EXPECT_EQ(state.L, 0x9D);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 11);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0x3A2A);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, PUSH_PSW)
+{
+	const std::vector<uint8_t> rom = {
+		0xF5
+	};
+
+	State state{};
+	state.A = 0x1F;
+	state.SP = 0x502A;
+	state.Flags.Carry = true;
+	state.Flags.Zero = true;
+	state.Flags.Parity = true;
+	state.F = state.Flags.getF();
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	
+	EXPECT_EQ(pMemoryMap->Peek(0x5029), 0x1F);
+	EXPECT_EQ(pMemoryMap->Peek(0x5028), 0x47);
+
+	EXPECT_EQ(state.A, 0x1F);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 0x47);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 11);
+	EXPECT_TRUE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0x5028);
+	EXPECT_TRUE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, CALL)
+{
+	std::vector<uint8_t> rom = {
+		0xCD, 0x66, 0x06
+	};
+	rom.resize(65536);
+
+	State state{};
+	state.F = state.Flags.getF();
+
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+
+	EXPECT_EQ(pMemoryMap->Peek(0xFFFF), 0x00);
+	EXPECT_EQ(pMemoryMap->Peek(0xFFFE), 0x03);
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 17);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 0x666);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0xFFFE);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, XCHG)
+{
+	std::vector<uint8_t> rom = {
+		0xEB
+	};
+
+	State state{};
+	state.F = state.Flags.getF();
+	state.D = 0x33;
+	state.E = 0x55;
+	state.H = 0x00;
+	state.L = 0xFF;
+
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0x00);
+	EXPECT_EQ(state.E, 0xFF);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0x33);
+	EXPECT_EQ(state.L, 0x55);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 4);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, POP_B)
+{
+	std::vector<uint8_t> rom = {
+		0xC1
+	};
+
+	State state{};
+	state.F = state.Flags.getF();
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+
+	rom.resize(65536);
+	pMemoryMap->Poke(0x1239, 0x3D);
+	pMemoryMap->Poke(0x123A, 0x93);
+	state.SP = 0x1239;
+
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0x93);
+	EXPECT_EQ(state.C, 0x3D);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 10);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0x123B);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, POP_D)
+{
+	std::vector<uint8_t> rom = {
+		0xD1
+	};
+
+	State state{};
+	state.F = state.Flags.getF();
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+
+	rom.resize(65536);
+	pMemoryMap->Poke(0x1239, 0x3D);
+	pMemoryMap->Poke(0x123A, 0x93);
+	state.SP = 0x1239;
+
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0x93);
+	EXPECT_EQ(state.E, 0x3D);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 10);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0x123B);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+}
+
+TEST_F(InstructionSetTest, POP_H)
+{
+	std::vector<uint8_t> rom = {
+		0xE1
+	};
+
+	State state{};
+	state.F = state.Flags.getF();
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+
+	rom.resize(65536);
+	pMemoryMap->Poke(0x1239, 0x3D);
+	pMemoryMap->Poke(0x123A, 0x93);
+	state.SP = 0x1239;
+
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0x93);
+	EXPECT_EQ(state.L, 0x3D);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 10);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 1);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0x123B);
 	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
