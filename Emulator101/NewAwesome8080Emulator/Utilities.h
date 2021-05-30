@@ -35,5 +35,9 @@ public:
 	static void SBI(State&, const uint8_t value);
 	static void ORI(State&, const uint8_t value);
 	static void XRI(State&, const uint8_t value);
+
+	// IN OUT, specific SpaceInvaders
+	static void machineIN(State&, const uint8_t port);
+	static void machineOUT(State&, const uint8_t port);
 };
 

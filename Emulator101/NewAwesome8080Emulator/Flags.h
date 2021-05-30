@@ -31,4 +31,6 @@ C  State of Carry bit
 
 
 	uint8_t getF();
+
+	void setF(const uint8_t f);
 };

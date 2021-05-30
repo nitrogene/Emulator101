@@ -170,29 +170,29 @@ void Utilities::CPI(State& state, const uint8_t& opCode1)
 
 	// Perform operation in higher precision
 	uint16_t a = ((uint16_t)state.A);
-	uint16_t b = ((uint16_t)opCode1);
-	uint16_t chp = a - b;
+	uint16_t b = ((uint16_t)(uint8_t(-opCode1)));
+	uint16_t chp = a + b;
 
 	// get result in normal precision
-	state.A = chp & 0xFF;
+	auto value = chp & 0xFF;
 
 	// ZERO CHECK
-	flags.Zero = state.A == 0;
+	flags.Zero = value == 0;
 
 	// SIGN CHECK
 	flags.Sign = chp & 0x80;
 
 	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(state.A);
+	flags.Parity = Utilities::isOddParity(value);
 
 	// CARRY BIT
-	flags.Carry = chp & 0x100;
+	flags.Carry = !(chp & 0x100);
 
 	// AUXILIARY CARRY
 	uint8_t a_ = a & 0x0F;
 	uint8_t b_ = b & 0x0F;
-	uint8_t c_ = a_ - b_;
-	flags.AuxiliaryCarry = c_ & 0x10;
+	uint8_t c_ = a_ + b_;
+	flags.AuxiliaryCarry = !(c_ & 0x10);
 
 	// change F 
 	state.F=flags.getF();
@@ -734,4 +734,64 @@ void Utilities::XRI(State& state, const uint8_t value)
 
 	// change F 
 	state.F=flags.getF();
+}
+
+/*
+	;16 bit shift register:
+   ;    f              0    bit
+   ;    xxxxxxxxyyyyyyyy
+   ;
+   ;    Writing to port 4 shifts x into y, and the new value into x, eg.
+   ;    $0000,
+   ;    write $aa -> $aa00,
+   ;    write $ff -> $ffaa,
+   ;    write $12 -> $12ff, ..
+   ;
+   ;    Writing to port 2 (bits 0,1,2) sets the offset for the 8 bit result, eg.
+   ;    offset 0:
+   ;    rrrrrrrr        result=xxxxxxxx
+   ;    xxxxxxxxyyyyyyyy
+   ;
+   ;    offset 2:
+   ;      rrrrrrrr  result=xxxxxxyy
+   ;    xxxxxxxxyyyyyyyy
+   ;
+   ;    offset 7:
+   ;           rrrrrrrr result=xyyyyyyy
+   ;    xxxxxxxxyyyyyyyy
+   ;
+   ;    Reading from port 3 returns said result.
+*/
+
+uint8_t x=0, y=0, shift_offset=0;
+
+void Utilities::machineIN(State& state, const uint8_t port)
+{
+	switch (port)
+	{
+		case 3:
+		{
+			uint16_t v = (x << 8) | y;
+			state.A=((v >> (8 - shift_offset)) & 0xff);
+		}
+	}
+}
+
+void Utilities::machineOUT(State& state, const uint8_t port)
+{
+	switch (port)
+	{
+		case 2:
+		{	
+			shift_offset = state.A & 0x7;
+			break;
+		}
+
+		case 4:
+		{
+			y = x;
+			x = state.A;
+			break;
+		}
+	}
 }

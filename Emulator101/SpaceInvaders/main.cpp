@@ -2,6 +2,8 @@
 #include <thread>
 #include "Processor.h"
 
+// http://computerarcheology.com/Arcade/SpaceInvaders/Hardware.html
+
 const static std::vector<std::filesystem::path> roms
 {
 	"invaders.h",
@@ -12,29 +14,28 @@ const static std::vector<std::filesystem::path> roms
 
 const static std::filesystem::path instructions = "instuctions.set";
 
+#include <iostream>
+
 
 void refreshScreen(const MemoryMap& map, SDL_Renderer* pRenderer)
 {
-	auto fb = &map.Peek(0x2400);
+	uint16_t x = 0, y = 0;
 
-	for (uint16_t y = 0; y < 224; ++y)
+	for (uint16_t adr = 0x2400; adr <= 0x3FFF; ++adr)
 	{
-		for (uint16_t x = 0; x < 256; x += 8)
+		auto pixel = map.Peek(adr);
+
+		for (uint8_t i = 0; i < 8; ++i)
 		{
-			// 8 pixels per byte
-			auto pixel=*(fb+y/8 + x * 28);
-
-			for (uint16_t i = 0; i < 8; ++i) 
-			{
-				uint8_t value = pixel & (1 << i);
-				
-				if (value != 0) {
-					value = 255;
-				}
-
-				SDL_SetRenderDrawColor(pRenderer, value, value, value, 255);
-				SDL_RenderDrawPoint(pRenderer, x+i, y);
-			}
+			uint8_t value = ((pixel >> i) & 0b00000001) == 0 ? 0 : 255;
+			SDL_SetRenderDrawColor(pRenderer, value, value, value, 255);
+			SDL_RenderDrawPoint(pRenderer, y, 256-(x+i));
+		}
+		x+=8;
+		if (x == 256)
+		{
+			x = 0;
+			++y;
 		}
 	}
 
@@ -52,7 +53,7 @@ int main(int /*argc*/, char** /*argv*/)
 	SDL_Window* window = nullptr;
 
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_CreateWindowAndRenderer(256, 224, 0, &window, &renderer);
+	SDL_CreateWindowAndRenderer(224, 256, 0, &window, &renderer);
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 	SDL_RenderPresent(renderer);

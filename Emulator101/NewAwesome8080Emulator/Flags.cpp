@@ -36,3 +36,12 @@ uint8_t Flags::getF()
 
 	return f;
 }
+
+void Flags::setF(const uint8_t f)
+{
+	this->Carry = f & 0b00000001;
+	this->Parity = f & 0b00000100;
+	this->AuxiliaryCarry = f & 0b00010000;
+	this->Zero = f & 0b01000000;
+	this->Sign = f & 0b10000000;
+}

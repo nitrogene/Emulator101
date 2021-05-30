@@ -2442,6 +2442,27 @@ void InstructionSet::setInstructions()
 		}
 	);
 
+	// CNZ adr
+	setInstruction(
+		0xC4,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			if (!state.Flags.Zero)
+			{
+				map.Poke(state.SP - 1, (state.PC & 0xFF00) >> 8);
+				map.Poke(state.SP - 2, state.PC & 0x00FF);
+				state.SP -= 2;
+				state.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				state.PC += size;
+			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
 	// PUSH B
 	setInstruction(
 		0xC5,
@@ -2510,6 +2531,27 @@ void InstructionSet::setInstructions()
 		{
 			if (state.Flags.Zero)
 			{
+				state.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				state.PC += size;
+			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// CZ adr
+	setInstruction(
+		0xCC,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			if (state.Flags.Zero)
+			{
+				map.Poke(state.SP - 1, (state.PC & 0xFF00) >> 8);
+				map.Poke(state.SP - 2, state.PC & 0x00FF);
+				state.SP -= 2;
 				state.PC = (opCode[2] << 8) + opCode[1];
 			}
 			else
@@ -2601,6 +2643,39 @@ void InstructionSet::setInstructions()
 		}
 	);
 
+	// OUT adr
+	setInstruction(
+		0xD3,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			Utilities::machineOUT(state, opCode[1]);
+			state.PC += size;
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// CNC adr
+	setInstruction(
+		0xD4,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			if (!state.Flags.Carry)
+			{
+				map.Poke(state.SP - 1, (state.PC & 0xFF00) >> 8);
+				map.Poke(state.SP - 2, state.PC & 0x00FF);
+				state.SP -= 2;
+				state.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				state.PC += size;
+			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
 	// PUSH D
 	setInstruction(
 		0xD5,
@@ -2661,6 +2736,18 @@ void InstructionSet::setInstructions()
 			{
 				state.PC += size;
 			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// IN adr
+	setInstruction(
+		0xDB,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			Utilities::machineIN(state, opCode[1]);
+			state.PC += size;
 			state.Steps++;
 			state.Cycles += cycle.A;
 		}
@@ -2765,6 +2852,46 @@ void InstructionSet::setInstructions()
 		}
 	);
 
+	// XTHL
+	setInstruction(
+		0xE3,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			auto value = state.L;
+			state.L = map.Peek(state.SP);
+			map.Poke(state.SP, value);
+
+			value = state.H;
+			state.H = map.Peek(state.SP+1);
+			map.Poke(state.SP+1, value);
+
+			state.PC += size;
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// CPO adr
+	setInstruction(
+		0xE4,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			if (state.Flags.Parity)
+			{
+				map.Poke(state.SP - 1, (state.PC & 0xFF00) >> 8);
+				map.Poke(state.SP - 2, state.PC & 0x00FF);
+				state.SP -= 2;
+				state.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				state.PC += size;
+			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
 	// PUSH H
 	setInstruction(
 		0xE5,
@@ -2841,6 +2968,27 @@ void InstructionSet::setInstructions()
 		}
 	);
 
+	// CPE adr
+	setInstruction(
+		0xEC,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			if (!state.Flags.Parity)
+			{
+				map.Poke(state.SP - 1, (state.PC & 0xFF00) >> 8);
+				map.Poke(state.SP - 2, state.PC & 0x00FF);
+				state.SP -= 2;
+				state.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				state.PC += size;
+			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
 	// XRI D8
 	setInstruction(
 		0xEE,
@@ -2874,6 +3022,21 @@ void InstructionSet::setInstructions()
 		}
 	);
 
+	// POP PSW
+	setInstruction(
+		0xF1,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			state.A = map.Peek(state.SP + 1);
+			state.F = map.Peek(state.SP);
+			state.Flags.setF(state.F);
+			state.SP += 2;
+			state.PC += size;
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
 	// JP adr
 	setInstruction(
 		0xF2,
@@ -2886,6 +3049,39 @@ void InstructionSet::setInstructions()
 			else
 			{
 				state.PC = (opCode[2] << 8) + opCode[1];
+			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// DI
+	setInstruction(
+		0xF3,
+		[](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			state.EI = false;
+			state.PC += size;
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// CP adr
+	setInstruction(
+		0xF4,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			if (!state.Flags.Sign)
+			{
+				map.Poke(state.SP - 1, (state.PC & 0xFF00) >> 8);
+				map.Poke(state.SP - 2, state.PC & 0x00FF);
+				state.SP -= 2;
+				state.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				state.PC += size;
 			}
 			state.Steps++;
 			state.Cycles += cycle.A;
@@ -2946,6 +3142,39 @@ void InstructionSet::setInstructions()
 		{
 			if (state.Flags.Sign)
 			{
+				state.PC = (opCode[2] << 8) + opCode[1];
+			}
+			else
+			{
+				state.PC += size;
+			}
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// EI
+	setInstruction(
+		0xFB,
+		[](State& state, MemoryMap&, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			state.EI = true;
+			state.PC += size;
+			state.Steps++;
+			state.Cycles += cycle.A;
+		}
+	);
+
+	// CM adr
+	setInstruction(
+		0xFC,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			if (state.Flags.Sign)
+			{
+				map.Poke(state.SP - 1, (state.PC & 0xFF00) >> 8);
+				map.Poke(state.SP - 2, state.PC & 0x00FF);
+				state.SP -= 2;
 				state.PC = (opCode[2] << 8) + opCode[1];
 			}
 			else

@@ -181,8 +181,15 @@ TEST_F(SpaceInvadersTest, Step2000)
 
 	for (auto i = 0; i < 2000; ++i)
 	{
+		if (i == 1552)
+		{
+			std::cout << i << std::endl;
+		}
+
 		p_Processor->RunStep();		
 		p_MachineTemplate->doCPUStep(cycles);
+
+
 
 		// Test work ram
 		auto it=std::mismatch(adr + 0x2000, adr + 0x23FF, adr8080 + 0x2000);

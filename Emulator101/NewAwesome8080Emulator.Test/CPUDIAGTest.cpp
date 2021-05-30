@@ -6,8 +6,6 @@ TEST_F(CPUDIAGTest, Step1)
 	p_Processor->setPC(0x100);
 	while (true)
 	{
-		p_Processor->RunStep();
-
 		// as explained in http://emulator101.com/, CPUDIAG is a binary for 8080 processor and CP/M
 		// running the binary without tweaks won't be usefull, because it is looking for CP/M instructions
 		// at lower address $0005 to display test informations.
@@ -77,21 +75,25 @@ TEST_F(CPUDIAGTest, Step1)
 				{
 					// C_WRITESTR
 					std::string output;
-					uint16_t adr= (state.D << 8) | state.E;
+					uint16_t adr = (state.D << 8) | state.E;
 					auto str = (const char*)&p_Processor->Peek(adr);
 					while (*str != '$')
 					{
 						output += *str++;
 					}
+					std::cout << output;
 				}
 				else
 				{
 					throw std::exception("unexpected call");
 				}
-			}
 
-			// With real CP/M, there is a RET, let's just go to next instruction
-			state.PC += isl.Size;
+				// With real CP/M, there is a RET, let's just go to next instruction
+				state.PC += isl.Size;
+				continue;
+			}
 		}
+
+		p_Processor->RunStep();
 	}
 }

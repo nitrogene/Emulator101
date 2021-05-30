@@ -30,6 +30,9 @@ struct State
 	// Number of cpu steps
 	uint64_t Steps = 0;
 
+	// Interrupt enable ?
+	bool EI=false;
+
 	// ToString
 	std::string toString();
 
