@@ -75,9 +75,9 @@ const uint8_t& MemoryMap::Peek(const uint16_t idx) const
 	return m_MemoryBuffer[idx];
 }
 
-void MemoryMap::Poke(const uint16_t idx, const uint8_t value)
+void MemoryMap::Poke(const uint16_t idx, const uint8_t value, const bool force)
 {
-	if (idx < m_RomSize)
+	if (idx < m_RomSize && !force)
 	{
 		std::cout << "Writing to ROM!!!!" << std::endl;
 		return;

@@ -8,7 +8,6 @@
     <ClCompile Include="Intel-8080-Emulator\MachineTemplate.cpp">
       <Filter>Intel-8080-Emulator</Filter>
     </ClCompile>
-    <ClCompile Include="CPUDIAGTest.cpp" />
     <ClCompile Include="InstructionSetTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -24,7 +23,6 @@
       <Filter>Intel-8080-Emulator</Filter>
     </ClInclude>
     <ClInclude Include="SpaceInvadersTest.h" />
-    <ClInclude Include="CPUDIAGTest.h" />
     <ClInclude Include="InstructionSetTest.h" />
   </ItemGroup>
   <ItemGroup>

@@ -30,5 +30,5 @@ public:
 	size_t size() const { return m_MemoryBuffer.size(); };
 
 	const uint8_t& Peek(const uint16_t idx) const;
-	void Poke(const uint16_t idx, const uint8_t value);
+	void Poke(const uint16_t idx, const uint8_t value, const bool force = false);
 };

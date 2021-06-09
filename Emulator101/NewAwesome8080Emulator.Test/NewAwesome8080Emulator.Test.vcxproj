@@ -33,7 +33,6 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClCompile Include="CPUDIAGTest.cpp" />
     <ClCompile Include="Intel-8080-Emulator\i8080.c" />
     <ClCompile Include="Intel-8080-Emulator\MachineTemplate.cpp" />
     <ClCompile Include="InstructionSetTest.cpp" />
@@ -48,7 +47,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CPUDIAGTest.h" />
     <ClInclude Include="InstructionSetTest.h" />
     <ClInclude Include="Intel-8080-Emulator\i8080.h" />
     <ClInclude Include="Intel-8080-Emulator\MachineTemplate.h" />
@@ -79,7 +77,7 @@
     <PostBuildEvent>
       <Command>xcopy /E /Y /I /R $(SolutionDir)docs\8080\invaders\* $(OutDir)
 xcopy /E /Y /I /R $(SolutionDir)docs\8080\cpudiag\* $(OutDir)
-xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
+xcopy /E /Y /I /R $(SolutionDir)docs\8080\instructions.set $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -102,7 +100,7 @@ xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     <PostBuildEvent>
       <Command>xcopy /E /Y /I /R $(SolutionDir)docs\8080\invaders\* $(OutDir)
 xcopy /E /Y /I /R $(SolutionDir)docs\8080\cpudiag\* $(OutDir)
-xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
+xcopy /E /Y /I /R $(SolutionDir)docs\8080\instructions.set $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -126,7 +124,7 @@ xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     <PostBuildEvent>
       <Command>xcopy /E /Y /I /R $(SolutionDir)docs\8080\invaders\* $(OutDir)
 xcopy /E /Y /I /R $(SolutionDir)docs\8080\cpudiag\* $(OutDir)
-xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
+xcopy /E /Y /I /R $(SolutionDir)docs\8080\instructions.set $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,7 +148,7 @@ xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
     <PostBuildEvent>
       <Command>xcopy /E /Y /I /R $(SolutionDir)docs\8080\invaders\* $(OutDir)
 xcopy /E /Y /I /R $(SolutionDir)docs\8080\cpudiag\* $(OutDir)
-xcopy /E /Y /I /R $(SolutionDir)docs\8080\instuctions.set $(OutDir)</Command>
+xcopy /E /Y /I /R $(SolutionDir)docs\8080\instructions.set $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

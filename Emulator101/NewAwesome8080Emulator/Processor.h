@@ -62,5 +62,5 @@ public:
 
 	const InstructionSetLine& getIsl(const uint8_t idx) const;
 
-	const MemoryMap& getMemoryMap();
+	MemoryMap& getMemoryMap();
 };

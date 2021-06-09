@@ -1,10 +1,33 @@
-#include "CPUDIAGTest.h"
+#include <iostream>
+#include "Processor.h"
 
-TEST_F(CPUDIAGTest, Step1)
+const static std::vector<std::filesystem::path> roms
 {
+	"CPUDIAG.COM"
+};
+
+const static std::filesystem::path instructions = "instructions.set";
+
+
+int main(int /*argc*/, char** /*argv*/)
+{
+	// This roms should start at 0x100, thus we need empty NOP vector
+	// and settinf PC to 0x100.
+	auto bytes = std::vector<uint8_t>(0x100, 0x0);
+
+	auto processor = std::make_shared<Processor>(instructions);
+
+	processor->Initialize(roms, 0xFFFF, 0x2000, 0x2400, 0x4000, bytes);
+
+	auto& map = processor->getMemoryMap();
+
+	//Fix the stack pointer from 0x6ad to 0x7ad    
+	map.Poke(0x01AB+2, 0x7, true);
+
 	// the original assembly code has a ORG 00100H, thus we set PC to 0x100
-	p_Processor->setPC(0x100);
-	while (true)
+	processor->setPC(0x100);
+
+	while (!processor->getState().HLT)
 	{
 		// as explained in http://emulator101.com/, CPUDIAG is a binary for 8080 processor and CP/M
 		// running the binary without tweaks won't be usefull, because it is looking for CP/M instructions
@@ -43,7 +66,7 @@ TEST_F(CPUDIAGTest, Step1)
 				;
 				;
 				BDOS	EQU	00005H	;BDOS ENTRY TO CP/M
-				WBOOT	EQU	00000H	;RE-ENTRY TO CP/M WARM BOOT	
+				WBOOT	EQU	00000H	;RE-ENTRY TO CP/M WARM BOOT
 		*/
 		/*
 		This is the print function:
@@ -58,13 +81,16 @@ TEST_F(CPUDIAGTest, Step1)
 			BDOS function 9 (C_WRITESTR) - Output string
 			Supported by: All versions
 			Entered with C=9, DE=address of string.
-			Display a string of ASCII characters, terminated with the $ character. Thus the string may not contain $ characters - so, for example, the VT52 cursor positioning command ESC Y y+32 x+32 will not be able to 
+			Display a string of ASCII characters, terminated with the $ character. Thus the string may not contain $ characters - so, for example, the VT52 cursor positioning command ESC Y y+32 x+32 will not be able to
 			use row 4.
 			Under CP/M 3 and above, the terminating character can be changed using BDOS function 110.
 		*/
-		auto opCode = &p_Processor->Peek(p_Processor->getState().PC);
-		auto& state = p_Processor->getState();
-		const auto& isl = p_Processor->getIsl(opCode[0]);
+
+		//processor->ShowState(16);
+
+		auto opCode = &processor->Peek(processor->getState().PC);
+		auto& state = processor->getState();
+		const auto& isl = processor->getIsl(opCode[0]);
 
 		if (opCode[0] == 0xCD)
 		{
@@ -76,7 +102,7 @@ TEST_F(CPUDIAGTest, Step1)
 					// C_WRITESTR
 					std::string output;
 					uint16_t adr = (state.D << 8) | state.E;
-					auto str = (const char*)&p_Processor->Peek(adr);
+					auto str = (const char*)&processor->Peek(adr);
 					while (*str != '$')
 					{
 						output += *str++;
@@ -94,6 +120,8 @@ TEST_F(CPUDIAGTest, Step1)
 			}
 		}
 
-		p_Processor->RunStep();
+		processor->RunStep();
 	}
+
+	return 0;
 }
