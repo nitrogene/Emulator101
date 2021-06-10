@@ -22,7 +22,6 @@
 
 std::string State::toString()
 {
-	Utilities::ClearScreen();
 	std::string flags = "";
 	auto fun = [](bool b, std::string c) -> std::string
 	{

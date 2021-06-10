@@ -4,7 +4,7 @@
 #include "InstructionSet.h"
 
 
-const static std::filesystem::path instructions = "instuctions.set";
+const static std::filesystem::path instructions = "instructions.set";
 
 class InstructionSetTest : public ::testing::Test {
 protected:

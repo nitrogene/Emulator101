@@ -18,7 +18,7 @@ public:
 	static void RRC(State& state);
 	static void DCR(State& state, uint8_t& value);
 	static void INR(State& state, uint8_t& value);
-	static void ANI(State& state, uint8_t& value, const uint8_t& opCode1);
+	static void ANI(State& state, const uint8_t& opCode1);
 	static void ADI(State& state, const uint8_t& opCode1);
 	static void CPI(State& state, const uint8_t& opCode1);
 	static void ACI(State& state, const uint8_t& opCode1);

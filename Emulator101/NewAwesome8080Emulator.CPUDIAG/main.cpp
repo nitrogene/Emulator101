@@ -86,7 +86,7 @@ int main(int /*argc*/, char** /*argv*/)
 			Under CP/M 3 and above, the terminating character can be changed using BDOS function 110.
 		*/
 
-		//processor->ShowState(16);
+		processor->ShowState();
 
 		auto opCode = &processor->Peek(processor->getState().PC);
 		auto& state = processor->getState();
@@ -107,15 +107,31 @@ int main(int /*argc*/, char** /*argv*/)
 					{
 						output += *str++;
 					}
+
+					// Remove line feed (for printer?)
+					output.erase(std::remove(output.begin(), output.end(), '\f'), output.end());
+
 					std::cout << output;
 				}
 				else
 				{
-					throw std::exception("unexpected call");
+					// C_WRITE
+					std::cout << (int)state.E;
 				}
 
 				// With real CP/M, there is a RET, let's just go to next instruction
 				state.PC += isl.Size;
+				state.Cycles += 17;
+				continue;
+			}
+		}
+		else if (opCode[0] == 0xC3)
+		{
+			if (opCode[1] == 0x00 && opCode[2] == 0x00)
+			{
+				// Detect EXIT TO CP/M WARM BOOT (JMP 0x0000)
+				std::cout << "\nCP/M WARM BOOT exit" << std::endl;
+				processor->getState().HLT = true;
 				continue;
 			}
 		}

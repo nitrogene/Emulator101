@@ -2911,7 +2911,7 @@ void InstructionSet::setInstructions()
 		0xE6,
 		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
 		{
-			Utilities::ANI(state, state.H, opCode[1]);
+			Utilities::ANI(state, opCode[1]);
 			state.PC += size;
 			state.Steps++;
 			state.Cycles += cycle.A;

@@ -51,6 +51,7 @@ public:
 
 	// show processor state (registers, next stackSize instructions)
 	void ShowState(const uint16_t stackSize);
+	void ShowState();
 
 	// Return current step
 	State& getState();

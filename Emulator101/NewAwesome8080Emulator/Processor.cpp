@@ -1695,6 +1695,7 @@ void Processor::RunStep()
 		// CNZ adr
 		if (!m_State.Flags.Zero)
 		{
+			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
 			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
@@ -1773,6 +1774,7 @@ void Processor::RunStep()
 		// CZ adr
 		if (m_State.Flags.Zero)
 		{
+			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
 			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
@@ -1790,6 +1792,7 @@ void Processor::RunStep()
 	case 0xCD:
 	{
 		// CALL adr
+		m_State.PC += 3;
 		p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
 		p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 		m_State.SP -= 2;
@@ -1869,6 +1872,7 @@ void Processor::RunStep()
 		// CNC adr
 		if (!m_State.Flags.Carry)
 		{
+			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
 			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
@@ -1953,6 +1957,7 @@ void Processor::RunStep()
 		// CC adr
 		if (m_State.Flags.Carry)
 		{
+			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
 			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
@@ -2051,6 +2056,7 @@ void Processor::RunStep()
 		// CPO adr
 		if (m_State.Flags.Parity)
 		{
+			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
 			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
@@ -2079,7 +2085,7 @@ void Processor::RunStep()
 	case 0xE6:
 	{
 		// ANI D8
-		Utilities::ANI(m_State, m_State.H, opCode[1]);
+		Utilities::ANI(m_State, opCode[1]);
 		m_State.PC += 2;
 		m_State.Cycles += 7;
 
@@ -2132,6 +2138,7 @@ void Processor::RunStep()
 		// CPE adr
 		if (!m_State.Flags.Parity)
 		{
+			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
 			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
@@ -2215,6 +2222,7 @@ void Processor::RunStep()
 		// CP adr
 		if (!m_State.Flags.Sign)
 		{
+			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
 			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
@@ -2299,6 +2307,7 @@ void Processor::RunStep()
 		// CM adr
 		if (m_State.Flags.Sign)
 		{
+			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
 			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
@@ -2369,6 +2378,12 @@ void Processor::ShowState(const uint16_t stackSize)
 	fmt::print("{0}", m_State.toString());
 	fmt::print("Next {0} instructions in rom:\n", stackSize);
 	this->DisassembleRomStacksize(m_State.PC, stackSize);
+}
+
+void Processor::ShowState()
+{
+	fmt::print("{0}", m_State.toString());
+	this->DisassembleRomStacksize(m_State.PC, 1);
 }
 
 void Processor::setPC(const uint16_t pc)

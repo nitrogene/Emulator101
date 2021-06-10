@@ -108,26 +108,21 @@ void Utilities::INR(State& state, uint8_t& value)
 	state.F=flags.getF();
 }
 
-void Utilities::ANI(State& state, uint8_t& value, const uint8_t& opCode1)
+void Utilities::ANI(State& state, const uint8_t& opCode1)
 {
 	auto& flags = state.Flags;
 
-	// Perform operation in higher precision
-	uint16_t a = ((uint16_t)value);
-	uint16_t b = ((uint16_t)opCode1);
-	uint16_t chp = a & b;
-
 	// get result in normal precision
-	value = chp & 0xFF;
+	state.A &= opCode1;
 
 	// ZERO CHECK
-	flags.Zero = value == 0;
+	flags.Zero = state.A == 0;
 
 	// SIGN CHECK
-	flags.Sign = chp & 0x80;
+	flags.Sign = state.A & 0x80;
 
 	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(value);
+	flags.Parity = Utilities::isOddParity(state.A);
 
 	flags.Carry = 0;
 	flags.AuxiliaryCarry = 0;
@@ -157,8 +152,14 @@ void Utilities::ADI(State& state, const uint8_t& opCode1)
 	// PARITY CHECK
 	flags.Parity = Utilities::isOddParity(state.A);
 
-	flags.Carry = 0;
-	flags.AuxiliaryCarry = 0;
+	// CARRY BIT
+	flags.Carry = chp & 0x100;
+
+	// AUXILIARY CARRY
+	uint8_t a_ = a & 0x0F;
+	uint8_t b_ = b & 0x0F;
+	uint8_t c_ = a_ + b_;
+	flags.AuxiliaryCarry = c_ & 0x10;
 
 	// change F 
 	state.F=flags.getF();
@@ -174,7 +175,7 @@ void Utilities::CPI(State& state, const uint8_t& opCode1)
 	uint16_t chp = a + b;
 
 	// get result in normal precision
-	auto value = chp & 0xFF;
+	uint8_t value = chp & 0xFF;
 
 	// ZERO CHECK
 	flags.Zero = value == 0;
@@ -187,12 +188,17 @@ void Utilities::CPI(State& state, const uint8_t& opCode1)
 
 	// CARRY BIT
 	flags.Carry = !(chp & 0x100);
-
 	// AUXILIARY CARRY
 	uint8_t a_ = a & 0x0F;
 	uint8_t b_ = b & 0x0F;
 	uint8_t c_ = a_ + b_;
 	flags.AuxiliaryCarry = !(c_ & 0x10);
+
+	if ((state.A & 0x80) != (opCode1 & 0x80))
+	{
+		flags.Carry = !flags.Carry;
+		flags.AuxiliaryCarry = !flags.AuxiliaryCarry;
+	}
 
 	// change F 
 	state.F=flags.getF();
