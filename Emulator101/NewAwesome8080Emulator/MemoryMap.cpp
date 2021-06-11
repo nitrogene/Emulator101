@@ -3,7 +3,7 @@
 #include "MemoryMap.h"
 
 MemoryMap::MemoryMap(const std::vector<uint8_t>& rom, const uint16_t totalRam,
-	const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress) :m_MemoryBuffer(rom), m_WorkRamAddress(workRamAddress), m_VideoRamAddress(videoRamAddress), m_MirrorRamAddress(mirrorRamAddress),
+	const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const bool allowWritingToRom) :m_MemoryBuffer(rom), m_WorkRamAddress(workRamAddress), m_VideoRamAddress(videoRamAddress), m_MirrorRamAddress(mirrorRamAddress), m_AllowWritingToRom(allowWritingToRom),
 	m_RomSize((uint16_t)rom.size())
 {
 	// TODO:
@@ -75,9 +75,9 @@ const uint8_t& MemoryMap::Peek(const uint16_t idx) const
 	return m_MemoryBuffer[idx];
 }
 
-void MemoryMap::Poke(const uint16_t idx, const uint8_t value, const bool force)
+void MemoryMap::Poke(const uint16_t idx, const uint8_t value)
 {
-	if (idx < m_RomSize && !force)
+	if (idx < m_RomSize && !m_AllowWritingToRom)
 	{
 		std::cout << "Writing to ROM!!!!" << std::endl;
 		return;

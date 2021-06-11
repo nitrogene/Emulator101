@@ -34,7 +34,7 @@ public:
 	void DisplayInstructionSet();
 
 	// Load rom files into memory map
-	void Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const std::vector<uint8_t>& bytes = {});
+	void Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const std::vector<uint8_t>& bytes = {}, const bool allowWritingToRom=false);
 
 	// Hexadeximal dump of buffer
 	void Hexdump(MemoryMapPart mmPart);

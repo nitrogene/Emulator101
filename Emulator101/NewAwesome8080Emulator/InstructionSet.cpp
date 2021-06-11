@@ -3135,6 +3135,18 @@ void InstructionSet::setInstructions()
 		}
 	);
 
+	// SPHL
+	setInstruction(
+		0xF9,
+		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
+		{
+			state.SP = (state.H << 8) + state.L;
+			state.PC += 1;
+			state.Cycles += 5;
+			state.Steps++;
+		}
+	);
+
 	// JM adr
 	setInstruction(
 		0xFA,

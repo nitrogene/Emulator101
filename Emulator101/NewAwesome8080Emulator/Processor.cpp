@@ -48,7 +48,7 @@ void Processor::LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::
 	throw new std::exception("unable to open file");
 }
 
-void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const std::vector<uint8_t>& bytes)
+void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const std::vector<uint8_t>& bytes, const bool allowWritingToRom)
 {
 	std::vector<uint8_t> buffer(bytes);
 
@@ -57,7 +57,7 @@ void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFi
 		LoadIntoBuffer(pathToRomFile, buffer);
 	}
 
-	this->p_MemoryMap = std::make_shared<MemoryMap>(buffer, totalRam, workRamAddress, videoRamAddress, mirrorRamAddress);
+	this->p_MemoryMap = std::make_shared<MemoryMap>(buffer, totalRam, workRamAddress, videoRamAddress, mirrorRamAddress, allowWritingToRom);
 }
 
 void Processor::DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize)
@@ -2054,7 +2054,7 @@ void Processor::RunStep()
 	case 0xE4:
 	{
 		// CPO adr
-		if (m_State.Flags.Parity)
+		if (!m_State.Flags.Parity)
 		{
 			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
@@ -2136,7 +2136,7 @@ void Processor::RunStep()
 	case 0xEC:
 	{
 		// CPE adr
-		if (!m_State.Flags.Parity)
+		if (m_State.Flags.Parity)
 		{
 			m_State.PC += 3;
 			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
@@ -2331,7 +2331,15 @@ void Processor::RunStep()
 
 		break;
 	}
+	case 0xF9:
+	{
+		// SPHL
+		m_State.SP= (m_State.L << 8) + m_State.H;
+		m_State.PC += 1;
+		m_State.Cycles += 5;
 
+		break;
+	}
 	default:
 		throw new std::exception("not implemented");
 	}

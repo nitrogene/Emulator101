@@ -17,15 +17,26 @@ int main(int /*argc*/, char** /*argv*/)
 
 	auto processor = std::make_shared<Processor>(instructions);
 
-	processor->Initialize(roms, 0xFFFF, 0x2000, 0x2400, 0x4000, bytes);
+
+	// To be noted:
+	// This rom use temporary variables:
+	// 06A6		TEMP0
+	// 06A7		TEMP1
+	// 06A8		TEMP2
+	// 06A9		TEMP3
+	// 06AA		TEMP4
+	// 06AB		SAVSTK
+	// THus, we have to allow writing to ROM
+	processor->Initialize(roms, 0xFFFF, 0x2000, 0x2400, 0x4000, bytes, true);
 
 	auto& map = processor->getMemoryMap();
 
 	//Fix the stack pointer from 0x6ad to 0x7ad    
-	map.Poke(0x01AB+2, 0x7, true);
+	map.Poke(0x01AB+2, 0x7);
 
 	// the original assembly code has a ORG 00100H, thus we set PC to 0x100
 	processor->setPC(0x100);
+
 
 	while (!processor->getState().HLT)
 	{
@@ -86,7 +97,7 @@ int main(int /*argc*/, char** /*argv*/)
 			Under CP/M 3 and above, the terminating character can be changed using BDOS function 110.
 		*/
 
-		processor->ShowState();
+		//processor->ShowState();
 
 		auto opCode = &processor->Peek(processor->getState().PC);
 		auto& state = processor->getState();
@@ -116,7 +127,7 @@ int main(int /*argc*/, char** /*argv*/)
 				else
 				{
 					// C_WRITE
-					std::cout << (int)state.E;
+					std::cout << (char)state.E;
 				}
 
 				// With real CP/M, there is a RET, let's just go to next instruction
