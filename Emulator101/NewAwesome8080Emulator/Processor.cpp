@@ -2334,7 +2334,7 @@ void Processor::RunStep()
 	case 0xF9:
 	{
 		// SPHL
-		m_State.SP= (m_State.L << 8) + m_State.H;
+		m_State.SP= (m_State.H << 8) + m_State.L;
 		m_State.PC += 1;
 		m_State.Cycles += 5;
 
@@ -2391,7 +2391,6 @@ void Processor::ShowState(const uint16_t stackSize)
 void Processor::ShowState()
 {
 	fmt::print("{0}", m_State.toString());
-	this->DisassembleRomStacksize(m_State.PC, 1);
 }
 
 void Processor::setPC(const uint16_t pc)

@@ -1,4 +1,9 @@
 #include <iostream>
+#include <windows.h> 
+#ifdef max 
+#undef max
+#endif
+#include <fmt/core.h>
 #include "Processor.h"
 
 const static std::vector<std::filesystem::path> roms
@@ -96,8 +101,31 @@ int main(int /*argc*/, char** /*argv*/)
 			use row 4.
 			Under CP/M 3 and above, the terminating character can be changed using BDOS function 110.
 		*/
+		
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsole, 10);
+		processor->ShowState();
 
-		//processor->ShowState();
+		SetConsoleTextAttribute(hConsole, 11);
+		processor->DisassembleRomStacksize(processor->getState().PC, 1);
+
+		SetConsoleTextAttribute(hConsole, 12);
+		fmt::print("TEMPP\tTEMP0\tTEMP1\tTEMP2\tTEMP3\tTEMP4\tSAVSTK\tMEM@SP\tMEM@SP+1\n");
+		uint8_t TEMPP = processor->getMemoryMap().Peek(0x06A4);
+		uint8_t TEMP0 = processor->getMemoryMap().Peek(0x06A6);
+		uint8_t TEMP1 = processor->getMemoryMap().Peek(0x06A7);
+		uint8_t TEMP2 = processor->getMemoryMap().Peek(0x06A8);
+		uint8_t TEMP3 = processor->getMemoryMap().Peek(0x06A9);
+		uint8_t TEMP4 = processor->getMemoryMap().Peek(0x06AA);
+		uint16_t SAVSTKH = processor->getMemoryMap().Peek(0x06AB);
+		uint16_t SAVSTKL = processor->getMemoryMap().Peek(0x06AC);
+		uint16_t SAVSTK = (SAVSTKH << 8) | SAVSTKL;
+		uint8_t MEMSP = processor->getMemoryMap().Peek(processor->getState().SP);
+		uint8_t MEMSP1 = processor->getMemoryMap().Peek(processor->getState().SP+1);
+		fmt::print("{0:02x}\t{1:02x}\t{2:02x}\t{3:02x}\t{4:02x}\t{5:02x}\t{6:04x}\t{7:02x}\t{8:02x}\n", TEMPP, TEMP0, TEMP1, TEMP2, TEMP3, TEMP4, SAVSTK, MEMSP, MEMSP1);
+		
+
+
 
 		auto opCode = &processor->Peek(processor->getState().PC);
 		auto& state = processor->getState();
@@ -122,11 +150,13 @@ int main(int /*argc*/, char** /*argv*/)
 					// Remove line feed (for printer?)
 					output.erase(std::remove(output.begin(), output.end(), '\f'), output.end());
 
+					//SetConsoleTextAttribute(hConsole, 13);
 					std::cout << output;
 				}
 				else
 				{
 					// C_WRITE
+					//SetConsoleTextAttribute(hConsole, 14);
 					std::cout << (char)state.E;
 				}
 
