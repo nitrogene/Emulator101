@@ -742,62 +742,11 @@ void Utilities::XRI(State& state, const uint8_t value)
 	state.F=flags.getF();
 }
 
-/*
-	;16 bit shift register:
-   ;    f              0    bit
-   ;    xxxxxxxxyyyyyyyy
-   ;
-   ;    Writing to port 4 shifts x into y, and the new value into x, eg.
-   ;    $0000,
-   ;    write $aa -> $aa00,
-   ;    write $ff -> $ffaa,
-   ;    write $12 -> $12ff, ..
-   ;
-   ;    Writing to port 2 (bits 0,1,2) sets the offset for the 8 bit result, eg.
-   ;    offset 0:
-   ;    rrrrrrrr        result=xxxxxxxx
-   ;    xxxxxxxxyyyyyyyy
-   ;
-   ;    offset 2:
-   ;      rrrrrrrr  result=xxxxxxyy
-   ;    xxxxxxxxyyyyyyyy
-   ;
-   ;    offset 7:
-   ;           rrrrrrrr result=xyyyyyyy
-   ;    xxxxxxxxyyyyyyyy
-   ;
-   ;    Reading from port 3 returns said result.
-*/
-
-uint8_t x=0, y=0, shift_offset=0;
-
-void Utilities::machineIN(State& state, const uint8_t port)
+void Utilities::RST(State& state, const uint8_t num, MemoryMap& pMap)
 {
-	switch (port)
-	{
-		case 3:
-		{
-			uint16_t v = (x << 8) | y;
-			state.A=((v >> (8 - shift_offset)) & 0xff);
-		}
-	}
-}
-
-void Utilities::machineOUT(State& state, const uint8_t port)
-{
-	switch (port)
-	{
-		case 2:
-		{	
-			shift_offset = state.A & 0x7;
-			break;
-		}
-
-		case 4:
-		{
-			y = x;
-			x = state.A;
-			break;
-		}
-	}
+	pMap.Poke(state.SP - 1, (state.PC & 0xFF00) >> 8);
+	pMap.Poke(state.SP - 2, state.PC & 0x00FF);
+	state.SP -= 2;
+	state.PC = 8*num;
+	state.Cycles += 11;
 }

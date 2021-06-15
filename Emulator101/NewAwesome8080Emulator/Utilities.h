@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <memory>
 #include "State.h"
+#include "MemoryMap.h"
 
 class Utilities
 {
@@ -9,6 +11,10 @@ public:
 	static void ClearScreen();
 	static std::vector<std::string> Split(const std::string& s, char delimiter);
 	static bool isOddParity(const uint8_t value);
+	static constexpr uint16_t getAddrFromHighLow(const uint8_t high, const uint8_t low)
+	{
+		return (high << 8) | low;
+	}
 
 	// State affecting operations
 	static void DAA(State& state);
@@ -35,9 +41,6 @@ public:
 	static void SBI(State&, const uint8_t value);
 	static void ORI(State&, const uint8_t value);
 	static void XRI(State&, const uint8_t value);
-
-	// IN OUT, specific SpaceInvaders
-	static void machineIN(State&, const uint8_t port);
-	static void machineOUT(State&, const uint8_t port);
+	static void RST(State& state, const uint8_t num, MemoryMap& pMap);
 };
 

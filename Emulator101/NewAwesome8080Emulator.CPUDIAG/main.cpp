@@ -103,13 +103,13 @@ int main(int /*argc*/, char** /*argv*/)
 		*/
 		
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(hConsole, 10);
-		processor->ShowState();
+		//SetConsoleTextAttribute(hConsole, 10);
+		//processor->ShowState();
 
-		SetConsoleTextAttribute(hConsole, 11);
-		processor->DisassembleRomStacksize(processor->getState().PC, 1);
+		//SetConsoleTextAttribute(hConsole, 11);
+		//processor->DisassembleRomStacksize(processor->getState().PC, 1);
 
-		SetConsoleTextAttribute(hConsole, 12);
+		/*SetConsoleTextAttribute(hConsole, 12);
 		fmt::print("TEMPP\tTEMP0\tTEMP1\tTEMP2\tTEMP3\tTEMP4\tSAVSTK\tMEM@SP\tMEM@SP+1\n");
 		uint8_t TEMPP = processor->getMemoryMap().Peek(0x06A4);
 		uint8_t TEMP0 = processor->getMemoryMap().Peek(0x06A6);
@@ -123,7 +123,7 @@ int main(int /*argc*/, char** /*argv*/)
 		uint8_t MEMSP = processor->getMemoryMap().Peek(processor->getState().SP);
 		uint8_t MEMSP1 = processor->getMemoryMap().Peek(processor->getState().SP+1);
 		fmt::print("{0:02x}\t{1:02x}\t{2:02x}\t{3:02x}\t{4:02x}\t{5:02x}\t{6:04x}\t{7:02x}\t{8:02x}\n", TEMPP, TEMP0, TEMP1, TEMP2, TEMP3, TEMP4, SAVSTK, MEMSP, MEMSP1);
-		
+		*/
 
 
 

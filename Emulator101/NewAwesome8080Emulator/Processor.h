@@ -26,6 +26,9 @@ private:
 	// Load into buffer hopefully valid 8080 assembly code
 	static void LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::vector<uint8_t>& buffer);
 
+	std::function<void(State&, const uint8_t)> m_machineIN;
+	std::function<void(State&, const uint8_t)> m_machineOUT;
+
 public:
 	Processor() = delete;
 
@@ -42,9 +45,8 @@ public:
 	// dissassemble stackSize instructions starting at PC=offset
 	void DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize);
 
-	// run for ever and show stackSize instruction at each step
-	void Run(const uint16_t stackSize, const uint64_t n = 1);
-	void Run();
+	// run until not HLT
+	void Run(std::function<void(void)> preProcessFunc=nullptr, std::function<void(void)> postProcessFunc = nullptr);
 
 	// run one step and return
 	void RunStep();
@@ -64,4 +66,9 @@ public:
 	const InstructionSetLine& getIsl(const uint8_t idx) const;
 
 	MemoryMap& getMemoryMap();
+
+	// IN / OUT
+	void setMachineIN(std::function<void(State&, const uint8_t)> machineIN) { m_machineIN = machineIN; }
+	void setMachineOUT(std::function<void(State&, const uint8_t)> machineOUT) { m_machineOUT = machineOUT; }
+
 };

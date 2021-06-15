@@ -2648,7 +2648,7 @@ void InstructionSet::setInstructions()
 		0xD3,
 		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
 		{
-			Utilities::machineOUT(state, opCode[1]);
+			//Utilities::machineOUT(state, opCode[1]);
 			state.PC += size;
 			state.Steps++;
 			state.Cycles += cycle.A;
@@ -2746,7 +2746,7 @@ void InstructionSet::setInstructions()
 		0xDB,
 		[](State& state, MemoryMap& map, const uint8_t* opCode, const uint16_t size, const ClockCycle& cycle)
 		{
-			Utilities::machineIN(state, opCode[1]);
+			//Utilities::machineIN(state, opCode[1]);
 			state.PC += size;
 			state.Steps++;
 			state.Cycles += cycle.A;
