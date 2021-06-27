@@ -2292,7 +2292,7 @@ void Processor::RunStep()
 	{
 		// PUSH PSW
 		p_MemoryMap->Poke(m_State.SP - 1, m_State.A);
-		p_MemoryMap->Poke(m_State.SP - 2, m_State.F);
+		p_MemoryMap->Poke(m_State.SP - 2, m_State.F & 0xD7 | 0x2);
 		m_State.PC += 1;
 		m_State.SP -= 2;
 		m_State.Cycles += 11;
