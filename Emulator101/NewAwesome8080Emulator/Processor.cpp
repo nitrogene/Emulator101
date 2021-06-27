@@ -1130,6 +1130,13 @@ void Processor::RunStep()
 		m_State.Cycles += 7;
 		break;
 	}
+	case 0x7F:
+	{
+		// MOV A,A
+		m_State.PC += 1;
+		m_State.Cycles += 5;
+		break;
+	}
 	case 0x80:
 	{
 		// ADD B

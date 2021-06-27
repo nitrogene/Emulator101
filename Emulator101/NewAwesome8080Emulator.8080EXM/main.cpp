@@ -8,7 +8,7 @@
 
 const static std::vector<std::filesystem::path> roms
 {
-	"CPUDIAG.COM"
+	"8080EXM.COM"
 };
 
 const static std::filesystem::path instructions = "instructions.set";
@@ -37,7 +37,7 @@ int main(int /*argc*/, char** /*argv*/)
 	auto& map = processor->getMemoryMap();
 
 	//Fix the stack pointer from 0x6ad to 0x7ad    
-	map.Poke(0x01AB+2, 0x7);
+	//map.Poke(0x01AB+2, 0x7);
 
 	// the original assembly code has a ORG 00100H, thus we set PC to 0x100
 	processor->setPC(0x100);
