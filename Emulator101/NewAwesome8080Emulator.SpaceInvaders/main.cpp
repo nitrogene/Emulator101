@@ -46,7 +46,9 @@ const static std::filesystem::path instructions = "instructions.set";
 */
 
 uint8_t x = 0, y = 0, shift_offset = 0;
-uint8_t in_port0 = 0, in_port1 = 0, in_port2 = 0;
+uint8_t in_port0 = 0b00001110;
+uint8_t in_port1 = 0b00001000;
+uint8_t in_port2 = 0b00000000;
 
 bool doDisassemble = false;
 
@@ -124,7 +126,88 @@ void refreshScreen(const MemoryMap& map, SDL_Renderer* pRenderer)
 	}
 
 	SDL_RenderPresent(pRenderer);
-};
+}
+
+void handleInput(bool& quit)
+{
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			quit = true;
+			break;
+
+		case SDL_KEYDOWN:
+			if (event.key.keysym.sym == SDLK_c)
+			{
+				// Port 1
+				// bit 0 = CREDIT (1 if deposit)
+				in_port1 |= 0b00000001;
+			}
+			else if (event.key.keysym.sym == SDLK_m)
+			{
+				// Port 1
+				// bit 2 = 1P start (1 if pressed)
+				in_port1 |= 0b00000100;
+			}
+			else if (event.key.keysym.sym == SDLK_SPACE)
+			{
+				// Port 1
+				// bit 4 = 1P shot (1 if pressed)
+				in_port1 |= 0b00010000;
+			}
+			else if (event.key.keysym.sym == SDLK_q)
+			{
+				// Port 1
+				// bit 5 = 1P left (1 if pressed)
+				in_port1 |= 0b00100000;
+			}
+			else if (event.key.keysym.sym == SDLK_s)
+			{
+				// Port 1
+				// bit 6 = 1P right (1 if pressed)
+				in_port1 |= 0b01000000;
+			}
+			break;
+
+		case SDL_KEYUP:
+			if (event.key.keysym.sym == SDLK_c)
+			{
+				// Port 1
+				// bit 0 = CREDIT (1 if deposit)
+				in_port1 &= ~0b00000001;
+			}
+			else if (event.key.keysym.sym == SDLK_m)
+			{
+				// Port 1
+				// bit 2 = 1P start (1 if pressed)
+				in_port1 &= ~0b00000100;
+			}
+			else if (event.key.keysym.sym == SDLK_SPACE)
+			{
+				// Port 1
+				// bit 4 = 1P shot (1 if pressed)
+				in_port1 &= ~0b00010000;
+			}
+			else if (event.key.keysym.sym == SDLK_q)
+			{
+				// Port 1
+				// bit 5 = 1P left (1 if pressed)
+				in_port1 &= ~0b00100000;
+			}
+			else if (event.key.keysym.sym == SDLK_s)
+			{
+				// Port 1
+				// bit 6 = 1P right (1 if pressed)
+				in_port1 &= ~0b01000000;
+			}
+			break;
+		}
+	}
+}
 
 int main(int /*argc*/, char** /*argv*/)
 {
@@ -152,29 +235,68 @@ int main(int /*argc*/, char** /*argv*/)
 		{
 			auto last_interrupt_time = std::chrono::high_resolution_clock::now();
 
-			auto preProcessFunc = [&last_interrupt_time, &processor, &map]()
+			auto preProcessFunc = [&processor, &map]()
 			{
+				auto pc = processor->getState().PC;
+
 				if (doDisassemble)
 				{
-					processor->DisassembleRomStacksize(processor->getState().PC, 1);
+					processor->DisassembleRomStacksize(pc, 1);
+				}
+
+				auto opCode = map.Peek(pc);
+
+				if (opCode == 0xF3)
+				{
+					std::cout << "DI" << std::endl;
+				}
+				else if (opCode == 0xFB)
+				{
+					std::cout << "EI" << std::endl;
+				}
+				else if (opCode == 0xDB)
+				{
+					std::cout << "IN" << std::endl;
+				}
+				else if (opCode == 0xD3)
+				{
+					std::cout << "OUT" << std::endl;
 				}
 			};
 
-			auto postProcessFunc = [&last_interrupt_time, &processor, &map]() 
+
+			uint8_t currentInterrupt = 1;
+
+			auto postProcessFunc = [&last_interrupt_time, &processor, &map, &currentInterrupt]()
 			{
 				// Should we trigger an interrupt ?
 				auto current_time = std::chrono::high_resolution_clock::now();
 
-				if (std::chrono::duration_cast<std::chrono::seconds>(current_time - last_interrupt_time) > 1s / 60.0)
+				auto dt = std::chrono::duration_cast<std::chrono::microseconds>(current_time - last_interrupt_time);
+
+				// https://www.cpu-world.com/Arch/8080.html
+				// 
+				// 60 Hz, 2 interrupts per frame
+				if ( dt > 8333us)
 				{
 					// generate interrupt
 					if (processor->getState().EI)
 					{
-						Utilities::RST(processor->getState(), 2, map);
-						processor->getState().EI = false;
-					}
+						std::cout << "RST " + std::to_string(currentInterrupt) << std::endl;
 
-					last_interrupt_time = current_time;
+						if (currentInterrupt == 1)
+						{
+							processor->setInterrupt({ 0xCF,0x00,0x00 });
+						}
+						else
+						{
+							processor->setInterrupt({ 0xD7,0x00,0x00 });
+						}
+
+						currentInterrupt = currentInterrupt == 1 ? 2 : 1;
+
+						last_interrupt_time = current_time;
+					}
 				}
 			};
 
@@ -184,94 +306,19 @@ int main(int /*argc*/, char** /*argv*/)
 	
 	);
 
+	//https://github.com/DanielH4/spaceinvaders-emulator
 
 	bool quit = false;
 	while (!quit) 
 	{
-		std::this_thread::sleep_for(std::chrono::microseconds(16666));
 		refreshScreen(map, renderer);
 		SDL_SetWindowTitle(window, std::to_string(processor->getState().Steps).c_str());
 
-		while (SDL_PollEvent(&event))
-		{
-			switch (event.type)
-			{
-			case SDL_QUIT:
-				quit = true;
-				break;
-
-			case SDL_KEYDOWN:
-				if (event.key.keysym.sym == SDLK_c)
-				{
-					// Port 1
-					// bit 0 = CREDIT (1 if deposit)
-					in_port1 |= 0b00000001;
-				}
-				else if (event.key.keysym.sym == SDLK_d)
-				{
-					doDisassemble = !doDisassemble;
-				}
-				else if (event.key.keysym.sym == SDLK_m)
-				{
-					// Port 1
-					// bit 2 = 1P start (1 if pressed)
-					in_port1 |= 0b00000100;
-				}
-				else if (event.key.keysym.sym == SDLK_SPACE)
-				{
-					// Port 1
-					// bit 4 = 1P shot (1 if pressed)
-					in_port1 |= 0b00010000;
-				}
-				else if (event.key.keysym.sym == SDLK_q)
-				{
-					// Port 1
-					// bit 5 = 1P left (1 if pressed)
-					in_port1 |= 0b00100000;
-				}
-				else if (event.key.keysym.sym == SDLK_s)
-				{
-					// Port 1
-					// bit 6 = 1P right (1 if pressed)
-					in_port1 |= 0b01000000;
-				}
-				break;
-
-			case SDL_KEYUP:
-				if (event.key.keysym.sym == SDLK_c)
-				{
-					// Port 1
-					// bit 0 = CREDIT (1 if deposit)
-					in_port1 &= ~0b00000001;
-				}
-				else if (event.key.keysym.sym == SDLK_m)
-				{
-					// Port 1
-					// bit 2 = 1P start (1 if pressed)
-					in_port1 &= ~0b00000100;
-				}
-				else if (event.key.keysym.sym == SDLK_SPACE)
-				{
-					// Port 1
-					// bit 4 = 1P shot (1 if pressed)
-					in_port1 &= ~0b00010000;
-				}
-				else if (event.key.keysym.sym == SDLK_q)
-				{
-					// Port 1
-					// bit 5 = 1P left (1 if pressed)
-					in_port1 &= ~0b00100000;
-				}
-				else if (event.key.keysym.sym == SDLK_s)
-				{
-					// Port 1
-					// bit 6 = 1P right (1 if pressed)
-					in_port1 &= ~0b01000000;
-				}
-				break;
-			}
-		}
+		handleInput(quit);
 	}
+
+	processor->getState().HLT = true;
+	t.join();
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);

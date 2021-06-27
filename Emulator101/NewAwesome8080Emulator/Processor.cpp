@@ -114,8 +114,13 @@ void Processor::RunStep()
 {
 	auto opCode = &p_MemoryMap->Peek(m_State.PC);
 
-	m_State.Steps++;
+	if (m_OpCodeInterrupt.size()>0)
+	{
+		opCode = m_OpCodeInterrupt.data();
+	}
 
+	m_State.Steps++;
+	
 	switch (opCode[0])
 	{
 	case 0x00:
@@ -2392,11 +2397,20 @@ void Processor::RunStep()
 	default:
 		throw new std::exception("not implemented");
 	}
+
+	m_OpCodeInterrupt.clear();
 }
 
 void Processor::Run(std::function<void(void)> preProcessFunc, std::function<void(void)> postProcessFunc)
 {
 	m_State.PC = 0;
+
+	// Nombre de cycles par "image" @60fps
+	uint64_t n = 33333;
+
+	auto c0 = m_State.Cycles;
+	auto t0 = std::chrono::high_resolution_clock::now();
+
 
 	while (!m_State.HLT)
 	{
@@ -2405,22 +2419,26 @@ void Processor::Run(std::function<void(void)> preProcessFunc, std::function<void
 			preProcessFunc();
 		}
 
-		// Run step & perform timing
-		auto t1 = std::chrono::high_resolution_clock::now();
 		this->RunStep();
-		auto t2 = std::chrono::high_resolution_clock::now();
 
-		auto d = std::chrono::duration_cast<std::chrono::microseconds>(t2-t1);
-
-		// Processor @2Mhz
-		if (d < 1s/2000000)
-		{
-			std::this_thread::sleep_for(1s / 2000000-d);
-		}
+		auto c1 = m_State.Cycles;
 
 		if (postProcessFunc)
 		{
 			postProcessFunc();
+		}
+
+		if ((c1 - c0) >= n)
+		{
+			auto t1 = std::chrono::high_resolution_clock::now();
+
+			auto tsim = (c1 - c0) * 500ns;
+			auto trea = std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0);
+
+			std::this_thread::sleep_for(tsim - trea);
+
+			c0 = c1;
+			t0 = t1;
 		}
 	}
 }
@@ -2462,3 +2480,19 @@ const InstructionSetLine& Processor::getIsl(const uint8_t idx) const
 {
 	return *p_MemoryMap;
 }
+
+ void Processor::setInterrupt(const std::vector<uint8_t> opCodeInterrupt)
+ {
+	 if (!m_State.EI)
+	 {
+		 return;
+	 }
+
+	 if (opCodeInterrupt.size() == 0 || opCodeInterrupt.size() > 3)
+	 {
+		 throw std::runtime_error("Invalid interrupt opCode");
+	 }
+
+	 m_State.EI = false;
+	 m_OpCodeInterrupt = opCodeInterrupt;
+ }

@@ -29,6 +29,8 @@ private:
 	std::function<void(State&, const uint8_t)> m_machineIN;
 	std::function<void(State&, const uint8_t)> m_machineOUT;
 
+	std::vector<uint8_t> m_OpCodeInterrupt{};
+
 public:
 	Processor() = delete;
 
@@ -70,5 +72,7 @@ public:
 	// IN / OUT
 	void setMachineIN(std::function<void(State&, const uint8_t)> machineIN) { m_machineIN = machineIN; }
 	void setMachineOUT(std::function<void(State&, const uint8_t)> machineOUT) { m_machineOUT = machineOUT; }
+
+	void setInterrupt(const std::vector<uint8_t> opCodeInterrupt);
 
 };
