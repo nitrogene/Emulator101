@@ -25,7 +25,7 @@ protected:
     {
         // You can do set-up work for each test here.
         p_Processor = std::make_shared<Processor>(instructions);
-        p_Processor->Initialize(roms, 0xFFFF, 0x2000, 0x2400, 0x4000);
+        p_Processor->Initialize(roms, 0xFFFF);
 
         p_MachineTemplate = std::make_shared<MachineTemplate>(false);
     }

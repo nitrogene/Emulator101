@@ -7,7 +7,7 @@ TEST_F(InstructionSetTest, NOP)
 	};
 
 	State state{};
-	auto pMemoryMap=std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap=std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -41,7 +41,7 @@ TEST_F(InstructionSetTest, LXI_B)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -75,7 +75,7 @@ TEST_F(InstructionSetTest, LXI_D)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -109,7 +109,7 @@ TEST_F(InstructionSetTest, LXI_H)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -143,7 +143,7 @@ TEST_F(InstructionSetTest, LXI_SP)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -175,7 +175,7 @@ TEST_F(InstructionSetTest, STAX_B)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	state.B = 0x3F;
@@ -213,7 +213,7 @@ TEST_F(InstructionSetTest, STAX_D)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	state.D = 0x3F;
@@ -251,7 +251,7 @@ TEST_F(InstructionSetTest, INX_B)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	state.B = 0x38;
@@ -285,7 +285,7 @@ TEST_F(InstructionSetTest, INX_D)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	state.D = 0x38;
@@ -319,7 +319,7 @@ TEST_F(InstructionSetTest, INX_H)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	state.H = 0x38;
@@ -353,7 +353,7 @@ TEST_F(InstructionSetTest, INX_SP)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	state.SP = 0xFFFF;
@@ -388,7 +388,7 @@ TEST_F(InstructionSetTest, INR_B)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -428,7 +428,7 @@ TEST_F(InstructionSetTest, INR_C)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -468,7 +468,7 @@ TEST_F(InstructionSetTest, INR_D)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -508,7 +508,7 @@ TEST_F(InstructionSetTest, INR_E)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -548,7 +548,7 @@ TEST_F(InstructionSetTest, INR_H)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -588,7 +588,7 @@ TEST_F(InstructionSetTest, INR_L)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -630,7 +630,7 @@ TEST_F(InstructionSetTest, INR_M)
 	State state{};
 	state.H = 0x25;
 	state.L = 0x34;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -673,7 +673,7 @@ TEST_F(InstructionSetTest, INR_A)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode,isl->Size, isl->ClockCycle);
@@ -713,7 +713,7 @@ TEST_F(InstructionSetTest, RLC)
 	State state{};
 	state.A = 0xF2;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -747,7 +747,7 @@ TEST_F(InstructionSetTest, RRC)
 	State state{};
 	state.A = 0xF2;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -781,7 +781,7 @@ TEST_F(InstructionSetTest, RAL)
 	State state{};
 	state.A = 0xB5;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -816,7 +816,7 @@ TEST_F(InstructionSetTest, RAR)
 	state.A = 0x6A;
 	state.Flags.Carry = 1;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -853,7 +853,7 @@ TEST_F(InstructionSetTest, DAD_B)
 	state.H = (0xA17B & 0b1111111100000000) >> 8;
 	state.L =  0xA17B & 0b0000000011111111;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -890,7 +890,7 @@ TEST_F(InstructionSetTest, DAD_D)
 	state.H = (0xA17B & 0b1111111100000000) >> 8;
 	state.L = 0xA17B & 0b0000000011111111;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -925,7 +925,7 @@ TEST_F(InstructionSetTest, DAD_H)
 	state.H = (0xA17B & 0b1111111100000000) >> 8;
 	state.L = 0xA17B & 0b0000000011111111;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -960,7 +960,7 @@ TEST_F(InstructionSetTest, LDAX_B)
 	state.B = 0x93;
 	state.C = 0x8B;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	pMemoryMap->Poke(0x938B, 0xAA);
 	
 	auto opCode = &pMemoryMap->Peek(state.PC);
@@ -997,7 +997,7 @@ TEST_F(InstructionSetTest, LDAX_D)
 	state.D = 0x93;
 	state.E = 0x8B;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	pMemoryMap->Poke(0x938B, 0xAA);
 
 	auto opCode = &pMemoryMap->Peek(state.PC);
@@ -1032,7 +1032,7 @@ TEST_F(InstructionSetTest, MVI_A)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1065,7 +1065,7 @@ TEST_F(InstructionSetTest, MVI_B)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1098,7 +1098,7 @@ TEST_F(InstructionSetTest, MVI_C)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1131,7 +1131,7 @@ TEST_F(InstructionSetTest, MVI_D)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1164,7 +1164,7 @@ TEST_F(InstructionSetTest, MVI_E)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1197,7 +1197,7 @@ TEST_F(InstructionSetTest, MVI_H)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1230,7 +1230,7 @@ TEST_F(InstructionSetTest, MVI_L)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1266,7 +1266,7 @@ TEST_F(InstructionSetTest, MVI_M)
 	state.H = 0x3C;
 	state.L = 0xF4;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1303,7 +1303,7 @@ TEST_F(InstructionSetTest, DCX_B)
 	State state{};
 	state.B = 0x98;
 	state.C = 0x00;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1337,7 +1337,7 @@ TEST_F(InstructionSetTest, DCX_D)
 	State state{};
 	state.D = 0x98;
 	state.E = 0x00;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1371,7 +1371,7 @@ TEST_F(InstructionSetTest, DCX_H)
 	State state{};
 	state.H = 0x98;
 	state.L= 0x00;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1404,7 +1404,7 @@ TEST_F(InstructionSetTest, DCX_SP)
 
 	State state{};
 	state.SP = 0xFF;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1440,7 +1440,7 @@ TEST_F(InstructionSetTest, SHLD_adr)
 	State state{};
 	state.H = 0xAE;
 	state.L = 0x29;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1480,7 +1480,7 @@ TEST_F(InstructionSetTest, DAA)
 
 	State state{};
 	state.A = 0x9B;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1514,7 +1514,7 @@ TEST_F(InstructionSetTest, LHLD_adr)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	pMemoryMap->Poke(0x025B, 0xFF);
 	pMemoryMap->Poke(0x025C, 0x03);
 	auto opCode = &pMemoryMap->Peek(state.PC);
@@ -1549,7 +1549,7 @@ TEST_F(InstructionSetTest, CMA)
 
 	State state{};
 	state.A = 0b01010001;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1584,7 +1584,7 @@ TEST_F(InstructionSetTest, STA_adr)
 
 	State state{};
 	state.A = 0x45;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1620,7 +1620,7 @@ TEST_F(InstructionSetTest, DCR_B)
 
 	State state{};
 	state.B = 0X40;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1653,7 +1653,7 @@ TEST_F(InstructionSetTest, DCR_C)
 
 	State state{};
 	state.C = 0X40;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1686,7 +1686,7 @@ TEST_F(InstructionSetTest, DCR_D)
 
 	State state{};
 	state.D = 0X40;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1719,7 +1719,7 @@ TEST_F(InstructionSetTest, DCR_E)
 
 	State state{};
 	state.E = 0X40;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1752,7 +1752,7 @@ TEST_F(InstructionSetTest, DCR_H)
 
 	State state{};
 	state.H = 0X40;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1785,7 +1785,7 @@ TEST_F(InstructionSetTest, DCR_L)
 
 	State state{};
 	state.L = 0X40;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1819,7 +1819,7 @@ TEST_F(InstructionSetTest, DCR_M)
 	State state{};
 	state.H = 0x3A;
 	state.L = 0x7C;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	pMemoryMap->Poke(0x3A7C, 0x40);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
@@ -1856,7 +1856,7 @@ TEST_F(InstructionSetTest, DCR_A)
 
 	State state{};
 	state.A = 0X40;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1888,7 +1888,7 @@ TEST_F(InstructionSetTest, STC)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1922,7 +1922,7 @@ TEST_F(InstructionSetTest, LDA_adr)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 
 	pMemoryMap->Poke(0x0300, 0x34);
 	auto opCode = &pMemoryMap->Peek(state.PC);
@@ -1957,7 +1957,7 @@ TEST_F(InstructionSetTest, DAD_SP)
 
 	State state{};
 	state.SP = 0xA17B;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -1989,7 +1989,7 @@ TEST_F(InstructionSetTest, CMC)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2023,7 +2023,7 @@ TEST_F(InstructionSetTest, ADD_B)
 	State state{};
 	state.A = 0x6C;
 	state.B = 0x2E;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2057,7 +2057,7 @@ TEST_F(InstructionSetTest, ADD_C)
 	State state{};
 	state.A = 0x6C;
 	state.C = 0x2E;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2091,7 +2091,7 @@ TEST_F(InstructionSetTest, ADD_D)
 	State state{};
 	state.A = 0x6C;
 	state.D = 0x2E;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2125,7 +2125,7 @@ TEST_F(InstructionSetTest, ADD_E)
 	State state{};
 	state.A = 0x6C;
 	state.E = 0x2E;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2159,7 +2159,7 @@ TEST_F(InstructionSetTest, ADD_H)
 	State state{};
 	state.A = 0x6C;
 	state.H = 0x2E;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2193,7 +2193,7 @@ TEST_F(InstructionSetTest, ADD_L)
 	State state{};
 	state.A = 0x6C;
 	state.L = 0x2E;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2229,7 +2229,7 @@ TEST_F(InstructionSetTest, ADD_M)
 	state.H = 0x2E;
 	state.L = 0x2E;
 	uint16_t adr = (state.H << 8) + state.L;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	pMemoryMap->Poke(adr, 0x2E);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
@@ -2263,7 +2263,7 @@ TEST_F(InstructionSetTest, ADD_A)
 
 	State state{};
 	state.A = 0x6C;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2297,7 +2297,7 @@ TEST_F(InstructionSetTest, ADC_B)
 	State state{};
 	state.B = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2332,7 +2332,7 @@ TEST_F(InstructionSetTest, ADC_B2)
 	state.B = 0x3D;
 	state.A = 0x42;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2366,7 +2366,7 @@ TEST_F(InstructionSetTest, ADC_C)
 	State state{};
 	state.C = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2401,7 +2401,7 @@ TEST_F(InstructionSetTest, ADC_C2)
 	state.C = 0x3D;
 	state.A = 0x42;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2435,7 +2435,7 @@ TEST_F(InstructionSetTest, ADC_D)
 	State state{};
 	state.D = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2470,7 +2470,7 @@ TEST_F(InstructionSetTest, ADC_D2)
 	state.D = 0x3D;
 	state.A = 0x42;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2504,7 +2504,7 @@ TEST_F(InstructionSetTest, ADC_E)
 	State state{};
 	state.E = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2539,7 +2539,7 @@ TEST_F(InstructionSetTest, ADC_E2)
 	state.E = 0x3D;
 	state.A = 0x42;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2573,7 +2573,7 @@ TEST_F(InstructionSetTest, ADC_H)
 	State state{};
 	state.H = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2608,7 +2608,7 @@ TEST_F(InstructionSetTest, ADC_H2)
 	state.H = 0x3D;
 	state.A = 0x42;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2642,7 +2642,7 @@ TEST_F(InstructionSetTest, ADC_L)
 	State state{};
 	state.L = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2677,7 +2677,7 @@ TEST_F(InstructionSetTest, ADC_L2)
 	state.L = 0x3D;
 	state.A = 0x42;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2710,7 +2710,7 @@ TEST_F(InstructionSetTest, ADC_A)
 
 	State state{};
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2747,7 +2747,7 @@ TEST_F(InstructionSetTest, ADC_M)
 	state.H = 0x2E;
 	state.L = 0x2E;
 	uint16_t adr = (state.H << 8) + state.L;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	pMemoryMap->Poke(adr, 0x3D);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
@@ -2785,7 +2785,7 @@ TEST_F(InstructionSetTest, ADC_M2)
 	state.L = 0x2E;
 	state.Flags.Carry = true;
 	uint16_t adr = (state.H << 8) + state.L;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	pMemoryMap->Poke(adr, 0x3D);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
@@ -2820,7 +2820,7 @@ TEST_F(InstructionSetTest, SUB_B)
 	State state{};
 	state.B = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2854,7 +2854,7 @@ TEST_F(InstructionSetTest, SUB_C)
 	State state{};
 	state.C = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2888,7 +2888,7 @@ TEST_F(InstructionSetTest, SUB_D)
 	State state{};
 	state.D = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2922,7 +2922,7 @@ TEST_F(InstructionSetTest, SUB_E)
 	State state{};
 	state.E = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2956,7 +2956,7 @@ TEST_F(InstructionSetTest, SUB_H)
 	State state{};
 	state.H = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -2990,7 +2990,7 @@ TEST_F(InstructionSetTest, SUB_L)
 	State state{};
 	state.L = 0x3D;
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3023,7 +3023,7 @@ TEST_F(InstructionSetTest, SUB_A)
 
 	State state{};
 	state.A = 0x42;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3059,7 +3059,7 @@ TEST_F(InstructionSetTest, SUB_M)
 	state.H = 0x12;
 	state.L = 0x12;
 	uint16_t adr = (state.H << 8) + state.L;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	pMemoryMap->Poke(adr, 0x3D);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
@@ -3095,7 +3095,7 @@ TEST_F(InstructionSetTest, SBB_B)
 	state.A = 0x04;
 	state.B = 0x02;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3130,7 +3130,7 @@ TEST_F(InstructionSetTest, SBB_C)
 	state.A = 0x04;
 	state.C = 0x02;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3165,7 +3165,7 @@ TEST_F(InstructionSetTest, SBB_D)
 	state.A = 0x04;
 	state.D = 0x02;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3200,7 +3200,7 @@ TEST_F(InstructionSetTest, SBB_E)
 	state.A = 0x04;
 	state.E = 0x02;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3235,7 +3235,7 @@ TEST_F(InstructionSetTest, SBB_H)
 	state.A = 0x04;
 	state.H = 0x02;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3270,7 +3270,7 @@ TEST_F(InstructionSetTest, SBB_L)
 	state.A = 0x04;
 	state.L = 0x02;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3306,7 +3306,7 @@ TEST_F(InstructionSetTest, SBB_M)
 	state.H = 0x12;
 	state.L = 0x12;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	uint16_t adr = (state.H << 8) + state.L;
 	pMemoryMap->Poke(adr, 0x02);
@@ -3342,7 +3342,7 @@ TEST_F(InstructionSetTest, SBB_A)
 	State state{};
 	state.A = 0x04;
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3376,7 +3376,7 @@ TEST_F(InstructionSetTest, ANA_B)
 	State state{};
 	state.A = 0xFC;
 	state.B = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3410,7 +3410,7 @@ TEST_F(InstructionSetTest, ANA_C)
 	State state{};
 	state.A = 0xFC;
 	state.C = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3444,7 +3444,7 @@ TEST_F(InstructionSetTest, ANA_D)
 	State state{};
 	state.A = 0xFC;
 	state.D = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3478,7 +3478,7 @@ TEST_F(InstructionSetTest, ANA_E)
 	State state{};
 	state.A = 0xFC;
 	state.E = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3513,7 +3513,7 @@ TEST_F(InstructionSetTest, ANA_H)
 	State state{};
 	state.A = 0xFC;
 	state.H = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3547,7 +3547,7 @@ TEST_F(InstructionSetTest, ANA_L)
 	State state{};
 	state.A = 0xFC;
 	state.L = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3582,7 +3582,7 @@ TEST_F(InstructionSetTest, ANA_M)
 	state.A = 0xFC;
 	state.H = 0x12;
 	state.L = 0x12;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	uint16_t adr = (state.H << 8) + state.L;
 	pMemoryMap->Poke(adr, 0x0F);
@@ -3617,7 +3617,7 @@ TEST_F(InstructionSetTest, ANA_A)
 
 	State state{};
 	state.A = 0xFC;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3651,7 +3651,7 @@ TEST_F(InstructionSetTest, XRA_B)
 	State state{};
 	state.A = 0xFC;
 	state.B = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3685,7 +3685,7 @@ TEST_F(InstructionSetTest, XRA_C)
 	State state{};
 	state.A = 0xFC;
 	state.C = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3719,7 +3719,7 @@ TEST_F(InstructionSetTest, XRA_D)
 	State state{};
 	state.A = 0xFC;
 	state.D = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3753,7 +3753,7 @@ TEST_F(InstructionSetTest, XRA_E)
 	State state{};
 	state.A = 0xFC;
 	state.E = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3787,7 +3787,7 @@ TEST_F(InstructionSetTest, XRA_H)
 	State state{};
 	state.A = 0xFC;
 	state.H = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3821,7 +3821,7 @@ TEST_F(InstructionSetTest, XRA_L)
 	State state{};
 	state.A = 0xFC;
 	state.L = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3856,7 +3856,7 @@ TEST_F(InstructionSetTest, XRA_M)
 	state.A = 0xFC;
 	state.H = 0x12;
 	state.L = 0x12;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	uint16_t adr = (state.H << 8) + state.L;
 	pMemoryMap->Poke(adr, 0x0F);
@@ -3892,7 +3892,7 @@ TEST_F(InstructionSetTest, ORA_B)
 	State state{};
 	state.A = 0x33;
 	state.B = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3926,7 +3926,7 @@ TEST_F(InstructionSetTest, ORA_C)
 	State state{};
 	state.A = 0x33;
 	state.C = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3960,7 +3960,7 @@ TEST_F(InstructionSetTest, ORA_D)
 	State state{};
 	state.A = 0x33;
 	state.D = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -3994,7 +3994,7 @@ TEST_F(InstructionSetTest, ORA_E)
 	State state{};
 	state.A = 0x33;
 	state.E = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4028,7 +4028,7 @@ TEST_F(InstructionSetTest, ORA_H)
 	State state{};
 	state.A = 0x33;
 	state.H = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4062,7 +4062,7 @@ TEST_F(InstructionSetTest, ORA_L)
 	State state{};
 	state.A = 0x33;
 	state.L = 0x0F;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4097,7 +4097,7 @@ TEST_F(InstructionSetTest, ORA_M)
 	state.A = 0x33;
 	state.H = 0x12;
 	state.L = 0x12;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	uint16_t adr = (state.H << 8) + state.L;
 	pMemoryMap->Poke(adr, 0x0F);
@@ -4132,7 +4132,7 @@ TEST_F(InstructionSetTest, ORA_A)
 
 	State state{};
 	state.A = 0x33;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4166,7 +4166,7 @@ TEST_F(InstructionSetTest, CMP_B)
 	State state{};
 	state.A = 0x0A;
 	state.B = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4200,7 +4200,7 @@ TEST_F(InstructionSetTest, CMP_B2)
 	State state{};
 	state.A = 0x02;
 	state.B = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4234,7 +4234,7 @@ TEST_F(InstructionSetTest, CMP_C)
 	State state{};
 	state.A = 0x0A;
 	state.C = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4268,7 +4268,7 @@ TEST_F(InstructionSetTest, CMP_C2)
 	State state{};
 	state.A = 0x02;
 	state.C = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4302,7 +4302,7 @@ TEST_F(InstructionSetTest, CMP_D)
 	State state{};
 	state.A = 0x0A;
 	state.D = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4336,7 +4336,7 @@ TEST_F(InstructionSetTest, CMP_D2)
 	State state{};
 	state.A = 0x02;
 	state.D = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4370,7 +4370,7 @@ TEST_F(InstructionSetTest, CMP_E)
 	State state{};
 	state.A = 0x0A;
 	state.E = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4404,7 +4404,7 @@ TEST_F(InstructionSetTest, CMP_E2)
 	State state{};
 	state.A = 0x02;
 	state.E = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4438,7 +4438,7 @@ TEST_F(InstructionSetTest, CMP_H)
 	State state{};
 	state.A = 0x0A;
 	state.H = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4472,7 +4472,7 @@ TEST_F(InstructionSetTest, CMP_H2)
 	State state{};
 	state.A = 0x02;
 	state.H = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4506,7 +4506,7 @@ TEST_F(InstructionSetTest, CMP_L)
 	State state{};
 	state.A = 0x0A;
 	state.L = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4540,7 +4540,7 @@ TEST_F(InstructionSetTest, CMP_L2)
 	State state{};
 	state.A = 0x02;
 	state.L = 0x05;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4575,7 +4575,7 @@ TEST_F(InstructionSetTest, CMP_M)
 	state.A = 0x0A;
 	state.H = 0x12;
 	state.L = 0x12;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	uint16_t adr = (state.H << 8) + state.L;
 	pMemoryMap->Poke(adr, 0x05);
@@ -4612,7 +4612,7 @@ TEST_F(InstructionSetTest, CMP_M2)
 	state.A = 0x02;
 	state.H = 0x12;
 	state.L = 0x12;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	uint16_t adr = (state.H << 8) + state.L;
 	pMemoryMap->Poke(adr, 0x05);
@@ -4647,7 +4647,7 @@ TEST_F(InstructionSetTest, CMP_A)
 
 	State state{};
 	state.A = 0x0A;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4680,7 +4680,7 @@ TEST_F(InstructionSetTest, CMP_A2)
 
 	State state{};
 	state.A = 0x02;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4713,7 +4713,7 @@ TEST_F(InstructionSetTest, SUI_D8)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4746,7 +4746,7 @@ TEST_F(InstructionSetTest, SBI_D8)
 	};
 
 	State state{};
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4780,7 +4780,7 @@ TEST_F(InstructionSetTest, SBI_D8_2)
 
 	State state{};
 	state.Flags.Carry = true;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4814,7 +4814,7 @@ TEST_F(InstructionSetTest, ORI_D8)
 
 	State state{};
 	state.A = 0xB5;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4848,7 +4848,7 @@ TEST_F(InstructionSetTest, XRI_D8)
 
 	State state{};
 	state.A = 0x3B;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4883,7 +4883,7 @@ TEST_F(InstructionSetTest, PUSH_B)
 	state.B = 0x8F;
 	state.C = 0x9D;
 	state.SP = 0x3A2C;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4921,7 +4921,7 @@ TEST_F(InstructionSetTest, PUSH_D)
 	state.D = 0x8F;
 	state.E = 0x9D;
 	state.SP = 0x3A2C;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -4959,7 +4959,7 @@ TEST_F(InstructionSetTest, PUSH_H)
 	state.H = 0x8F;
 	state.L = 0x9D;
 	state.SP = 0x3A2C;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5000,7 +5000,7 @@ TEST_F(InstructionSetTest, PUSH_PSW)
 	state.Flags.Zero = true;
 	state.Flags.Parity = true;
 	state.F = state.Flags.getF();
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5032,12 +5032,11 @@ TEST_F(InstructionSetTest, CALL)
 	std::vector<uint8_t> rom = {
 		0xCD, 0x66, 0x06
 	};
-	rom.resize(65536);
 
 	State state{};
 	state.F = state.Flags.getF();
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5077,7 +5076,7 @@ TEST_F(InstructionSetTest, XCHG)
 	state.H = 0x00;
 	state.L = 0xFF;
 
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5109,7 +5108,7 @@ TEST_F(InstructionSetTest, POP_B)
 
 	State state{};
 	state.F = state.Flags.getF();
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 
@@ -5147,7 +5146,7 @@ TEST_F(InstructionSetTest, POP_D)
 
 	State state{};
 	state.F = state.Flags.getF();
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 
@@ -5185,7 +5184,7 @@ TEST_F(InstructionSetTest, POP_H)
 
 	State state{};
 	state.F = state.Flags.getF();
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 
@@ -5222,7 +5221,7 @@ TEST_F(InstructionSetTest, POP_PSW)
 	};
 	State state{};
 	state.F = state.Flags.getF();
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 
@@ -5261,7 +5260,7 @@ TEST_F(InstructionSetTest, CPI)
 
 	State state{};
 	state.A = 0x4A;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5294,7 +5293,7 @@ TEST_F(InstructionSetTest, CPI_1)
 
 	State state{};
 	state.A = 0x4A;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5327,7 +5326,7 @@ TEST_F(InstructionSetTest, CPI_2)
 
 	State state{};
 	state.A = 0x4A;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5360,7 +5359,7 @@ TEST_F(InstructionSetTest, CPI_3)
 
 	State state{};
 	state.A = 0xF5;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5390,12 +5389,11 @@ TEST_F(InstructionSetTest, XTHL)
 	std::vector<uint8_t> rom = {
 		0xE3
 	};
-	rom.resize(65536);
 	State state{};
 	state.SP = 0x10AD;
 	state.H = 0x0B;
 	state.L = 0x3C;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 
@@ -5434,7 +5432,7 @@ TEST_F(InstructionSetTest, ADI)
 	};
 	State state{};
 	state.A = 0x14;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5489,7 +5487,7 @@ TEST_F(InstructionSetTest, ACI)
 	};
 	State state{};
 	state.A = 0x56;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5544,7 +5542,7 @@ TEST_F(InstructionSetTest, SUI)
 	};
 	State state{};
 	state.A = 0x00;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5576,7 +5574,7 @@ TEST_F(InstructionSetTest, ANI)
 	};
 	State state{};
 	state.A = 0x3A;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
@@ -5609,7 +5607,7 @@ TEST_F(InstructionSetTest, SPHL)
 	State state{};
 	state.H = 0x50;
 	state.L = 0x6C;
-	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF, (uint16_t)0x2000, (uint16_t)0x2400, (uint16_t)0x4000);
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
 	auto opCode = &pMemoryMap->Peek(state.PC);
 	auto isl = (*p_InstructionSet)[opCode[0]];
 	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);

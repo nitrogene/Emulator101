@@ -21,7 +21,7 @@ private:
 	std::shared_ptr<MemoryMap> p_MemoryMap;
 
 	// dissassemble instruction pointed by PC
-	void Disassemble(uint16_t& pc);
+	void Disassemble(uint16_t& pc, std::ostream& outs = std::cout);
 
 	// Load into buffer hopefully valid 8080 assembly code
 	static void LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::vector<uint8_t>& buffer);
@@ -39,13 +39,13 @@ public:
 	void DisplayInstructionSet();
 
 	// Load rom files into memory map
-	void Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const std::vector<uint8_t>& bytes = {}, const bool allowWritingToRom=false);
+	void Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t ramSize, const std::vector<uint8_t>& bytes = {}, const bool allowWritingToRom=false);
 
 	// Hexadeximal dump of buffer
-	void Hexdump(MemoryMapPart mmPart);
+	void Hexdump();
 
 	// dissassemble stackSize instructions starting at PC=offset
-	void DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize);
+	void DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize, std::ostream& outs = std::cout);
 
 	// run until not HLT
 	void Run(std::function<void(void)> preProcessFunc=nullptr, std::function<void(void)> postProcessFunc = nullptr);

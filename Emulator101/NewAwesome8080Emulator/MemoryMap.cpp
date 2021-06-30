@@ -2,51 +2,22 @@
 #include <iomanip>
 #include "MemoryMap.h"
 
-MemoryMap::MemoryMap(const std::vector<uint8_t>& rom, const uint16_t totalRam,
-	const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const bool allowWritingToRom) :m_MemoryBuffer(rom), m_WorkRamAddress(workRamAddress), m_VideoRamAddress(videoRamAddress), m_MirrorRamAddress(mirrorRamAddress), m_AllowWritingToRom(allowWritingToRom),
+MemoryMap::MemoryMap(const std::vector<uint8_t>& rom, const uint16_t totalMemorySize, const bool allowWritingToRom) :m_MemoryBuffer(rom), m_AllowWritingToRom(allowWritingToRom),
 	m_RomSize((uint16_t)rom.size())
 {
-	// TODO:
-	// Check size and addresses coherence
-	// Split ROM and RAM ??
-	// Check get / set
-	// How to simulate a part of memory read only, another part writable, while providing pointer 
-	m_MemoryBuffer.resize(totalRam+1);
-}
 
-void MemoryMap::Hexdump(const MemoryMapPart mmPart)
-{
-	uint8_t* buffer = nullptr;
-	uint16_t size = 0;
-
-	switch (mmPart)
+	if (rom.size() >= totalMemorySize)
 	{
-	case MemoryMapPart::ROM:
-		buffer = m_MemoryBuffer.data();
-		size=m_RomSize;
-		break;
-
-	case MemoryMapPart::WORK_RAM:
-		buffer = m_MemoryBuffer.data()+ m_WorkRamAddress;
-		size = m_VideoRamAddress- m_WorkRamAddress;
-		break;
-
-	case MemoryMapPart::VIDEO_RAM:
-		buffer = m_MemoryBuffer.data() + m_VideoRamAddress;
-		size = m_MirrorRamAddress - m_VideoRamAddress;
-		break;
-
-	case MemoryMapPart::MIRROR_RAM:
-		buffer = m_MemoryBuffer.data() + m_MirrorRamAddress;
-		size = (uint16_t)m_MemoryBuffer.size() - m_MirrorRamAddress;
-		break;
-
-	case MemoryMapPart::FULL:
-		buffer = m_MemoryBuffer.data();
-		size = (uint16_t)m_MemoryBuffer.size();
-		break;
+		throw new std::exception("totalMemorySize should be greater than rom size");
 	}
 
+	m_MemoryBuffer.resize(1+(size_t)totalMemorySize,0x00);
+}
+
+void MemoryMap::Hexdump()
+{
+	uint8_t* buffer = m_MemoryBuffer.data();
+	uint16_t size = m_RomSize;
 	uint16_t c = 0;
 	auto limit = buffer + size;
 

@@ -1,10 +1,14 @@
 #include <iostream>
+#include <fstream>
 #include <windows.h> 
 #ifdef max 
 #undef max
 #endif
 #include <fmt/core.h>
 #include "Processor.h"
+#include <SDL.h>
+
+using namespace std::chrono_literals;
 
 const static std::vector<std::filesystem::path> roms
 {
@@ -13,38 +17,78 @@ const static std::vector<std::filesystem::path> roms
 
 const static std::filesystem::path instructions = "instructions.set";
 
+bool quit = false;
+bool trace = false;
+bool file = false;
+
+void handleInput(bool& quit)
+{
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			quit = true;
+			break;
+
+		case SDL_KEYDOWN:
+			if (event.key.keysym.sym == SDLK_d)
+			{
+				trace = !trace;
+			}
+			else if (event.key.keysym.sym == SDLK_f)
+			{
+				file = !file;
+			}
+			break;
+		}
+	}
+}
 
 int main(int /*argc*/, char** /*argv*/)
 {
+	SDL_Event event{};
+	SDL_Renderer* renderer = nullptr;
+	SDL_Window* window = nullptr;
+
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_CreateWindowAndRenderer(224, 256, 0, &window, &renderer);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderClear(renderer);
+	SDL_RenderPresent(renderer);
+
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 	// This roms should start at 0x100, thus we need empty NOP vector
 	// and settinf PC to 0x100.
 	auto bytes = std::vector<uint8_t>(0x100, 0x0);
 
 	auto processor = std::make_shared<Processor>(instructions);
+	auto& state = processor->getState();
 
-
-	// To be noted:
 	// This rom use temporary variables:
-	// 06A6		TEMP0
-	// 06A7		TEMP1
-	// 06A8		TEMP2
-	// 06A9		TEMP3
-	// 06AA		TEMP4
-	// 06AB		SAVSTK
 	// THus, we have to allow writing to ROM
-	processor->Initialize(roms, 0xFFFF, 0x2000, 0x2400, 0x4000, bytes, true);
+	processor->Initialize(roms, 0xFFFF, bytes, true);
 
 	auto& map = processor->getMemoryMap();
-
-	//Fix the stack pointer from 0x6ad to 0x7ad    
-	//map.Poke(0x01AB+2, 0x7);
 
 	// the original assembly code has a ORG 00100H, thus we set PC to 0x100
 	processor->setPC(0x100);
 
+	//{
+	//	std::ofstream outs("CPUTEST.HEX");
+	//	processor->DisassembleRomStacksize(0x100, map.romSize() + 0x100, outs);
+	//	outs.close();
+	//}
 
-	while (!processor->getState().HLT)
+	std::ofstream debugFile("debug.log");
+
+	while (!processor->getState().HLT && !quit)
 	{
+		handleInput(quit);
+
 		// as explained in http://emulator101.com/, CPUDIAG is a binary for 8080 processor and CP/M
 		// running the binary without tweaks won't be usefull, because it is looking for CP/M instructions
 		// at lower address $0005 to display test informations.
@@ -101,34 +145,33 @@ int main(int /*argc*/, char** /*argv*/)
 			use row 4.
 			Under CP/M 3 and above, the terminating character can be changed using BDOS function 110.
 		*/
-		
-		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		//SetConsoleTextAttribute(hConsole, 10);
-		//processor->ShowState();
 
-		//SetConsoleTextAttribute(hConsole, 11);
-		//processor->DisassembleRomStacksize(processor->getState().PC, 1);
+		if (trace || file)
+		{
+			auto stateStr = state.toString();
+			std::stringstream ss;
+			processor->DisassembleRomStacksize(state.PC, 1, ss);
+			auto dissStr = ss.str();
 
-		/*SetConsoleTextAttribute(hConsole, 12);
-		fmt::print("TEMPP\tTEMP0\tTEMP1\tTEMP2\tTEMP3\tTEMP4\tSAVSTK\tMEM@SP\tMEM@SP+1\n");
-		uint8_t TEMPP = processor->getMemoryMap().Peek(0x06A4);
-		uint8_t TEMP0 = processor->getMemoryMap().Peek(0x06A6);
-		uint8_t TEMP1 = processor->getMemoryMap().Peek(0x06A7);
-		uint8_t TEMP2 = processor->getMemoryMap().Peek(0x06A8);
-		uint8_t TEMP3 = processor->getMemoryMap().Peek(0x06A9);
-		uint8_t TEMP4 = processor->getMemoryMap().Peek(0x06AA);
-		uint16_t SAVSTKH = processor->getMemoryMap().Peek(0x06AB);
-		uint16_t SAVSTKL = processor->getMemoryMap().Peek(0x06AC);
-		uint16_t SAVSTK = (SAVSTKH << 8) | SAVSTKL;
-		uint8_t MEMSP = processor->getMemoryMap().Peek(processor->getState().SP);
-		uint8_t MEMSP1 = processor->getMemoryMap().Peek(processor->getState().SP+1);
-		fmt::print("{0:02x}\t{1:02x}\t{2:02x}\t{3:02x}\t{4:02x}\t{5:02x}\t{6:04x}\t{7:02x}\t{8:02x}\n", TEMPP, TEMP0, TEMP1, TEMP2, TEMP3, TEMP4, SAVSTK, MEMSP, MEMSP1);
-		*/
+			if (trace)
+			{
+				SetConsoleTextAttribute(hConsole, 10);
+				std::cout << stateStr;
+
+				SetConsoleTextAttribute(hConsole, 11);
+				std::cout << ss.str();
+			}
+
+			if (debugFile)
+			{
+				debugFile << stateStr << ss.str();
+			}
 
 
+		}
 
-		auto opCode = &processor->Peek(processor->getState().PC);
-		auto& state = processor->getState();
+
+		auto opCode = &processor->Peek(state.PC);
 		const auto& isl = processor->getIsl(opCode[0]);
 
 		if (opCode[0] == 0xCD)
@@ -150,14 +193,13 @@ int main(int /*argc*/, char** /*argv*/)
 					// Remove line feed (for printer?)
 					output.erase(std::remove(output.begin(), output.end(), '\f'), output.end());
 
-					//SetConsoleTextAttribute(hConsole, 13);
-					std::cout << output;
+					OutputDebugStringA(output.c_str());
 				}
 				else
 				{
 					// C_WRITE
-					//SetConsoleTextAttribute(hConsole, 14);
-					std::cout << (char)state.E;
+					std::string output = { (char)state.E };
+					OutputDebugStringA(output.c_str());
 				}
 
 				// With real CP/M, there is a RET, let's just go to next instruction
@@ -179,6 +221,12 @@ int main(int /*argc*/, char** /*argv*/)
 
 		processor->RunStep();
 	}
+
+	debugFile.close();
+
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
 
 	return 0;
 }

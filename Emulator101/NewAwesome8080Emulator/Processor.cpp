@@ -21,9 +21,9 @@ void Processor::DisplayInstructionSet()
 	std::cout << this->m_InstructionSet.DisplayInstructionSet();
 }
 
-void Processor::Hexdump(MemoryMapPart mmPart)
+void Processor::Hexdump()
 {
-	p_MemoryMap->Hexdump(mmPart);
+	p_MemoryMap->Hexdump();
 }
 
 void Processor::LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::vector<uint8_t>& buffer)
@@ -50,7 +50,7 @@ void Processor::LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::
 	throw new std::exception("unable to open file");
 }
 
-void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalRam, const uint16_t workRamAddress, const uint16_t videoRamAddress, const uint16_t mirrorRamAddress, const std::vector<uint8_t>& bytes, const bool allowWritingToRom)
+void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalMemorySize, const std::vector<uint8_t>& bytes, const bool allowWritingToRom)
 {
 	std::vector<uint8_t> buffer(bytes);
 
@@ -59,26 +59,27 @@ void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFi
 		LoadIntoBuffer(pathToRomFile, buffer);
 	}
 
-	this->p_MemoryMap = std::make_shared<MemoryMap>(buffer, totalRam, workRamAddress, videoRamAddress, mirrorRamAddress, allowWritingToRom);
+	this->p_MemoryMap = std::make_shared<MemoryMap>(buffer, totalMemorySize, allowWritingToRom);
 }
 
-void Processor::DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize)
+void Processor::DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize, std::ostream& outs)
 {
 	auto pc = offset;
 	auto count = 0;
 	while (count < stackSize)
 	{
-		Disassemble(pc);
+		Disassemble(pc, outs);
 		count++;
 	}
 }
 
-void Processor::Disassemble(uint16_t& pc)
+void Processor::Disassemble(uint16_t& pc, std::ostream& outs)
 {
 	auto opCode = &p_MemoryMap->Peek(pc);
 	uint16_t opbytes = 1;
 
-	fmt::print("{0:04x}\t", pc);
+
+	outs << fmt::format("{0:04x}\t", pc);
 
 	if (m_InstructionSet[opCode[0]]!=nullptr)
 	{
@@ -99,12 +100,12 @@ void Processor::Disassemble(uint16_t& pc)
 			unsigned  short d = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			instruction = fmt::format("{0}#${1:02x}", instruction.substr(0, instruction.size() - 3), d);
 		}
-		fmt::print("{0:10}\n", instruction);
+		outs << fmt::format("{0:10}\n", instruction);
 		opbytes = isl->Size;
 	}
 	else
 	{
-		fmt::print("-\n");
+		outs << fmt::format("-\n");
 	}
 
 	pc += opbytes;
