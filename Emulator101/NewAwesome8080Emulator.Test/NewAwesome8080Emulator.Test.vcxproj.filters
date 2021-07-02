@@ -2,28 +2,22 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="SpaceInvadersTest.cpp" />
-    <ClCompile Include="Intel-8080-Emulator\i8080.c">
-      <Filter>Intel-8080-Emulator</Filter>
-    </ClCompile>
-    <ClCompile Include="Intel-8080-Emulator\MachineTemplate.cpp">
-      <Filter>Intel-8080-Emulator</Filter>
-    </ClCompile>
     <ClCompile Include="InstructionSetTest.cpp" />
+    <ClCompile Include="superzazu-8080\i8080.c">
+      <Filter>superzazu-8080</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Intel-8080-Emulator">
-      <UniqueIdentifier>{7d9b2429-5640-449e-bdca-7ae9debbbfe4}</UniqueIdentifier>
+    <Filter Include="superzazu-8080">
+      <UniqueIdentifier>{d1b63f84-e8bd-4004-a10a-d3388cb5648b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Intel-8080-Emulator\i8080.h">
-      <Filter>Intel-8080-Emulator</Filter>
-    </ClInclude>
-    <ClInclude Include="Intel-8080-Emulator\MachineTemplate.h">
-      <Filter>Intel-8080-Emulator</Filter>
-    </ClInclude>
     <ClInclude Include="SpaceInvadersTest.h" />
     <ClInclude Include="InstructionSetTest.h" />
+    <ClInclude Include="superzazu-8080\i8080.h">
+      <Filter>superzazu-8080</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

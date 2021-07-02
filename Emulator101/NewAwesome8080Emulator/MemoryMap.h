@@ -7,11 +7,15 @@ class MemoryMap
 private:
 	// 8 bits buffer
 	std::vector<uint8_t> m_MemoryBuffer{};
-	const uint16_t m_RomSize = 0;
-	const bool m_AllowWritingToRom = false;
+	uint16_t m_RomSize = 0;
+	bool m_AllowWritingToRom = false;
 
 public:
 	MemoryMap(const std::vector<uint8_t>& rom, const uint16_t totalMemorySize, const bool allowWritingToRom=false);
+
+	MemoryMap() = default;
+	MemoryMap(const MemoryMap&) = default;
+	//MemoryMap& operator=(const MemoryMap&) = default;
 
 	void Hexdump();
 

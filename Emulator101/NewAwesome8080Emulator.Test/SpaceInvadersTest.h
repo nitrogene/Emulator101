@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 #include <filesystem>
 #include "Processor.h"
-#include "Intel-8080-Emulator/MachineTemplate.h"
+#include "superzazu-8080/i8080.h"
 
 const static std::vector<std::filesystem::path> roms
 {
@@ -12,22 +12,34 @@ const static std::vector<std::filesystem::path> roms
     "invaders.e"
 };
 
-const static std::filesystem::path instructions = "instuctions.set";
+const static std::filesystem::path instructions = "instructions.set";
 
 class SpaceInvadersTest : public ::testing::Test {
 protected:
     // You can remove any or all of the following functions if their bodies would
     // be empty.
-    std::shared_ptr<Processor> p_Processor;
-    std::shared_ptr<MachineTemplate> p_MachineTemplate;
-
     SpaceInvadersTest()
     {
         // You can do set-up work for each test here.
         p_Processor = std::make_shared<Processor>(instructions);
         p_Processor->Initialize(roms, 0xFFFF);
 
-        p_MachineTemplate = std::make_shared<MachineTemplate>(false);
+        p_i8080State = std::make_shared<i8080>();
+        i8080_init(p_i8080State.get());
+        m_i8080Memory = p_Processor->getMemoryMap();
+        p_i8080State->read_byte = [](void* mem, uint16_t addr)->uint8_t 
+        {
+            auto map = (MemoryMap*)mem;
+            return map->Peek(addr);
+        };
+        p_i8080State->write_byte = [](void* mem, uint16_t addr, uint8_t value)
+        {
+            auto map = (MemoryMap*)mem;
+            map->Poke(addr, value);
+        };
+        p_i8080State->port_in = [](void*, uint8_t)->uint8_t {return 0; };
+        p_i8080State->port_out = [](void*, uint8_t, uint8_t) {};
+        p_i8080State->userdata = &m_i8080Memory;
     }
 
     ~SpaceInvadersTest() override {
@@ -49,4 +61,11 @@ protected:
 
     // Class members declared here can be used by all tests in the test suite
     // for Foo.
+    std::shared_ptr<Processor> p_Processor;
+    //std::shared_ptr<MachineTemplate> p_MachineTemplate;
+
+    std::shared_ptr<i8080> p_i8080State;
+    MemoryMap m_i8080Memory;
+
+    void fun();
 };
