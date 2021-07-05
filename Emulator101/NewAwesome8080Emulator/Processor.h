@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <deque>
 #include <filesystem>
 #include <array>
 #include <memory>
@@ -30,6 +31,8 @@ private:
 	std::function<void(State&, const uint8_t)> m_machineOUT;
 
 	std::vector<uint8_t> m_OpCodeInterrupt{};
+
+	std::deque<std::pair<State,InstructionSetLine>> m_AllStates;
 
 public:
 	Processor() = delete;

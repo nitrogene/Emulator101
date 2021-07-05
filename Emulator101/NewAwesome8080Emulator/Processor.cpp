@@ -114,6 +114,11 @@ void Processor::Disassemble(uint16_t& pc, std::ostream& outs)
 void Processor::RunStep()
 {
 	auto opCode = &p_MemoryMap->Peek(m_State.PC);
+	m_AllStates.push_back(std::make_pair(m_State, getIsl(opCode[0])));
+	if (m_AllStates.size() > 1000)
+	{
+		m_AllStates.pop_front();
+	}
 
 	if (m_OpCodeInterrupt.size()>0)
 	{

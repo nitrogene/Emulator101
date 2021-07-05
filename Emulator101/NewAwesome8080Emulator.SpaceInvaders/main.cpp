@@ -147,6 +147,10 @@ void handleInput(bool& quit)
 				// bit 0 = CREDIT (1 if deposit)
 				in_port1 |= 0b00000001;
 			}
+			else if (event.key.keysym.sym == SDLK_d)
+			{
+				doDisassemble = !doDisassemble;
+			}
 			else if (event.key.keysym.sym == SDLK_m)
 			{
 				// Port 1
@@ -231,36 +235,16 @@ int main(int /*argc*/, char** /*argv*/)
 	auto& map = processor->getMemoryMap();
 
 	auto t=std::thread(
-		[&processor,&map]() 
+		[&processor,&map]()
 		{
 			auto last_interrupt_time = std::chrono::high_resolution_clock::now();
 
 			auto preProcessFunc = [&processor, &map]()
 			{
-				auto pc = processor->getState().PC;
-
 				if (doDisassemble)
 				{
+					auto pc = processor->getState().PC;
 					processor->DisassembleRomStacksize(pc, 1);
-				}
-
-				auto opCode = map.Peek(pc);
-
-				if (opCode == 0xF3)
-				{
-					std::cout << "DI" << std::endl;
-				}
-				else if (opCode == 0xFB)
-				{
-					std::cout << "EI" << std::endl;
-				}
-				else if (opCode == 0xDB)
-				{
-					std::cout << "IN" << std::endl;
-				}
-				else if (opCode == 0xD3)
-				{
-					std::cout << "OUT" << std::endl;
 				}
 			};
 
@@ -282,8 +266,6 @@ int main(int /*argc*/, char** /*argv*/)
 					// generate interrupt
 					if (processor->getState().EI)
 					{
-						std::cout << "RST " + std::to_string(currentInterrupt) << std::endl;
-
 						if (currentInterrupt == 1)
 						{
 							processor->setInterrupt({ 0xCF,0x00,0x00 });
