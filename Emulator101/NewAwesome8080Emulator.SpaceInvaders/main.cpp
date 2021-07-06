@@ -102,7 +102,6 @@ void machineOUT(State& state, const uint8_t port)
 	}
 }
 
-
 void refreshScreen(const MemoryMap& map, SDL_Renderer* pRenderer)
 {
 	uint16_t px = 0, py = 0;

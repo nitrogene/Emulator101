@@ -313,7 +313,7 @@ static inline void i8080_pop_psw(i8080* const c) {
 // rotate register A left
 static inline void i8080_rlc(i8080* const c) {
   c->cf = c->a >> 7;
-  c->a = ((c->a << 1)!=0) | c->cf;
+  c->a = (c->a << 1) | c->cf;
 }
 
 // rotate register A right
@@ -326,7 +326,7 @@ static inline void i8080_rrc(i8080* const c) {
 static inline void i8080_ral(i8080* const c) {
   bool cy = c->cf;
   c->cf = c->a >> 7;
-  c->a = ((c->a << 1)!=0) | cy;
+  c->a = (c->a << 1) | cy;
 }
 
 // rotate register A right with the carry flag

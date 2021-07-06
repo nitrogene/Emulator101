@@ -5,6 +5,8 @@
 #endif
 #include <fmt/core.h>
 #include "Processor.h"
+#include "../../Emulator101/NewAwesome8080Emulator.Test/superzazu-8080/i8080.h"
+#include <Utilities.h>
 
 const static std::vector<std::filesystem::path> roms
 {
@@ -24,11 +26,28 @@ int main(int /*argc*/, char** /*argv*/)
 
 	processor->Initialize(roms, 0xFFFF, bytes,true);
 
-	auto& map = processor->getMemoryMap();
+	auto map = processor->getMemoryMap();
 
 	// the original assembly code has a ORG 00100H, thus we set PC to 0x100
 	processor->setPC(0x100);
 
+	auto p_i8080State = std::make_shared<i8080>();
+	i8080_init(p_i8080State.get());
+	auto m_i8080Memory = processor->getMemoryMap();
+	p_i8080State->read_byte = [](void* mem, uint16_t addr)->uint8_t
+	{
+		auto map = (MemoryMap*)mem;
+		return map->Peek(addr);
+	};
+	p_i8080State->write_byte = [](void* mem, uint16_t addr, uint8_t value)
+	{
+		auto map = (MemoryMap*)mem;
+		map->Poke(addr, value);
+	};
+	p_i8080State->port_in = [](void*, uint8_t)->uint8_t {return 0; };
+	p_i8080State->port_out = [](void*, uint8_t, uint8_t) {};
+	p_i8080State->userdata = &m_i8080Memory;
+	p_i8080State->pc = 0x100;
 
 	while (!processor->getState().HLT)
 	{
@@ -80,6 +99,8 @@ int main(int /*argc*/, char** /*argv*/)
 				// With real CP/M, there is a RET, let's just go to next instruction
 				state.PC += isl.Size;
 				state.Cycles += 17;
+				p_i8080State->pc += isl.Size;
+				p_i8080State->cyc += 17;
 				continue;
 			}
 		}
@@ -95,6 +116,67 @@ int main(int /*argc*/, char** /*argv*/)
 		}
 
 		processor->RunStep();
+
+		i8080_step(p_i8080State.get());
+
+		for (auto i = 0; i < map.size(); ++i)
+		{
+			if (map.Peek(i) != m_i8080Memory.Peek(i))
+			{
+				std::cout << "aaa" << std::endl;
+			}
+		}
+
+		
+
+		if (state.A != p_i8080State->a)
+		{
+			std::cout << "pb" << std::endl;
+		} 
+		if(state.B != p_i8080State->b)
+		{
+			std::cout << "pb" << std::endl;
+		}
+		if(state.C != p_i8080State->c)
+		{
+			std::cout << "pb" << std::endl;
+		}
+		if(state.D != p_i8080State->d)
+		{
+			std::cout << "pb" << std::endl;
+		}
+		if(state.E != p_i8080State->e)
+		{
+			std::cout << "pb" << std::endl;
+		}
+		if(state.H != p_i8080State->h)
+		{
+			std::cout << "pb" << std::endl;
+		} 
+		if(state.L != p_i8080State->l)
+		{
+			std::cout << "pb" << std::endl;
+		}
+		if(state.Flags.AuxiliaryCarry != p_i8080State->hf)
+		{
+			std::cout << "pb" << std::endl;
+		} 
+		if(state.Flags.Carry != p_i8080State->cf)
+		{
+			std::cout << "pb" << std::endl;
+		}
+		if(state.Flags.Parity != p_i8080State->pf)
+		{
+			std::cout << "pb" << std::endl;
+		}
+		if(state.Flags.Sign != p_i8080State->sf)
+		{
+			std::cout << "pb" << std::endl;
+		} 
+		if(state.Flags.Zero != p_i8080State->zf)
+		{
+			std::cout << "pb" << std::endl;
+		}
 	}
 
 	return 0;

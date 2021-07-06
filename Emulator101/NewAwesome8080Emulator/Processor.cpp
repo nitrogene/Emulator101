@@ -1892,7 +1892,7 @@ void Processor::RunStep()
 	case 0xD3:
 	{
 		// OUT adr
-		if (m_State.EI && m_machineOUT!=nullptr)
+		if (m_machineOUT!=nullptr)
 		{
 			m_machineOUT(m_State, opCode[1]);
 		}
@@ -1981,7 +1981,7 @@ void Processor::RunStep()
 	case 0xDB:
 	{
 		// IN D8
-		if(m_State.EI && m_machineIN!=nullptr)
+		if(m_machineIN!=nullptr)
 		{ 
 			m_machineIN(m_State, opCode[1]);
 		}

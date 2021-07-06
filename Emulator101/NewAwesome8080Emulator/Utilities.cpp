@@ -194,11 +194,15 @@ void Utilities::CPI(State& state, const uint8_t& opCode1)
 	uint8_t c_ = a_ + b_;
 	flags.AuxiliaryCarry = !(c_ & 0x10);
 
-	if ((state.A & 0x80) != (opCode1 & 0x80))
-	{
-		flags.Carry = !flags.Carry;
-		flags.AuxiliaryCarry = !flags.AuxiliaryCarry;
-	}
+	// user manual, page 29
+	// NOTE: If the two quantities to be compared differ in sign,
+	// the sense of the Carry bit is reversed.
+	// But superzazu code does not take that intop account...
+	//if ((state.A & 0x80) != (opCode1 & 0x80))
+	//{
+	//	flags.Carry = !flags.Carry;
+	//	flags.AuxiliaryCarry = !flags.AuxiliaryCarry;
+	//}
 
 	// change F 
 	state.F=flags.getF();
