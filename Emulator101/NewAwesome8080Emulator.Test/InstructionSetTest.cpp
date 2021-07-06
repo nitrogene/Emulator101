@@ -5631,3 +5631,93 @@ TEST_F(InstructionSetTest, SPHL)
 	EXPECT_FALSE(state.Flags.Zero);
 	EXPECT_EQ(state.Steps, 1);
 }
+
+TEST_F(InstructionSetTest, CALL_RET_HLT)
+{
+	std::vector<uint8_t> rom = {
+		0xCD,	// CALL 0X0004
+		0x04,
+		0x00,
+		0x76,	// HLT
+		0xC9	// RET
+	};
+	State state{};
+	auto pMemoryMap = std::make_shared<MemoryMap>(rom, (uint16_t)0xFFFF);
+
+	auto opCode = &pMemoryMap->Peek(state.PC);
+	auto isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+	auto c1 = pMemoryMap->Peek(0xFFFE);
+	auto c2 = pMemoryMap->Peek(0xFFFF);
+
+	EXPECT_EQ(c1, 0x03);
+	EXPECT_EQ(c2, 0x00);
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 17);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 0x0004);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0xFFFE);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 1);
+	EXPECT_EQ(state.HLT, false);
+
+	opCode = &pMemoryMap->Peek(state.PC);
+	isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+
+	EXPECT_EQ(c1, 0x03);
+	EXPECT_EQ(c2, 0x00);
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 27);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 0x003);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0x0000);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 2);
+	EXPECT_EQ(state.HLT, false);
+
+	opCode = &pMemoryMap->Peek(state.PC);
+	isl = (*p_InstructionSet)[opCode[0]];
+	isl->exec(state, *pMemoryMap, opCode, isl->Size, isl->ClockCycle);
+
+	EXPECT_EQ(c1, 0x03);
+	EXPECT_EQ(c2, 0x00);
+	EXPECT_EQ(state.A, 0);
+	EXPECT_EQ(state.B, 0);
+	EXPECT_EQ(state.C, 0);
+	EXPECT_EQ(state.D, 0);
+	EXPECT_EQ(state.E, 0);
+	EXPECT_EQ(state.F, 0);
+	EXPECT_EQ(state.H, 0);
+	EXPECT_EQ(state.L, 0);
+	EXPECT_FALSE(state.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(state.Flags.Carry);
+	EXPECT_EQ(state.Cycles, 34);
+	EXPECT_FALSE(state.Flags.Parity);
+	EXPECT_EQ(state.PC, 0x004);
+	EXPECT_FALSE(state.Flags.Sign);
+	EXPECT_EQ(state.SP, 0x0000);
+	EXPECT_FALSE(state.Flags.Zero);
+	EXPECT_EQ(state.Steps, 3);
+	EXPECT_EQ(state.HLT, true);
+}

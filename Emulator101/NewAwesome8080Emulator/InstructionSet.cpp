@@ -1490,6 +1490,9 @@ void InstructionSet::setInstructions()
 		[](State& state, MemoryMap& map, const uint8_t*, const uint16_t size, const ClockCycle& cycle)
 		{
 			state.HLT = true;
+			state.PC += size;
+			state.Steps++;
+			state.Cycles += cycle.A;
 		}
 	);
 
