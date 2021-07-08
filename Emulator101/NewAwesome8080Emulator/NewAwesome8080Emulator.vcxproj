@@ -19,11 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InstructionSetLine.cpp" />
     <ClCompile Include="MemoryMap.cpp" />
     <ClCompile Include="Processor.cpp" />
-    <ClCompile Include="InstructionSet.cpp" />
-    <ClCompile Include="ClockCycle.cpp" />
     <ClCompile Include="Flags.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Utilities.cpp" />
@@ -31,7 +28,6 @@
   <ItemGroup>
     <ClInclude Include="ClockCycle.h" />
     <ClInclude Include="Flags.h" />
-    <ClInclude Include="InstructionSet.h" />
     <ClInclude Include="InstructionSetLine.h" />
     <ClInclude Include="MemoryMap.h" />
     <ClInclude Include="Processor.h" />

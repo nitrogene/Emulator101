@@ -13,7 +13,6 @@ Online 8080 assembler & simulator:
 
 TODO:
 * Memory breakpoints
-* Get rid of instructions.set, instead use formated_instruction_set.txt
-* Get rid of InstructionSetLine::exec
 * Put memory map in State ?
-* Implement a state operator==
+* Implement a state operator==?
+* void Processor::RunStep() get isl and use it to update cycles & size

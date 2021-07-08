@@ -2,16 +2,22 @@
 #include <iomanip>
 #include "MemoryMap.h"
 
-MemoryMap::MemoryMap(const std::vector<uint8_t>& rom, const uint16_t totalMemorySize, const bool allowWritingToRom) :m_MemoryBuffer(rom), m_AllowWritingToRom(allowWritingToRom),
-	m_RomSize((uint16_t)rom.size())
+MemoryMap::MemoryMap(const std::vector<uint8_t>& rom, const uint16_t totalMemorySize, const bool allowWritingToRom) 
 {
+	Initialize(rom, totalMemorySize, allowWritingToRom);
+}
 
+void MemoryMap::Initialize(const std::vector<uint8_t>& rom, const uint16_t totalMemorySize, const bool allowWritingToRom)
+{
 	if (rom.size() >= totalMemorySize)
 	{
 		throw new std::exception("totalMemorySize should be greater than rom size");
 	}
 
-	m_MemoryBuffer.resize(1+(size_t)totalMemorySize,0x00);
+	m_MemoryBuffer = rom;
+	m_AllowWritingToRom = allowWritingToRom;
+	m_RomSize = (uint16_t)rom.size();
+	m_MemoryBuffer.resize(1 + (size_t)totalMemorySize, 0x00);
 }
 
 void MemoryMap::Hexdump()
@@ -39,7 +45,6 @@ void MemoryMap::Hexdump()
 		c += 16;
 	}
 }
-
 
 const uint8_t& MemoryMap::Peek(const uint16_t idx) const
 {

@@ -17,6 +17,8 @@ public:
 	MemoryMap(const MemoryMap&) = default;
 	//MemoryMap& operator=(const MemoryMap&) = default;
 
+	void Initialize(const std::vector<uint8_t>& rom, const uint16_t totalMemorySize, const bool allowWritingToRom);
+
 	void Hexdump();
 
 	size_t size() const { return m_MemoryBuffer.size(); };

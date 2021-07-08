@@ -1,20 +1,14 @@
 #pragma once
 #include "gtest/gtest.h"
-#include <filesystem>
-#include "InstructionSet.h"
+#include "Processor.h"
 
-
-const static std::filesystem::path instructions = "instructions.set";
 
 class InstructionSetTest : public ::testing::Test {
 protected:
     // You can remove any or all of the following functions if their bodies would
     // be empty.
-    std::shared_ptr<InstructionSet> p_InstructionSet;
-
-    InstructionSetTest()
+    InstructionSetTest():p_Processor(std::make_shared<Processor>("InstructionSet.csv")), m_State(p_Processor->getState()), m_MemoryMap(p_Processor->getMemoryMap())
     {
-        p_InstructionSet = std::make_shared<InstructionSet>(instructions);
     }
 
     ~InstructionSetTest() override {
@@ -36,4 +30,7 @@ protected:
 
     // Class members declared here can be used by all tests in the test suite
     // for Foo.
+    std::shared_ptr<Processor> p_Processor;
+    State& m_State;
+    MemoryMap& m_MemoryMap;
 };

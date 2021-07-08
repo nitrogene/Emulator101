@@ -5,21 +5,24 @@
 #include <filesystem>
 #include <array>
 #include <memory>
-#include "InstructionSet.h"
+#include <functional>
 #include "State.h"
 #include "MemoryMap.h"
+#include "InstructionSetLine.h"
 
 class Processor
 {
 private:
 	// Instruction set
-	InstructionSet m_InstructionSet;
+	std::array<InstructionSetLine, std::numeric_limits<uint8_t>::max() + 1> m_InstructionSet{};
 
 	// Registers
 	State m_State{};
 
 	// MemoryMap
-	std::shared_ptr<MemoryMap> p_MemoryMap;
+	MemoryMap m_MemoryMap;
+
+	void LoadInstructionSet(const std::filesystem::path& pathToInstructionSet);
 
 	// dissassemble instruction pointed by PC
 	void Disassemble(uint16_t& pc, std::ostream& outs = std::cout);
@@ -39,10 +42,9 @@ public:
 
 	Processor(const std::filesystem::path& pathToInstructiosSet);
 
-	void DisplayInstructionSet();
-
 	// Load rom files into memory map
-	void Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t ramSize, const std::vector<uint8_t>& bytes = {}, const bool allowWritingToRom=false);
+	void Initialize(const std::vector<std::filesystem::path>& pathToRomFiles, const uint16_t totalMemorySize =0xFFFF, const std::vector<uint8_t>& bytes = {}, const bool allowWritingToRom=false);
+	void Initialize(const std::vector<uint8_t>& rom, const uint16_t totalMemorySize = 0xFFFF, const bool allowWritingToRom = false);
 
 	// Hexadeximal dump of buffer
 	void Hexdump();

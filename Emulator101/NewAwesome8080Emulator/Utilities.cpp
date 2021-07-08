@@ -316,6 +316,9 @@ void Utilities::DAD(State& state, uint8_t& rh, uint8_t& rl)
 	flags.Carry = value & 0b10000000000000000;
 	state.H = (value & 0b1111111100000000) >> 8;
 	state.L = value & 0b0000000011111111;
+
+	// change F 
+	state.F = flags.getF();
 }
 
 void Utilities::DAA(State& state)
@@ -355,6 +358,9 @@ void Utilities::DAA(State& state)
 	flags.Sign = state.A & 0x80;
 
 	flags.Parity = Utilities::isOddParity(state.A);
+
+	// change F 
+	state.F = flags.getF();
 }
 
 void Utilities::ADD(State& state, const uint8_t value)

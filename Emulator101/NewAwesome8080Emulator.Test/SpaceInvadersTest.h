@@ -12,7 +12,7 @@ const static std::vector<std::filesystem::path> roms
     "invaders.e"
 };
 
-const static std::filesystem::path instructions = "instructions.set";
+const static std::filesystem::path instructions = "InstructionSet.csv";
 
 class SpaceInvadersTest : public ::testing::Test {
 protected:

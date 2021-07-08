@@ -13,7 +13,7 @@ const static std::vector<std::filesystem::path> roms
 	"8080EXER.COM"
 };
 
-const static std::filesystem::path instructions = "instructions.set";
+const static std::filesystem::path instructions = "InstructionSet.csv";
 
 
 int main(int /*argc*/, char** /*argv*/)

@@ -10,20 +10,49 @@
 
 using namespace std::chrono_literals;
 
-Processor::Processor(const std::filesystem::path& pathToInstructiosSet):m_InstructionSet(InstructionSet(pathToInstructiosSet))
+Processor::Processor(const std::filesystem::path& pathToInstructionSet)
 {
+	LoadInstructionSet(pathToInstructionSet);
 }
 
-void Processor::DisplayInstructionSet()
+void Processor::LoadInstructionSet(const std::filesystem::path& pathToInstructionSet)
 {
-	std::cout << "formatted instruction set\n";
+	std::ifstream fs(pathToInstructionSet);
 
-	std::cout << this->m_InstructionSet.DisplayInstructionSet();
+	if (fs.is_open())
+	{
+		std::string line;
+
+		// skip header row
+		std::getline(fs, line);
+
+		// read line by line
+		for (line; std::getline(fs, line); )
+		{
+			// OpCode;Mnemonic;Description;Cycles;Size
+			auto t = Utilities::Split(line, ';');
+			InstructionSetLine isl;
+			auto opCode = (uint8_t)std::stoul(t[0],nullptr,16);
+			isl.Mnemonic = t[1];
+			if (isl.Mnemonic.compare("-") != 0)
+			{
+				isl.Description = t[2];
+				auto cycles = Utilities::Split(t[3], '/');
+				isl.ClockCycle.A = (uint8_t)std::atoi(cycles[0].c_str());
+				if (cycles.size() > 1)
+				{
+					isl.ClockCycle.B = (uint8_t)std::atoi(cycles[1].c_str());
+				}
+				isl.Size = (uint8_t)atoi(t[4].c_str());
+			}
+			m_InstructionSet[opCode] = isl;
+		}
+	}
 }
 
 void Processor::Hexdump()
 {
-	p_MemoryMap->Hexdump();
+	m_MemoryMap.Hexdump();
 }
 
 void Processor::LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::vector<uint8_t>& buffer)
@@ -59,7 +88,12 @@ void Processor::Initialize(const std::vector<std::filesystem::path>& pathToRomFi
 		LoadIntoBuffer(pathToRomFile, buffer);
 	}
 
-	this->p_MemoryMap = std::make_shared<MemoryMap>(buffer, totalMemorySize, allowWritingToRom);
+	m_MemoryMap = MemoryMap(buffer, totalMemorySize, allowWritingToRom);
+}
+
+void Processor::Initialize(const std::vector<uint8_t>& rom, const uint16_t totalMemorySize, const bool allowWritingToRom)
+{
+	m_MemoryMap = MemoryMap(rom, totalMemorySize, allowWritingToRom);
 }
 
 void Processor::DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize, std::ostream& outs)
@@ -75,33 +109,33 @@ void Processor::DisassembleRomStacksize(const uint16_t offset, const uint16_t st
 
 void Processor::Disassemble(uint16_t& pc, std::ostream& outs)
 {
-	auto opCode = &p_MemoryMap->Peek(pc);
+	auto opCode = &m_MemoryMap.Peek(pc);
 	uint16_t opbytes = 1;
 
 
 	outs << fmt::format("{0:04x}\t", pc);
 
-	if (m_InstructionSet[opCode[0]]!=nullptr)
+	if (m_InstructionSet[opCode[0]].Mnemonic.compare("-")!=0)
 	{
 		auto isl = m_InstructionSet[opCode[0]];
-		auto instruction = isl->Mnemonic;
-		if (isl->Mnemonic.ends_with("adr"))
+		auto instruction = isl.Mnemonic;
+		if (isl.Mnemonic.ends_with("adr"))
 		{
 			unsigned  short d = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			instruction = fmt::format("{0}${1:04x}", instruction.substr(0, instruction.size() - 3), d);
 		}
-		else if (isl->Mnemonic.ends_with("D8"))
+		else if (isl.Mnemonic.ends_with("D8"))
 		{
 			unsigned  short d = opCode[1];
 			instruction = fmt::format("{0}#${1:02x}", instruction.substr(0, instruction.size() - 2), d);
 		}
-		else if (isl->Mnemonic.ends_with("D16"))
+		else if (isl.Mnemonic.ends_with("D16"))
 		{
 			unsigned  short d = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			instruction = fmt::format("{0}#${1:02x}", instruction.substr(0, instruction.size() - 3), d);
 		}
 		outs << fmt::format("{0:10}\n", instruction);
-		opbytes = isl->Size;
+		opbytes = isl.Size;
 	}
 	else
 	{
@@ -113,7 +147,7 @@ void Processor::Disassemble(uint16_t& pc, std::ostream& outs)
 
 void Processor::RunStep()
 {
-	auto opCode = &p_MemoryMap->Peek(m_State.PC);
+	auto opCode = &m_MemoryMap.Peek(m_State.PC);
 	m_AllStates.push_back(std::make_pair(m_State, getIsl(opCode[0])));
 	if (m_AllStates.size() > 1000)
 	{
@@ -149,7 +183,7 @@ void Processor::RunStep()
 	{
 		// STAX B 
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.B, m_State.C);
-		p_MemoryMap->Poke(adr, m_State.A);
+		m_MemoryMap.Poke(adr, m_State.A);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -209,7 +243,7 @@ void Processor::RunStep()
 	{
 		// LDAX B  
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.B, m_State.C);
-		m_State.A = p_MemoryMap->Peek(adr);
+		m_State.A = m_MemoryMap.Peek(adr);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -270,7 +304,7 @@ void Processor::RunStep()
 	{
 		// STAX D 
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.D , m_State.E);
-		p_MemoryMap->Poke(adr, m_State.A);
+		m_MemoryMap.Poke(adr, m_State.A);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -330,7 +364,7 @@ void Processor::RunStep()
 	{
 		// LDAX D
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.D, m_State.E);
-		m_State.A = p_MemoryMap->Peek(adr);
+		m_State.A = m_MemoryMap.Peek(adr);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -391,8 +425,8 @@ void Processor::RunStep()
 	{
 		// SHLD adr
 		uint16_t adr = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
-		p_MemoryMap->Poke(adr, m_State.L);
-		p_MemoryMap->Poke(adr + 1, m_State.H);
+		m_MemoryMap.Poke(adr, m_State.L);
+		m_MemoryMap.Poke(adr + 1, m_State.H);
 		m_State.PC += 3;
 		m_State.Cycles += 16;
 		break;
@@ -452,8 +486,8 @@ void Processor::RunStep()
 	{
 		// LHLD adr
 		auto adr = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
-		m_State.L = p_MemoryMap->Peek(adr);
-		m_State.H = p_MemoryMap->Peek(adr + 1);
+		m_State.L = m_MemoryMap.Peek(adr);
+		m_State.H = m_MemoryMap.Peek(adr + 1);
 		m_State.PC += 3;
 		m_State.Cycles += 16;
 		break;
@@ -513,7 +547,7 @@ void Processor::RunStep()
 	{
 		// STA adr
 		auto adr = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
-		p_MemoryMap->Poke(adr, m_State.A);
+		m_MemoryMap.Poke(adr, m_State.A);
 		m_State.PC += 3;
 		m_State.Cycles += 13;
 		break;
@@ -530,9 +564,9 @@ void Processor::RunStep()
 	{
 		// INR M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		auto value = p_MemoryMap->Peek(adr);
+		auto value = m_MemoryMap.Peek(adr);
 		Utilities::INR(m_State, value);
-		p_MemoryMap->Poke(adr, value);
+		m_MemoryMap.Poke(adr, value);
 		m_State.PC += 1;
 		m_State.Cycles += 10;
 		break;
@@ -541,9 +575,9 @@ void Processor::RunStep()
 	{
 		// DCR M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		auto value = p_MemoryMap->Peek(adr);
+		auto value = m_MemoryMap.Peek(adr);
 		Utilities::DCR(m_State, value);
-		p_MemoryMap->Poke(adr, value);
+		m_MemoryMap.Poke(adr, value);
 		m_State.PC += 1;
 		m_State.Cycles += 10;
 		break;
@@ -552,7 +586,7 @@ void Processor::RunStep()
 	{
 		// MVI M,D8
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		p_MemoryMap->Poke(adr, opCode[1]);
+		m_MemoryMap.Poke(adr, opCode[1]);
 		m_State.PC += 2;
 		m_State.Cycles += 10;
 		break;
@@ -579,7 +613,7 @@ void Processor::RunStep()
 	{
 		// LDA adr
 		uint16_t adr = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
-		m_State.A = p_MemoryMap->Peek(adr);
+		m_State.A = m_MemoryMap.Peek(adr);
 		m_State.PC += 3;
 		m_State.Cycles += 13;
 		break;
@@ -675,7 +709,7 @@ void Processor::RunStep()
 	{
 		// MOV B,M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		m_State.B = p_MemoryMap->Peek(adr);
+		m_State.B = m_MemoryMap.Peek(adr);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -739,7 +773,7 @@ void Processor::RunStep()
 	{
 		// MOV C,M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		m_State.C = p_MemoryMap->Peek(adr);
+		m_State.C = m_MemoryMap.Peek(adr);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -803,7 +837,7 @@ void Processor::RunStep()
 	{
 		// MOV D,M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		m_State.D = p_MemoryMap->Peek(adr);
+		m_State.D = m_MemoryMap.Peek(adr);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -867,7 +901,7 @@ void Processor::RunStep()
 	{
 		// MOV E,M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		m_State.E = p_MemoryMap->Peek(adr);
+		m_State.E = m_MemoryMap.Peek(adr);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -931,7 +965,7 @@ void Processor::RunStep()
 	{
 		// MOV H,M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		m_State.H = p_MemoryMap->Peek(adr);
+		m_State.H = m_MemoryMap.Peek(adr);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -995,7 +1029,7 @@ void Processor::RunStep()
 	{
 		// MOV L,M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		m_State.L = p_MemoryMap->Peek(adr);
+		m_State.L = m_MemoryMap.Peek(adr);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1012,7 +1046,7 @@ void Processor::RunStep()
 	{
 		// MOV M,B
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		p_MemoryMap->Poke(adr, m_State.B);
+		m_MemoryMap.Poke(adr, m_State.B);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1021,7 +1055,7 @@ void Processor::RunStep()
 	{
 		// MOV M,C
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		p_MemoryMap->Poke(adr, m_State.C);
+		m_MemoryMap.Poke(adr, m_State.C);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1030,7 +1064,7 @@ void Processor::RunStep()
 	{
 		// MOV M,D
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		p_MemoryMap->Poke(adr, m_State.D);
+		m_MemoryMap.Poke(adr, m_State.D);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1039,7 +1073,7 @@ void Processor::RunStep()
 	{
 		// MOV M,E
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		p_MemoryMap->Poke(adr, m_State.E);
+		m_MemoryMap.Poke(adr, m_State.E);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1048,7 +1082,7 @@ void Processor::RunStep()
 	{
 		// MOV M,H
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		p_MemoryMap->Poke(adr, m_State.H);
+		m_MemoryMap.Poke(adr, m_State.H);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1057,7 +1091,7 @@ void Processor::RunStep()
 	{
 		// MOV M,L
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		p_MemoryMap->Poke(adr, m_State.L);
+		m_MemoryMap.Poke(adr, m_State.L);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1074,7 +1108,7 @@ void Processor::RunStep()
 	{
 		// MOV M,A
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		p_MemoryMap->Poke(adr, m_State.A);
+		m_MemoryMap.Poke(adr, m_State.A);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1131,7 +1165,7 @@ void Processor::RunStep()
 	{
 		// MOV A,M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		m_State.A = p_MemoryMap->Peek(adr);
+		m_State.A = m_MemoryMap.Peek(adr);
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1195,7 +1229,7 @@ void Processor::RunStep()
 	{
 		// ADD M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::ADD(m_State, p_MemoryMap->Peek(adr));
+		Utilities::ADD(m_State, m_MemoryMap.Peek(adr));
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1260,7 +1294,7 @@ void Processor::RunStep()
 	{
 		// ADC M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::ADC(m_State, p_MemoryMap->Peek(adr));
+		Utilities::ADC(m_State, m_MemoryMap.Peek(adr));
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1325,7 +1359,7 @@ void Processor::RunStep()
 	{
 		// SUB M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::SUB(m_State, p_MemoryMap->Peek(adr));
+		Utilities::SUB(m_State, m_MemoryMap.Peek(adr));
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1390,7 +1424,7 @@ void Processor::RunStep()
 	{
 		// SBB M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::SBB(m_State, p_MemoryMap->Peek(adr));
+		Utilities::SBB(m_State, m_MemoryMap.Peek(adr));
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1455,7 +1489,7 @@ void Processor::RunStep()
 	{
 		// ANA M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::ANA(m_State, p_MemoryMap->Peek(adr));
+		Utilities::ANA(m_State, m_MemoryMap.Peek(adr));
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1520,7 +1554,7 @@ void Processor::RunStep()
 	{
 		// XRA M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::XRA(m_State, p_MemoryMap->Peek(adr));
+		Utilities::XRA(m_State, m_MemoryMap.Peek(adr));
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1585,7 +1619,7 @@ void Processor::RunStep()
 	{
 		// ORA M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::ORA(m_State, p_MemoryMap->Peek(adr));
+		Utilities::ORA(m_State, m_MemoryMap.Peek(adr));
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1650,7 +1684,7 @@ void Processor::RunStep()
 	{
 		// CMP M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::CMP(m_State, p_MemoryMap->Peek(adr));
+		Utilities::CMP(m_State, m_MemoryMap.Peek(adr));
 		m_State.PC += 1;
 		m_State.Cycles += 7;
 		break;
@@ -1673,8 +1707,8 @@ void Processor::RunStep()
 		}
 		else
 		{
-			auto spc = p_MemoryMap->Peek(m_State.SP);
-			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+			auto spc = m_MemoryMap.Peek(m_State.SP);
+			auto spc1 = m_MemoryMap.Peek(m_State.SP + 1);
 			m_State.PC = Utilities::getAddrFromHighLow(spc1, spc);
 			m_State.SP += 2;
 			m_State.Cycles += 11;
@@ -1684,8 +1718,8 @@ void Processor::RunStep()
 	case 0xC1:
 	{
 		// POP B
-		m_State.B = p_MemoryMap->Peek(m_State.SP + 1);
-		m_State.C = p_MemoryMap->Peek(m_State.SP);
+		m_State.B = m_MemoryMap.Peek(m_State.SP + 1);
+		m_State.C = m_MemoryMap.Peek(m_State.SP);
 		m_State.SP += 2;
 		m_State.PC += 1;
 		m_State.Cycles += 10;
@@ -1718,8 +1752,8 @@ void Processor::RunStep()
 		if (!m_State.Flags.Zero)
 		{
 			m_State.PC += 3;
-			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_MemoryMap.Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			m_MemoryMap.Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
 			m_State.PC = Utilities::getAddrFromHighLow(opCode[2],opCode[1]);
 			m_State.Cycles += 17;
@@ -1734,8 +1768,8 @@ void Processor::RunStep()
 	case 0xC5:
 	{
 		// PUSH B
-		p_MemoryMap->Poke(m_State.SP - 1, m_State.B);
-		p_MemoryMap->Poke(m_State.SP - 2, m_State.C);
+		m_MemoryMap.Poke(m_State.SP - 1, m_State.B);
+		m_MemoryMap.Poke(m_State.SP - 2, m_State.C);
 		m_State.PC += 1;
 		m_State.SP -= 2;
 		m_State.Cycles += 11;
@@ -1752,7 +1786,7 @@ void Processor::RunStep()
 	case 0xC7:
 	{
 		// RST 0
-		Utilities::RST(m_State, 0, *p_MemoryMap);
+		Utilities::RST(m_State, 0, m_MemoryMap);
 		break;
 	}
 	case 0xC8:
@@ -1765,8 +1799,8 @@ void Processor::RunStep()
 		}
 		else
 		{
-			auto spc = p_MemoryMap->Peek(m_State.SP);
-			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+			auto spc = m_MemoryMap.Peek(m_State.SP);
+			auto spc1 = m_MemoryMap.Peek(m_State.SP + 1);
 			m_State.PC = Utilities::getAddrFromHighLow(spc1, spc);
 			m_State.SP += 2;
 			m_State.Cycles += 11;
@@ -1776,8 +1810,8 @@ void Processor::RunStep()
 	case 0xC9:
 	{
 		// RET
-		auto spc = p_MemoryMap->Peek(m_State.SP);
-		auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+		auto spc = m_MemoryMap.Peek(m_State.SP);
+		auto spc1 = m_MemoryMap.Peek(m_State.SP + 1);
 		m_State.PC = Utilities::getAddrFromHighLow(spc1, spc);
 		m_State.SP += 2;
 		m_State.Cycles += 10;
@@ -1803,8 +1837,8 @@ void Processor::RunStep()
 		if (m_State.Flags.Zero)
 		{
 			m_State.PC += 3;
-			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_MemoryMap.Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			m_MemoryMap.Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
 			m_State.PC = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			m_State.Cycles += 17;
@@ -1821,8 +1855,8 @@ void Processor::RunStep()
 	{
 		// CALL adr
 		m_State.PC += 3;
-		p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-		p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+		m_MemoryMap.Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+		m_MemoryMap.Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 		m_State.SP -= 2;
 		m_State.PC = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 		m_State.Cycles += 17;
@@ -1841,7 +1875,7 @@ void Processor::RunStep()
 	case 0xCF:
 	{
 		// RST 1
-		Utilities::RST(m_State, 1, *p_MemoryMap);
+		Utilities::RST(m_State, 1, m_MemoryMap);
 		break;
 	}
 	case 0xD0:
@@ -1854,8 +1888,8 @@ void Processor::RunStep()
 		}
 		else
 		{
-			auto spc = p_MemoryMap->Peek(m_State.SP);
-			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+			auto spc = m_MemoryMap.Peek(m_State.SP);
+			auto spc1 = m_MemoryMap.Peek(m_State.SP + 1);
 			m_State.PC = Utilities::getAddrFromHighLow(spc1, spc);
 			m_State.SP += 2;
 			m_State.Cycles += 11;
@@ -1866,8 +1900,8 @@ void Processor::RunStep()
 	case 0xD1:
 	{
 		// POP D
-		m_State.D = p_MemoryMap->Peek(m_State.SP + 1);
-		m_State.E = p_MemoryMap->Peek(m_State.SP);
+		m_State.D = m_MemoryMap.Peek(m_State.SP + 1);
+		m_State.E = m_MemoryMap.Peek(m_State.SP);
 		m_State.SP += 2;
 		m_State.PC += 1;
 		m_State.Cycles += 10;
@@ -1907,8 +1941,8 @@ void Processor::RunStep()
 		if (!m_State.Flags.Carry)
 		{
 			m_State.PC += 3;
-			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_MemoryMap.Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			m_MemoryMap.Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
 			m_State.PC = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			m_State.Cycles += 17;
@@ -1923,8 +1957,8 @@ void Processor::RunStep()
 	case 0xD5:
 	{
 		// PUSH D
-		p_MemoryMap->Poke(m_State.SP - 1, m_State.D);
-		p_MemoryMap->Poke(m_State.SP - 2, m_State.E);
+		m_MemoryMap.Poke(m_State.SP - 1, m_State.D);
+		m_MemoryMap.Poke(m_State.SP - 2, m_State.E);
 		m_State.PC += 1;
 		m_State.SP -= 2;
 		m_State.Cycles += 11;
@@ -1941,7 +1975,7 @@ void Processor::RunStep()
 	case 0xD7:
 	{
 		// RST 2
-		Utilities::RST(m_State, 2, *p_MemoryMap);
+		Utilities::RST(m_State, 2, m_MemoryMap);
 		break;
 	}
 	case 0xD8:
@@ -1954,8 +1988,8 @@ void Processor::RunStep()
 		}
 		else
 		{
-			auto spc = p_MemoryMap->Peek(m_State.SP);
-			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+			auto spc = m_MemoryMap.Peek(m_State.SP);
+			auto spc1 = m_MemoryMap.Peek(m_State.SP + 1);
 			m_State.PC = Utilities::getAddrFromHighLow(spc1, spc);
 			m_State.SP += 2;
 			m_State.Cycles += 11;
@@ -1996,8 +2030,8 @@ void Processor::RunStep()
 		if (m_State.Flags.Carry)
 		{
 			m_State.PC += 3;
-			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_MemoryMap.Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			m_MemoryMap.Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
 			m_State.PC = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			m_State.Cycles += 17;
@@ -2022,7 +2056,7 @@ void Processor::RunStep()
 	case 0xDF:
 	{
 		// RST 3
-		Utilities::RST(m_State, 3, *p_MemoryMap);
+		Utilities::RST(m_State, 3, m_MemoryMap);
 		break;
 	}
 	case 0xEB:
@@ -2045,8 +2079,8 @@ void Processor::RunStep()
 		}
 		else
 		{
-			auto spc = p_MemoryMap->Peek(m_State.SP);
-			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+			auto spc = m_MemoryMap.Peek(m_State.SP);
+			auto spc1 = m_MemoryMap.Peek(m_State.SP + 1);
 			m_State.PC = Utilities::getAddrFromHighLow(spc1, spc);
 			m_State.SP += 2;
 			m_State.Cycles += 11;
@@ -2057,8 +2091,8 @@ void Processor::RunStep()
 	case 0xE1:
 	{
 		// POP H
-		m_State.H = p_MemoryMap->Peek(m_State.SP + 1);
-		m_State.L = p_MemoryMap->Peek(m_State.SP);
+		m_State.H = m_MemoryMap.Peek(m_State.SP + 1);
+		m_State.L = m_MemoryMap.Peek(m_State.SP);
 		m_State.SP += 2;
 		m_State.PC += 1;
 		m_State.Cycles += 10;
@@ -2084,15 +2118,15 @@ void Processor::RunStep()
 	{
 		// XTHL
 		auto value = m_State.L;
-		m_State.L = p_MemoryMap->Peek(m_State.SP);
-		p_MemoryMap->Poke(m_State.SP, value);
+		m_State.L = m_MemoryMap.Peek(m_State.SP);
+		m_MemoryMap.Poke(m_State.SP, value);
 
 		value = m_State.H;
-		m_State.H = p_MemoryMap->Peek(m_State.SP + 1);
-		p_MemoryMap->Poke(m_State.SP + 1, value);
+		m_State.H = m_MemoryMap.Peek(m_State.SP + 1);
+		m_MemoryMap.Poke(m_State.SP + 1, value);
 
 		m_State.PC += 1;
-		m_State.Cycles += 8;
+		m_State.Cycles += 18;
 
 		break;
 	}
@@ -2102,8 +2136,8 @@ void Processor::RunStep()
 		if (!m_State.Flags.Parity)
 		{
 			m_State.PC += 3;
-			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_MemoryMap.Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			m_MemoryMap.Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
 			m_State.PC = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			m_State.Cycles += 17;
@@ -2119,8 +2153,8 @@ void Processor::RunStep()
 	case 0xE5:
 	{
 		// PUSH H
-		p_MemoryMap->Poke(m_State.SP - 1, m_State.H);
-		p_MemoryMap->Poke(m_State.SP - 2, m_State.L);
+		m_MemoryMap.Poke(m_State.SP - 1, m_State.H);
+		m_MemoryMap.Poke(m_State.SP - 2, m_State.L);
 		m_State.PC += 1;
 		m_State.SP -= 2;
 		m_State.Cycles += 11;
@@ -2139,7 +2173,7 @@ void Processor::RunStep()
 	case 0xE7:
 	{
 		// RST 4
-		Utilities::RST(m_State, 4, *p_MemoryMap);
+		Utilities::RST(m_State, 4, m_MemoryMap);
 		break;
 	}
 	case 0xE8:
@@ -2152,8 +2186,8 @@ void Processor::RunStep()
 		}
 		else
 		{
-			auto spc = p_MemoryMap->Peek(m_State.SP);
-			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+			auto spc = m_MemoryMap.Peek(m_State.SP);
+			auto spc1 = m_MemoryMap.Peek(m_State.SP + 1);
 			m_State.PC = Utilities::getAddrFromHighLow(spc1, spc);
 			m_State.SP += 2;
 			m_State.Cycles += 11;
@@ -2190,8 +2224,8 @@ void Processor::RunStep()
 		if (m_State.Flags.Parity)
 		{
 			m_State.PC += 3;
-			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_MemoryMap.Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			m_MemoryMap.Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
 			m_State.PC = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			m_State.Cycles += 17;
@@ -2216,7 +2250,7 @@ void Processor::RunStep()
 	case 0xEF:
 	{
 		// RST 5
-		Utilities::RST(m_State, 5, *p_MemoryMap);
+		Utilities::RST(m_State, 5, m_MemoryMap);
 		break;
 	}
 	case 0xF0:
@@ -2229,8 +2263,8 @@ void Processor::RunStep()
 		}
 		else
 		{
-			auto spc = p_MemoryMap->Peek(m_State.SP);
-			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+			auto spc = m_MemoryMap.Peek(m_State.SP);
+			auto spc1 = m_MemoryMap.Peek(m_State.SP + 1);
 			m_State.PC = Utilities::getAddrFromHighLow(spc1, spc);
 			m_State.SP += 2;
 			m_State.Cycles += 11;
@@ -2241,8 +2275,8 @@ void Processor::RunStep()
 	case 0xF1:
 	{
 		// POP PSW
-		m_State.A = p_MemoryMap->Peek(m_State.SP + 1);
-		m_State.F = p_MemoryMap->Peek(m_State.SP);
+		m_State.A = m_MemoryMap.Peek(m_State.SP + 1);
+		m_State.F = m_MemoryMap.Peek(m_State.SP);
 		m_State.Flags.setF(m_State.F);
 		m_State.SP += 2;
 		m_State.PC += 1;
@@ -2280,8 +2314,8 @@ void Processor::RunStep()
 		if (!m_State.Flags.Sign)
 		{
 			m_State.PC += 3;
-			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_MemoryMap.Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			m_MemoryMap.Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
 			m_State.PC = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			m_State.Cycles += 17;
@@ -2297,8 +2331,8 @@ void Processor::RunStep()
 	case 0xF5:
 	{
 		// PUSH PSW
-		p_MemoryMap->Poke(m_State.SP - 1, m_State.A);
-		p_MemoryMap->Poke(m_State.SP - 2, m_State.F & 0xD7 | 0x2);
+		m_MemoryMap.Poke(m_State.SP - 1, m_State.A);
+		m_MemoryMap.Poke(m_State.SP - 2, m_State.F & 0xD7 | 0x2);
 		m_State.PC += 1;
 		m_State.SP -= 2;
 		m_State.Cycles += 11;
@@ -2317,7 +2351,7 @@ void Processor::RunStep()
 	case 0xF7:
 	{
 		// RST 6
-		Utilities::RST(m_State, 6, *p_MemoryMap);
+		Utilities::RST(m_State, 6, m_MemoryMap);
 		break;
 	}
 	case 0xF8:
@@ -2330,8 +2364,8 @@ void Processor::RunStep()
 		}
 		else
 		{
-			auto spc = p_MemoryMap->Peek(m_State.SP);
-			auto spc1 = p_MemoryMap->Peek(m_State.SP + 1);
+			auto spc = m_MemoryMap.Peek(m_State.SP);
+			auto spc1 = m_MemoryMap.Peek(m_State.SP + 1);
 			m_State.PC = Utilities::getAddrFromHighLow(spc1, spc);
 			m_State.SP += 2;
 			m_State.Cycles += 11;
@@ -2369,8 +2403,8 @@ void Processor::RunStep()
 		if (m_State.Flags.Sign)
 		{
 			m_State.PC += 3;
-			p_MemoryMap->Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
-			p_MemoryMap->Poke(m_State.SP - 2, m_State.PC & 0x00FF);
+			m_MemoryMap.Poke(m_State.SP - 1, (m_State.PC & 0xFF00) >> 8);
+			m_MemoryMap.Poke(m_State.SP - 2, m_State.PC & 0x00FF);
 			m_State.SP -= 2;
 			m_State.PC = Utilities::getAddrFromHighLow(opCode[2], opCode[1]);
 			m_State.Cycles += 17;
@@ -2404,7 +2438,7 @@ void Processor::RunStep()
 	case 0xFF:
 	{
 		// RST 7
-		Utilities::RST(m_State, 7, *p_MemoryMap);
+		Utilities::RST(m_State, 7, m_MemoryMap);
 		break;
 	}
 	default:
@@ -2412,6 +2446,7 @@ void Processor::RunStep()
 	}
 
 	m_OpCodeInterrupt.clear();
+	m_State.F = m_State.Flags.getF();
 }
 
 void Processor::Run(std::function<void(void)> preProcessFunc, std::function<void(void)> postProcessFunc)
@@ -2481,17 +2516,17 @@ void Processor::setPC(const uint16_t pc)
 
 const uint8_t& Processor::Peek(const uint16_t idx) const
 {
-	return p_MemoryMap->Peek(idx);
+	return m_MemoryMap.Peek(idx);
 }
 
 const InstructionSetLine& Processor::getIsl(const uint8_t idx) const
 {
-	return *m_InstructionSet[idx].get();
+	return m_InstructionSet[idx];
 }
 
  MemoryMap& Processor::getMemoryMap()
 {
-	return *p_MemoryMap;
+	return m_MemoryMap;
 }
 
  void Processor::setInterrupt(const std::vector<uint8_t> opCodeInterrupt)

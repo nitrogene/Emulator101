@@ -11,7 +11,7 @@ const static std::vector<std::filesystem::path> roms
 	"TST8080.COM"
 };
 
-const static std::filesystem::path instructions = "instructions.set";
+const static std::filesystem::path instructions = "InstructionSet.csv";
 
 int main(int /*argc*/, char** /*argv*/)
 {

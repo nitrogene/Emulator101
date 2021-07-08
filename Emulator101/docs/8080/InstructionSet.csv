@@ -1,0 +1,257 @@
+OpCode;Mnemonic;Description;Cycles;Size
+0x00 ;NOP;No-operation;4;1
+0x01 ;LXI B,D16;Load immediate register Pair B & C;10;3
+0x02 ;STAX B;Store A indirect;7;1
+0x03 ;INX B;Increment B & C registers;5;1
+0x04 ;INR B;Increment register;5;1
+0x05 ;DCR B;Decrement register;5;1
+0x06 ;MVI B,D8;Move immediate register;7;2
+0x07 ;RLC;Rotate A left;4;1
+0x08 ;-;;;
+0x09 ;DAD B;Add B & C to H & L;10;1
+0x0a ;LDAX B;Load A indirect;7;1
+0x0b ;DCX B;Decrement B & C;5;1
+0x0c ;INR C;Increment register;5;1
+0x0d ;DCR C;Decrement register;5;1
+0x0e ;MVI C,D8;Move immediate register;7;2
+0x0f ;RRC;Rotate A right;4;1
+0x10;-;;;
+0x11;LXI D,D16;Load immediate register Pair D & E;10;3
+0x12;STAX D;Store A indirect;7;1
+0x13;INX D;Increment D & E registers;5;1
+0x14;INR D;Increment register;5;1
+0x15;DCR D;Decrement register;5;1
+0x16;MVI D,D8;Move immediate register;7;2
+0x17;RAL;Rotate A left through carry;4;1
+0x18;-;;;
+0x19;DAD D;Add D & E to H & L;10;1
+0x1a;LDAX D;Load A indirect;7;1
+0x1b;DCX D;Decrement D & E;5;1
+0x1c;INR E;Increment register;5;1
+0x1d;DCR E;Decrement register;5;1
+0x1e;MVI E,D8;Move immediate register;7;2
+0x1f;RAR;Rotate A right through carry;4;1
+0x20;-;;;
+0x21;LXI H,D16;Load immediate register Pair H & L;10;3
+0x22;SHLD adr;Store H & L direct;16;3
+0x23;INX H;Increment H & L registers;5;1
+0x24;INR H;Increment register;5;1
+0x25;DCR H;Decrement register;5;1
+0x26;MVI H,D8;Move immediate register;7;2
+0x27;DAA;Decimal adjust A;4;1
+0x28;-;;;
+0x29;DAD H;Add H & L to H & L;10;1
+0x2a;LHLD adr;Load H & L direct;16;3
+0x2b;DCX H;Decrement H & L;5;1
+0x2c;INR L;Increment register;5;1
+0x2d;DCR L;Decrement register;5;1
+0x2e;MVI L,D8;Move immediate register;7;2
+0x2f;CMA;Complement A;4;1
+0x30;-;;;
+0x31;LXI SP,D16;Load immediate stack pointer;10;3
+0x32;STA adr;Store A direct;13;3
+0x33;INX SP;Increment stack pointer;5;1
+0x34;INR M;Increment memory;10;1
+0x35;DCR M;Decrement memory;10;1
+0x36;MVI M,D8;Move immediate memory;10;2
+0x37;STC;Set carry;4;1
+0x38;-;;;
+0x39;DAD SP;Add stack pointer to H & L;10;1
+0x3a;LDA adr;Load A direct;13;3
+0x3b;DCX SP;Decrement stack pointer;5;1
+0x3c;INR A;Increment register;5;1
+0x3d;DCR A;Decrement register;5;1
+0x3e;MVI A,D8;Move immediate register;7;2
+0x3f;CMC;Complement carry;4;1
+0x40;MOV B,B;Move register to register;5;1
+0x41;MOV B,C;Move register to register;5;1
+0x42;MOV B,D;Move register to register;5;1
+0x43;MOV B,E;Move register to register;5;1
+0x44;MOV B,H;Move register to register;5;1
+0x45;MOV B,L;Move register to register;5;1
+0x46;MOV B,M;Move register to memory;7;1
+0x47;MOV B,A;Move register to register;5;1
+0x48;MOV C,B;Move register to register;5;1
+0x49;MOV C,C;Move register to register;5;1
+0x4a;MOV C,D;Move register to register;5;1
+0x4b;MOV C,E;Move register to register;5;1
+0x4c;MOV C,H;Move register to register;5;1
+0x4d;MOV C,L;Move register to register;5;1
+0x4e;MOV C,M;Move register to memory;7;1
+0x4f;MOV C,A;Move register to register;5;1
+0x50;MOV D,B;Move register to register;5;1
+0x51;MOV D,C;Move register to register;5;1
+0x52;MOV D,D;Move register to register;5;1
+0x53;MOV D,E;Move register to register;5;1
+0x54;MOV D,H;Move register to register;5;1
+0x55;MOV D,L;Move register to register;5;1
+0x56;MOV D,M;Move register to memory;7;1
+0x57;MOV D,A;Move register to register;5;1
+0x58;MOV E,B;Move register to register;5;1
+0x59;MOV E,C;Move register to register;5;1
+0x5a;MOV E,D;Move register to register;5;1
+0x5b;MOV E,E;Move register to register;5;1
+0x5c;MOV E,H;Move register to register;5;1
+0x5d;MOV E,L;Move register to register;5;1
+0x5e;MOV E,M;Move register to memory;7;1
+0x5f;MOV E,A;Move register to register;5;1
+0x60;MOV H,B;Move register to register;5;1
+0x61;MOV H,C;Move register to register;5;1
+0x62;MOV H,D;Move register to register;5;1
+0x63;MOV H,E;Move register to register;5;1
+0x64;MOV H,H;Move register to register;5;1
+0x65;MOV H,L;Move register to register;5;1
+0x66;MOV H,M;Move register to memory;7;1
+0x67;MOV H,A;Move register to register;5;1
+0x68;MOV L,B;Move register to register;5;1
+0x69;MOV L,C;Move register to register;5;1
+0x6a;MOV L,D;Move register to register;5;1
+0x6b;MOV L,E;Move register to register;5;1
+0x6c;MOV L,H;Move register to register;5;1
+0x6d;MOV L,L;Move register to register;5;1
+0x6e;MOV L,M;Move register to memory;7;1
+0x6f;MOV L,A;Move register to register;5;1
+0x70;MOV M,B;Move memory to register;7;1
+0x71;MOV M,C;Move memory to register;7;1
+0x72;MOV M,D;Move memory to register;7;1
+0x73;MOV M,E;Move memory to register;7;1
+0x74;MOV M,H;Move memory to register;7;1
+0x75;MOV M,L;Move memory to register;7;1
+0x76;HLT;Halt;7;1
+0x77;MOV M,A;Move memory to register;7;1
+0x78;MOV A,B;Move register to register;5;1
+0x79;MOV A,C;Move register to register;5;1
+0x7a;MOV A,D;Move register to register;5;1
+0x7b;MOV A,E;Move register to register;5;1
+0x7c;MOV A,H;Move register to register;5;1
+0x7d;MOV A,L;Move register to register;5;1
+0x7e;MOV A,M;Move register to memory;7;1
+0x7f;MOV A,A;Move register to register;5;1
+0x80;ADD B;Add register to A;4;1
+0x81;ADD C;Add register to A;4;1
+0x82;ADD D;Add register to A;4;1
+0x83;ADD E;Add register to A;4;1
+0x84;ADD H;Add register to A;4;1
+0x85;ADD L;Add register to A;4;1
+0x86;ADD M;Add memory to A;7;1
+0x87;ADD A;Add register to A;4;1
+0x88;ADC B;Add register to A with carry;4;1
+0x89;ADC C;Add register to A with carry;4;1
+0x8a;ADC D;Add register to A with carry;4;1
+0x8b;ADC E;Add register to A with carry;4;1
+0x8c;ADC H;Add register to A with carry;4;1
+0x8d;ADC L;Add register to A with carry;4;1
+0x8e;ADC M;Add memory to A with carry;7;1
+0x8f;ADC A;Add register to A with carry;4;1
+0x90;SUB B;Subtract register from A;4;1
+0x91;SUB C;Subtract register from A;4;1
+0x92;SUB D;Subtract register from A;4;1
+0x93;SUB E;Subtract register from A;4;1
+0x94;SUB H;Subtract register from A;4;1
+0x95;SUB L;Subtract register from A;4;1
+0x96;SUB M;Subtract memory from A;7;1
+0x97;SUB A;Subtract register from A;4;1
+0x98;SBB B;Subtract register from A with borrow;4;1
+0x99;SBB C;Subtract register from A with borrow;4;1
+0x9a;SBB D;Subtract register from A with borrow;4;1
+0x9b;SBB E;Subtract register from A with borrow;4;1
+0x9c;SBB H;Subtract register from A with borrow;4;1
+0x9d;SBB L;Subtract register from A with borrow;4;1
+0x9e;SBB M;Subtract memory from A with borrow;7;1
+0x9f;SBB A;Subtract register from A with borrow;4;1
+0xa0;ANA B;And register with A;4;1
+0xa1;ANA C;And register with A;4;1
+0xa2;ANA D;And register with A;4;1
+0xa3;ANA E;And register with A;4;1
+0xa4;ANA H;And register with A;4;1
+0xa5;ANA L;And register with A;4;1
+0xa6;ANA M;And memory with A;7;1
+0xa7;ANA A;And register with A;4;1
+0xa8;XRA B;Exclusive Or register with A;4;1
+0xa9;XRA C;Exclusive Or register with A;4;1
+0xaa;XRA D;Exclusive Or register with A;4;1
+0xab;XRA E;Exclusive Or register with A;4;1
+0xac;XRA H;Exclusive Or register with A;4;1
+0xad;XRA L;Exclusive Or register with A;4;1
+0xae;XRA M;Exclusive Or memory with A;7;1
+0xaf;XRA A;Exclusive Or register with A;4;1
+0xb0;ORA B;Or register with A;4;1
+0xb1;ORA C;Or register with A;4;1
+0xb2;ORA D;Or register with A;4;1
+0xb3;ORA E;Or register with A;4;1
+0xb4;ORA H;Or register with A;4;1
+0xb5;ORA L;Or register with A;4;1
+0xb6;ORA M;Or memory with A;7;1
+0xb7;ORA A;Or register with A;4;1
+0xb8;CMP B;Compare register with A;4;1
+0xb9;CMP C;Compare register with A;4;1
+0xba;CMP D;Compare register with A;4;1
+0xbb;CMP E;Compare register with A;4;1
+0xbc;CMP H;Compare register with A;4;1
+0xbd;CMP L;Compare register with A;4;1
+0xbe;CMP M;Compare memory with A;7;1
+0xbf;CMP A;Compare register with A;4;1
+0xc0;RNZ;Return on no zero;5/11;1
+0xc1;POP B;Pop register pair B & C off stack;10;1
+0xc2;JNZ adr;Jump on no zero;10;3
+0xc3;JMP adr;Jump unconditional;10;3
+0xc4;CNZ adr;Call on no zero;11/17;3
+0xc5;PUSH B;Push register Pair B & C on stack;11;1
+0xc6;ADI D8;Add immediate to A;7;2
+0xc7;RST 0;Restart at $0;11;1
+0xc8;RZ;Return on zero;5/11;1
+0xc9;RET;Return;10;1
+0xca;JZ adr;Jump on zero;10;3
+0xcb;-;;;
+0xcc;CZ adr;Call on zero;11/17;3
+0xcd;CALL adr;Call unconditional;17;3
+0xce;ACI D8;Add immediate to A with carry;7;2
+0xcf;RST 1;Restart at $8;11;1
+0xd0;RNC;Return on no carry;5/11;1
+0xd1;POP D;Pop register pair D & E off stack;10;1
+0xd2;JNC adr;Jump on no carry;10;3
+0xd3;OUT D8;Output;10;2
+0xd4;CNC adr;Call on no carry;11/17;3
+0xd5;PUSH D;Push register Pair D & E on stack;11;1
+0xd6;SUI D8;Subtract immediate from A;7;2
+0xd7;RST 2;Restart at $10;11;1
+0xd8;RC;Return on carry;5/11;1
+0xd9;-;;;
+0xda;JC adr;Jump on carry;10;3
+0xdb;IN D8;Input;10;2
+0xdc;CC adr;Call on carry;11/17;3
+0xdd;-;;;
+0xde;SBI D8;Subtract immediate from A with borrow;7;2
+0xdf;RST 3;Restart at $18;11;1
+0xe0;RPO;Return on parity odd;5/11;1
+0xe1;POP H;Pop register pair H & L off stack;10;1
+0xe2;JPO adr;Jump on parity odd;10;3
+0xe3;XTHL;Exchange top of stack, H & L;18;1
+0xe4;CPO adr;Call on parity odd;11/17;3
+0xe5;PUSH H;Push register Pair H & L on stack;11;1
+0xe6;ANI D8;And immediate with A;7;2
+0xe7;RST 4;Restart at $20;11;1
+0xe8;RPE;Return on parity even;5/11;1
+0xe9;PCHL;H & L to program counter;5;1
+0xea;JPE adr;Jump on parity even;10;3
+0xeb;XCHG;Exchange D & E, H & L Registers;4;1
+0xec;CPE adr;Call on parity even;11/17;3
+0xed;-;;;
+0xee;XRI D8;Exclusive Or immediate with A;7;2
+0xef;RST 5;Restart at $28;11;1
+0xf0;RP;Return on positive;5/11;1
+0xf1;POP PSW;Pop A and Flags off stack;10;1
+0xf2;JP adr;Jump on positive;10;3
+0xf3;DI;Disable interrupt;4;1
+0xf4;CP adr;Call on positive;11/17;3
+0xf5;PUSH PSW;Push A and Flags on stack;11;1
+0xf6;ORI D8;Or immediate with A;7;2
+0xf7;RST 6;Restart at $30;11;1
+0xf8;RM;Return on minus;5/11;1
+0xf9;SPHL;H & L to stack pointer;5;1
+0xfa;JM adr;Jump on minus;10;3
+0xfb;EI;Enable Interrupts;4;1
+0xfc;CM adr;Call on minus;11/17;3
+0xfd;-;;;
+0xfe;CPI D8;Compare immediate with A;7;2
+0xff;RST 7;Restart at $38;11;1

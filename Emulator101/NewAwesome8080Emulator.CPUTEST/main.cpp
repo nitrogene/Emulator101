@@ -15,7 +15,7 @@ const static std::vector<std::filesystem::path> roms
 	"CPUTEST.COM"
 };
 
-const static std::filesystem::path instructions = "instructions.set";
+const static std::filesystem::path instructions = "InstructionSet.csv";
 
 bool quit = false;
 bool trace = false;
