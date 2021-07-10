@@ -45,3 +45,20 @@ void Flags::setF(const uint8_t f)
 	this->Zero = f & 0b01000000;
 	this->Sign = f & 0b10000000;
 }
+
+std::string Flags::toString()
+{
+	std::string flags = "";
+	auto fun = [](bool b, std::string c) -> std::string
+	{
+		return b ? c : ".";
+	};
+
+	flags += fun(Zero, "Z");
+	flags += fun(Sign, "S");
+	flags += fun(Parity, "P");
+	flags += fun(Carry, "CY");
+	flags += fun(AuxiliaryCarry, "AC");
+
+	return flags;
+}

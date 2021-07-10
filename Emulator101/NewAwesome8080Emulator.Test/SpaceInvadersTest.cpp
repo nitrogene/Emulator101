@@ -12,7 +12,7 @@ void SpaceInvadersTest::fun()
 
 	i8080_step(p_i8080State.get());
 
-	auto msg = state.toString();
+	auto msg = isl.Mnemonic + "\n" + state.toString();
 	
 
 	// Registers

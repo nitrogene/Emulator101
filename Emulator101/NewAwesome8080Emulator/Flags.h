@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <string>
 
 
 struct Flags
@@ -33,4 +34,6 @@ C  State of Carry bit
 	uint8_t getF();
 
 	void setF(const uint8_t f);
+
+	std::string toString();
 };
