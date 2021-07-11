@@ -129,6 +129,10 @@ int main(int /*argc*/, char** /*argv*/)
 		processor->RunStep();
 		i8080_step(p_i8080State.get());
 
+		opCode = &processor->Peek(processor->getState().PC);
+		state = processor->getState();
+		const auto& isl2 = processor->getIsl(opCode[0]);
+
 		if (state.A != p_i8080State->a || state.B != p_i8080State->b || state.C != p_i8080State->c || state.D != p_i8080State->d
 			|| state.E != p_i8080State->e || state.H != p_i8080State->h || state.L != p_i8080State->l
 			/*|| state.Flags.AuxiliaryCarry != p_i8080State->hf */|| state.Flags.Carry != p_i8080State->cf
