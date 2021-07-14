@@ -1838,8 +1838,8 @@ void Processor::RunStep()
 	}
 	case 0xFE:
 	{
-		// CPI D8
-		Utilities::CPI(m_State, opCode[1]);
+		// CPI D8 (same as CMP)
+		Utilities::CMP(m_State, opCode[1]);
 		break;
 	}
 	case 0xF9:

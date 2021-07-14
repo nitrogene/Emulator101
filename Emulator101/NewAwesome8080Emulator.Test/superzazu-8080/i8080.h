@@ -31,4 +31,14 @@ void i8080_step(i8080* const c);
 void i8080_interrupt(i8080* const c, uint8_t opcode);
 void i8080_debug_output(i8080* const c, bool print_disassembly);
 
+void i8080_cmp(i8080* const c, uint8_t val);
+void i8080_add(i8080* const c, uint8_t* const reg, uint8_t val, bool cy);
+void i8080_ana(i8080* const c, uint8_t val);
+uint8_t i8080_inr(i8080* const c, uint8_t val);
+void i8080_rlc(i8080* const c);
+void i8080_rrc(i8080* const c);
+void i8080_ral(i8080* const c);
+void i8080_rar(i8080* const c);
+void i8080_dad(i8080* const c, uint16_t val);
+uint8_t i8080_dcr(i8080* const c, uint8_t val);
 #endif // I8080_I8080_H_

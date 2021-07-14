@@ -15,6 +15,7 @@ public:
 	{
 		return (high << 8) | low;
 	}
+	static void setZeroSignAndParity(Flags& state, uint8_t value);
 
 	// State affecting operations
 	static void DAA(State& state);
@@ -24,11 +25,10 @@ public:
 	static void RRC(State& state);
 	static void DCR(State& state, uint8_t& value);
 	static void INR(State& state, uint8_t& value);
-	static void ANI(State& state, const uint8_t& opCode1);
-	static void ADI(State& state, const uint8_t& opCode1);
-	static void CPI(State& state, const uint8_t& opCode1);
-	static void ACI(State& state, const uint8_t& opCode1);
-	static void DAD(State&, uint8_t& rh, uint8_t& rl);
+	static void ANI(State& state, const uint8_t value);
+	static void ADI(State& state, const uint8_t value);
+	static void ACI(State& state, const uint8_t value);
+	static void DAD(State&, const uint8_t h, const uint8_t l);
 	static void ADD(State&, const uint8_t value);
 	static void ADC(State&, const uint8_t value);
 	static void SUB(State&, const uint8_t value);

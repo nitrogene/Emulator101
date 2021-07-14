@@ -81,170 +81,64 @@ void Utilities::INR(State& state, uint8_t& value)
 {
 	auto& flags = state.Flags;
 
-	// Perform operation in higher precision
-	uint16_t a = ((uint16_t)value);
-	uint16_t b = ((uint16_t)1);
-	uint16_t chp = a + b;
-
-	// get result in normal precision
-	value = chp & 0xFF;
-
-	// ZERO CHECK
-	flags.Zero = value == 0;
-
-	// SIGN CHECK
-	flags.Sign = chp & 0x80;
-
-	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(value);
-
-	// AUXILIARY CARRY
-	uint8_t a_ = a & 0x0F;
-	uint8_t b_ = b & 0x0F;
-	uint8_t c_ = a_ + b_;
-	flags.AuxiliaryCarry = c_ & 0x10;
-
+	++value;
+	// if lower 4 bits are 0, that means that theer was a 
+	// carry out of bit 3
+	flags.AuxiliaryCarry = (value & 0xF) == 0;
+	setZeroSignAndParity(flags, value);
 	// change F 
-	state.F=flags.getF();
+	state.F = flags.getF();
 }
 
-void Utilities::ANI(State& state, const uint8_t& opCode1)
+void Utilities::ANI(State& state, const uint8_t value)
 {
 	auto& flags = state.Flags;
 
-	// get result in normal precision
-	state.A &= opCode1;
-
-	// ZERO CHECK
-	flags.Zero = state.A == 0;
-
-	// SIGN CHECK
-	flags.Sign = state.A & 0x80;
-
-	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(state.A);
-
+	uint16_t chp = state.A & value;
+	uint8_t tmp = chp & 0xFF;
+	setZeroSignAndParity(flags, tmp);
 	flags.Carry = 0;
-	flags.AuxiliaryCarry = 0;
+	// The 8080 logical AND instructions set the flag to reflect 
+	// the logical OR of bit 3 of the values involved in the AND 
+	// operation
+	flags.AuxiliaryCarry = (state.A|value)&0x08;
+
+	state.A = tmp;
 
 	// change F 
-	state.F=flags.getF();
+	state.F = flags.getF();
 }
 
-void Utilities::ADI(State& state, const uint8_t& opCode1)
+void Utilities::ADI(State& state, const uint8_t value)
 {
 	auto& flags = state.Flags;
 
-	// Perform operation in higher precision
-	uint16_t a = ((uint16_t)state.A);
-	uint16_t b = ((uint16_t)opCode1);
-	uint16_t chp = a + b;
+	uint16_t chp = state.A + value;
+	uint8_t tmp = chp & 0xFF;
+	setZeroSignAndParity(flags, tmp);
+	flags.Carry = chp >> 8;
+	flags.AuxiliaryCarry = (state.A ^ value ^ chp) & 0x10;
 
-	// get result in normal precision
-	state.A = chp & 0xFF;
-
-	// ZERO CHECK
-	flags.Zero = state.A == 0;
-
-	// SIGN CHECK
-	flags.Sign = chp & 0x80;
-
-	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(state.A);
-
-	// CARRY BIT
-	flags.Carry = chp & 0x100;
-
-	// AUXILIARY CARRY
-	uint8_t a_ = a & 0x0F;
-	uint8_t b_ = b & 0x0F;
-	uint8_t c_ = a_ + b_;
-	flags.AuxiliaryCarry = c_ & 0x10;
+	state.A = tmp;
 
 	// change F 
-	state.F=flags.getF();
+	state.F = flags.getF();
 }
 
-void Utilities::CPI(State& state, const uint8_t& opCode1)
+void Utilities::ACI(State& state, const uint8_t value)
 {
 	auto& flags = state.Flags;
 
-	// Perform operation in higher precision
-	uint16_t a = ((uint16_t)state.A);
-	uint16_t b = ((uint16_t)(uint8_t(-opCode1)));
-	uint16_t chp = a + b;
+	uint16_t chp = state.A + value + flags.Carry;
+	uint8_t tmp = chp & 0xFF;
+	setZeroSignAndParity(flags, tmp);
+	flags.Carry = chp >> 8;
+	flags.AuxiliaryCarry = (state.A ^ value ^ chp) & 0x10;
 
-	// get result in normal precision
-	uint8_t value = chp & 0xFF;
-
-	// ZERO CHECK
-	flags.Zero = value == 0;
-
-	// SIGN CHECK
-	flags.Sign = chp & 0x80;
-
-	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(value);
-
-	// CARRY BIT
-	flags.Carry = !(chp & 0x100);
-	// AUXILIARY CARRY
-	uint8_t a_ = a & 0x0F;
-	uint8_t b_ = b & 0x0F;
-	uint8_t c_ = a_ + b_;
-	flags.AuxiliaryCarry = !(c_ & 0x10);
-
-	// user manual, page 29
-	// NOTE: If the two quantities to be compared differ in sign,
-	// the sense of the Carry bit is reversed.
-	// But superzazu code does not take that intop account...
-	//if ((state.A & 0x80) != (opCode1 & 0x80))
-	//{
-	//	flags.Carry = !flags.Carry;
-	//	flags.AuxiliaryCarry = !flags.AuxiliaryCarry;
-	//}
+	state.A = tmp;
 
 	// change F 
-	state.F=flags.getF();
-}
-
-void Utilities::ACI(State& state, const uint8_t& opCode1)
-{
-	auto& flags = state.Flags;
-
-	// Perform operation in higher precision
-	uint16_t a = ((uint16_t)state.A);
-	uint16_t b = ((uint16_t)opCode1);
-	uint16_t chp = a + b;
-
-	if (flags.Carry)
-	{
-		chp += 1;
-	}
-
-	// get result in normal precision
-	state.A = chp & 0xFF;
-
-	// ZERO CHECK
-	flags.Zero = state.A == 0;
-
-	// SIGN CHECK
-	flags.Sign = chp & 0x80;
-
-	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(state.A);
-
-	// CARRY BIT
-	flags.Carry = chp & 0x100;
-
-	// AUXILIARY CARRY
-	uint8_t a_ = a & 0x0F;
-	uint8_t b_ = b & 0x0F;
-	uint8_t c_ = a_ + b_;
-	flags.AuxiliaryCarry = c_ & 0x10;
-
-	// change F 
-	state.F=flags.getF();
+	state.F = flags.getF();
 }
 
 void Utilities::RLC(State& state)
@@ -303,11 +197,11 @@ void Utilities::RAR(State& state)
 	state.F=flags.getF();
 }
 
-void Utilities::DAD(State& state, uint8_t& rh, uint8_t& rl)
+void Utilities::DAD(State& state, const uint8_t h, const uint8_t l)
 {
 	auto& flags = state.Flags;
 
-	uint16_t p = ((uint16_t)rh) << 8 | ((uint16_t)rl);
+	uint16_t p = ((uint16_t)h) << 8 | ((uint16_t)l);
 	uint16_t hl = ((uint16_t)state.H) << 8 | ((uint16_t)state.L);
 
 	uint32_t value = ((uint32_t)p) + ((uint32_t)hl);
@@ -588,36 +482,27 @@ void Utilities::ORA(State& state, const uint8_t value)
 	state.F=flags.getF();
 }
 
+void Utilities::setZeroSignAndParity(Flags& flags, uint8_t value)
+{
+	// ZERO CHECK
+	flags.Zero = value == 0;
+
+	// SIGN CHECK
+	flags.Sign = value & 0x80;
+
+	// PARITY CHECK
+	flags.Parity = Utilities::isOddParity(value);
+}
+
 void Utilities::CMP(State& state, const uint8_t value)
 {
 	auto& flags = state.Flags;
 
-	// Perform operation in higher precision
-	uint16_t a = ((uint16_t)state.A);
-	uint16_t b = ((uint16_t)(uint8_t(-value)));
-	uint16_t chp = a + b;
-
-	// get result in normal precision 
-	auto tmp = chp & 0xFF;
-
-	// ZERO CHECK
-	flags.Zero = tmp == 0;
-
-	// SIGN CHECK
-	flags.Sign = chp & 0x80;
-
-	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(tmp);
-
-	// CARRY BIT
-	flags.Carry = !(chp & 0x100);
-
-	// AUXILIARY CARRY
-	uint8_t a_ = a & 0x0F;
-	uint8_t b_ = b & 0x0F;
-	uint8_t c_ = a_ + b_;
-	flags.AuxiliaryCarry = c_ & 0x10;
-
+	uint16_t chp = state.A - value;
+	flags.Carry = chp >> 8;
+	flags.AuxiliaryCarry = ~(state.A ^ chp ^ value) & 0x10;
+	uint8_t tmp = chp & 0xFF;
+	setZeroSignAndParity(flags, tmp);
 	// change F 
 	state.F=flags.getF();
 }

@@ -167,7 +167,7 @@ static inline bool carry(int bit_no, uint8_t a, uint8_t b, bool cy) {
 }
 
 // adds a value (+ an optional carry flag) to a register
-static inline void i8080_add(
+void i8080_add(
     i8080* const c, uint8_t* const reg, uint8_t val, bool cy) {
   uint8_t result = *reg + val + cy;
   c->cf = carry(8, *reg, val, cy);
@@ -185,13 +185,13 @@ static inline void i8080_sub(
 }
 
 // adds a word to HL
-static inline void i8080_dad(i8080* const c, uint16_t val) {
+ inline void i8080_dad(i8080* const c, uint16_t val) {
   c->cf = ((i8080_get_hl(c) + val) >> 16) & 1;
   i8080_set_hl(c, i8080_get_hl(c) + val);
 }
 
 // increments a byte
-static inline uint8_t i8080_inr(i8080* const c, uint8_t val) {
+inline uint8_t i8080_inr(i8080* const c, uint8_t val) {
   uint8_t result = val + 1;
   c->hf = (result & 0xF) == 0;
   SET_ZSP(c, result);
@@ -199,7 +199,7 @@ static inline uint8_t i8080_inr(i8080* const c, uint8_t val) {
 }
 
 // decrements a byte
-static inline uint8_t i8080_dcr(i8080* const c, uint8_t val) {
+inline uint8_t i8080_dcr(i8080* const c, uint8_t val) {
   uint8_t result = val - 1;
   c->hf = !((result & 0xF) == 0xF);
   SET_ZSP(c, result);
@@ -208,7 +208,7 @@ static inline uint8_t i8080_dcr(i8080* const c, uint8_t val) {
 
 // executes a logic "and" between register A and a byte, then stores the
 // result in register A
-static inline void i8080_ana(i8080* const c, uint8_t val) {
+void i8080_ana(i8080* const c, uint8_t val) {
   uint8_t result = c->a & val;
   c->cf = 0;
   c->hf = ((c->a | val) & 0x08) != 0;
@@ -235,7 +235,7 @@ static inline void i8080_ora(i8080* const c, uint8_t val) {
 }
 
 // compares the register A to another byte
-static inline void i8080_cmp(i8080* const c, uint8_t val) {
+void i8080_cmp(i8080* const c, uint8_t val) {
   int16_t result = c->a - val;
   c->cf = result >> 8;
   c->hf = ~(c->a ^ result ^ val) & 0x10;
@@ -311,26 +311,26 @@ static inline void i8080_pop_psw(i8080* const c) {
 }
 
 // rotate register A left
-static inline void i8080_rlc(i8080* const c) {
+ inline void i8080_rlc(i8080* const c) {
   c->cf = c->a >> 7;
   c->a = (c->a << 1) | c->cf;
 }
 
 // rotate register A right
-static inline void i8080_rrc(i8080* const c) {
+ inline void i8080_rrc(i8080* const c) {
   c->cf = c->a & 1;
   c->a = (c->a >> 1) | (c->cf << 7);
 }
 
 // rotate register A left with the carry flag
-static inline void i8080_ral(i8080* const c) {
+inline void i8080_ral(i8080* const c) {
   bool cy = c->cf;
   c->cf = c->a >> 7;
   c->a = (c->a << 1) | cy;
 }
 
 // rotate register A right with the carry flag
-static inline void i8080_rar(i8080* const c) {
+inline void i8080_rar(i8080* const c) {
   bool cy = c->cf;
   c->cf = c->a & 1;
   c->a = (c->a >> 1) | (cy << 7);
