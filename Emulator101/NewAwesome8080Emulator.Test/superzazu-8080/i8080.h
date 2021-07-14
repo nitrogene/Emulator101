@@ -41,4 +41,6 @@ void i8080_ral(i8080* const c);
 void i8080_rar(i8080* const c);
 void i8080_dad(i8080* const c, uint16_t val);
 uint8_t i8080_dcr(i8080* const c, uint8_t val);
+inline void i8080_daa(i8080* const c);
+
 #endif // I8080_I8080_H_

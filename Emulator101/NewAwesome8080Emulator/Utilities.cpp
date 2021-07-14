@@ -50,31 +50,13 @@ void Utilities::DCR(State& state, uint8_t& value)
 {
 	auto& flags = state.Flags;
 
-	// Perform operation in higher precision
-	uint16_t a = ((uint16_t)value);
-	uint16_t b = ((uint16_t)-1);
-	uint16_t chp = a + b;
-
-	// get result in normal precision
-	value = chp & 0xFF;
-
-	// ZERO CHECK
-	flags.Zero = value == 0;
-
-	// SIGN CHECK
-	flags.Sign = chp & 0x80;
-
-	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(value);
-
-	// AUXILIARY CARRY
-	uint8_t a_ = a & 0x0F;
-	uint8_t b_ = b & 0x0F;
-	uint8_t c_ = a_ + b_;
-	flags.AuxiliaryCarry = c_ & 0x10;
-
+	--value;
+	// if result is equal to 0b00001111, that
+	// means there was a carry out of bit 3
+	flags.AuxiliaryCarry = (value & 0xF) != 0xF;
+	setZeroSignAndParity(flags, value);
 	// change F 
-	state.F=flags.getF();
+	state.F = flags.getF();
 }
 
 void Utilities::INR(State& state, uint8_t& value)
@@ -82,7 +64,7 @@ void Utilities::INR(State& state, uint8_t& value)
 	auto& flags = state.Flags;
 
 	++value;
-	// if lower 4 bits are 0, that means that theer was a 
+	// if lower 4 bits are 0, that means that there was a 
 	// carry out of bit 3
 	flags.AuxiliaryCarry = (value & 0xF) == 0;
 	setZeroSignAndParity(flags, value);
@@ -102,38 +84,6 @@ void Utilities::ANI(State& state, const uint8_t value)
 	// the logical OR of bit 3 of the values involved in the AND 
 	// operation
 	flags.AuxiliaryCarry = (state.A|value)&0x08;
-
-	state.A = tmp;
-
-	// change F 
-	state.F = flags.getF();
-}
-
-void Utilities::ADI(State& state, const uint8_t value)
-{
-	auto& flags = state.Flags;
-
-	uint16_t chp = state.A + value;
-	uint8_t tmp = chp & 0xFF;
-	setZeroSignAndParity(flags, tmp);
-	flags.Carry = chp >> 8;
-	flags.AuxiliaryCarry = (state.A ^ value ^ chp) & 0x10;
-
-	state.A = tmp;
-
-	// change F 
-	state.F = flags.getF();
-}
-
-void Utilities::ACI(State& state, const uint8_t value)
-{
-	auto& flags = state.Flags;
-
-	uint16_t chp = state.A + value + flags.Carry;
-	uint8_t tmp = chp & 0xFF;
-	setZeroSignAndParity(flags, tmp);
-	flags.Carry = chp >> 8;
-	flags.AuxiliaryCarry = (state.A ^ value ^ chp) & 0x10;
 
 	state.A = tmp;
 
@@ -247,82 +197,26 @@ void Utilities::DAA(State& state)
 
 	state.A = (a7_4 << 4) | a3_0;
 
-	flags.Zero = state.A == 0;
-
-	flags.Sign = state.A & 0x80;
-
-	flags.Parity = Utilities::isOddParity(state.A);
+	setZeroSignAndParity(flags, state.A);
 
 	// change F 
 	state.F = flags.getF();
 }
 
-void Utilities::ADD(State& state, const uint8_t value)
+void Utilities::ADD(State& state, const uint8_t value, const bool carry)
 {
 	auto& flags = state.Flags;
 
-	// Perform operation in higher precision
-	uint16_t a = ((uint16_t)state.A);
-	uint16_t b = ((uint16_t)value);
-	uint16_t chp = a + b;
+	uint16_t chp = state.A + value + carry;
+	uint8_t tmp = chp & 0xFF;
+	setZeroSignAndParity(flags, tmp);
+	flags.Carry = chp >> 8;
+	flags.AuxiliaryCarry = (state.A ^ value ^ chp) & 0x10;
 
-	// get result in normal precision
-	state.A = chp & 0xFF;
-
-	// ZERO CHECK
-	flags.Zero = state.A == 0;
-
-	// SIGN CHECK
-	flags.Sign = chp & 0x80;
-
-	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(state.A);
-
-	// CARRY BIT
-	flags.Carry = chp & 0x100;
-
-	// AUXILIARY CARRY
-	uint8_t a_ = a & 0x0F;
-	uint8_t b_ = b & 0x0F;
-	uint8_t c_ = a_ + b_;
-	flags.AuxiliaryCarry = c_ & 0x10;
+	state.A = tmp;
 
 	// change F 
-	state.F=flags.getF();
-}
-
-void Utilities::ADC(State& state, const uint8_t value)
-{
-	auto& flags = state.Flags;
-
-	// Perform operation in higher precision
-	uint16_t a = ((uint16_t)state.A);
-	uint16_t b = ((uint16_t)value) + flags.Carry;
-	uint16_t chp = a + b;
-
-	// get result in normal precision
-	state.A = chp & 0xFF;
-
-	// ZERO CHECK
-	flags.Zero = state.A == 0;
-
-	// SIGN CHECK
-	flags.Sign = chp & 0x80;
-
-	// PARITY CHECK
-	flags.Parity = Utilities::isOddParity(state.A);
-
-	// CARRY BIT
-	flags.Carry = chp & 0x100;
-
-	// AUXILIARY CARRY
-	uint8_t a_ = a & 0x0F;
-	uint8_t b_ = b & 0x0F;
-	uint8_t c_ = a_ + b_;
-	flags.AuxiliaryCarry = c_ & 0x10;
-
-	// change F 
-	state.F=flags.getF();
+	state.F = flags.getF();
 }
 
 void Utilities::SUB(State& state, const uint8_t value)

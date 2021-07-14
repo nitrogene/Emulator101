@@ -26,11 +26,8 @@ public:
 	static void DCR(State& state, uint8_t& value);
 	static void INR(State& state, uint8_t& value);
 	static void ANI(State& state, const uint8_t value);
-	static void ADI(State& state, const uint8_t value);
-	static void ACI(State& state, const uint8_t value);
 	static void DAD(State&, const uint8_t h, const uint8_t l);
-	static void ADD(State&, const uint8_t value);
-	static void ADC(State&, const uint8_t value);
+	static void ADD(State&, const uint8_t value, const bool carry);
 	static void SUB(State&, const uint8_t value);
 	static void SBB(State&, const uint8_t value);
 	static void ANA(State&, const uint8_t value);

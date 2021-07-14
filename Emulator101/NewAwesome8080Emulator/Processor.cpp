@@ -941,99 +941,99 @@ void Processor::RunStep()
 	case 0x80:
 	{
 		// ADD B
-		Utilities::ADD(m_State, m_State.B);
+		Utilities::ADD(m_State, m_State.B,0);
 		break;
 	}
 	case 0x81:
 	{
 		// ADD C
-		Utilities::ADD(m_State, m_State.C);
+		Utilities::ADD(m_State, m_State.C,0);
 		break;
 	}
 	case 0x82:
 	{
 		// ADD D
-		Utilities::ADD(m_State, m_State.D);
+		Utilities::ADD(m_State, m_State.D,0);
 		break;
 	}
 	case 0x83:
 	{
 		// ADD E
-		Utilities::ADD(m_State, m_State.E);
+		Utilities::ADD(m_State, m_State.E,0);
 		break;
 	}
 	case 0x84:
 	{
 		// ADD H
-		Utilities::ADD(m_State, m_State.H);
+		Utilities::ADD(m_State, m_State.H,0);
 		break;
 	}
 	case 0x85:
 	{
 		// ADD L
-		Utilities::ADD(m_State, m_State.L);
+		Utilities::ADD(m_State, m_State.L,0);
 		break;
 	}
 	case 0x86:
 	{
 		// ADD M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::ADD(m_State, m_MemoryMap.Peek(adr));
+		Utilities::ADD(m_State, m_MemoryMap.Peek(adr),0);
 		break;
 	}
 	case 0x87:
 	{
 		// ADD A
-		Utilities::ADD(m_State, m_State.A);
+		Utilities::ADD(m_State, m_State.A,0);
 		break;
 	}
 	case 0x88:
 	{
 		// ADC B
-		Utilities::ADC(m_State, m_State.B);
+		Utilities::ADD(m_State, m_State.B, m_State.Flags.Carry);
 		break;
 	}
 	case 0x89:
 	{
 		// ADC C
-		Utilities::ADC(m_State, m_State.C);
+		Utilities::ADD(m_State, m_State.C, m_State.Flags.Carry);
 		break;
 	}
 	case 0x8A:
 	{
 		// ADC D
-		Utilities::ADC(m_State, m_State.D);
+		Utilities::ADD(m_State, m_State.D, m_State.Flags.Carry);
 		break;
 	}
 	case 0x8B:
 	{
 		// ADC E
-		Utilities::ADC(m_State, m_State.E);
+		Utilities::ADD(m_State, m_State.E, m_State.Flags.Carry);
 		break;
 	}
 	case 0x8C:
 	{
 		// ADC H
-		Utilities::ADC(m_State, m_State.H);
+		Utilities::ADD(m_State, m_State.H, m_State.Flags.Carry);
 		break;
 	}
 	case 0x8D:
 	{
 		// ADC L
-		Utilities::ADC(m_State, m_State.L);
+		Utilities::ADD(m_State, m_State.L, m_State.Flags.Carry);
 		break;
 	}
 	case 0x8E:
 	{
 		// ADC M
 		uint16_t adr = Utilities::getAddrFromHighLow(m_State.H, m_State.L);
-		Utilities::ADC(m_State, m_MemoryMap.Peek(adr));
+		Utilities::ADD(m_State, m_MemoryMap.Peek(adr), m_State.Flags.Carry);
 		break;
 	}
 	case 0x8F:
 	{
 		// ADC A
-		Utilities::ADC(m_State, m_State.A);
+		Utilities::ADD(m_State, m_State.A, m_State.Flags.Carry);
 		break;
 	}
 	case 0x90:
@@ -1390,7 +1390,7 @@ void Processor::RunStep()
 	case 0xC6:
 	{
 		// ADI D8
-		Utilities::ADI(m_State, opCode[1]);
+		Utilities::ADD(m_State, opCode[1],0);
 		break;
 	}
 	case 0xC7:
@@ -1456,7 +1456,7 @@ void Processor::RunStep()
 	case 0xCE:
 	{
 		// ACI D8
-		Utilities::ACI(m_State, opCode[1]);
+		Utilities::ADD(m_State, opCode[1], m_State.Flags.Carry);
 		break;
 	}
 	case 0xCF:

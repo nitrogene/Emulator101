@@ -339,7 +339,7 @@ inline void i8080_rar(i8080* const c) {
 // Decimal Adjust Accumulator: the eight-bit number in register A is adjusted
 // to form two four-bit binary-coded-decimal digits.
 // For example, if A=$2B and DAA is executed, A becomes $31.
-static inline void i8080_daa(i8080* const c) {
+inline void i8080_daa(i8080* const c) {
   bool cy = c->cf;
   uint8_t correction = 0;
 
