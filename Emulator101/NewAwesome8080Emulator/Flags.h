@@ -30,10 +30,7 @@ C  State of Carry bit
 	bool Parity = false;
 	bool Carry = false;
 
-
-	uint8_t getF();
-
-	void setF(const uint8_t f);
-
-	std::string toString();
+	std::string toString() const;
+	uint8_t getF() const;
+	void setF(uint8_t f);
 };

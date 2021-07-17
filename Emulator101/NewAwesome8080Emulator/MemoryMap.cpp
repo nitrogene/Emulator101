@@ -46,18 +46,34 @@ void MemoryMap::Hexdump()
 	}
 }
 
-const uint8_t& MemoryMap::Peek(const uint16_t idx) const
+const uint8_t MemoryMap::Peek(const uint16_t adr) const
 {
-	return m_MemoryBuffer[idx];
+	return m_MemoryBuffer[adr];
 }
 
-void MemoryMap::Poke(const uint16_t idx, const uint8_t value)
+const uint16_t MemoryMap::Peek16(const uint16_t adr) const
 {
-	if (idx < m_RomSize && !m_AllowWritingToRom)
+	return m_MemoryBuffer[adr+1]<<8 | m_MemoryBuffer[adr];
+}
+
+void MemoryMap::Poke(const uint16_t adr, const uint8_t value)
+{
+	if (adr < m_RomSize && !m_AllowWritingToRom)
 	{
 		std::cout << "Writing to ROM!!!!" << std::endl;
 		return;
 	}
 		
-	m_MemoryBuffer[idx] = value;
+	m_MemoryBuffer[adr] = value;
+}
+
+void MemoryMap::Poke16(const uint16_t adr, const uint16_t value)
+{
+	Poke(adr, value & 0xFF);
+	Poke(adr+1, value >>8);
+}
+
+const uint8_t* MemoryMap::getOpCode(const uint16_t adr) const 
+{
+	return m_MemoryBuffer.data()+adr;
 }

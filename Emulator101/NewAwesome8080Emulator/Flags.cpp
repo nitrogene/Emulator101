@@ -1,52 +1,6 @@
 #include "Flags.h"
 
-uint8_t Flags::getF()
-{
-	/*
-	| | | |A| | | | |
-	|S|Z|0|C|0|P|1|C|
-	*/
-
-	uint8_t f = 0b00000010;
-
-	if (this->Carry)
-	{
-		f |= 0b00000001;
-	}
-
-	if (this->Parity)
-	{
-		f |= 0b00000100;
-	}
-
-	if (this->AuxiliaryCarry)
-	{
-		f |= 0b00010000;
-	}
-
-	if (this->Zero)
-	{
-		f |= 0b01000000;
-	}
-
-	if (this->Sign)
-	{
-		f |= 0b10000000;
-	}
-
-	return f;
-}
-
-void Flags::setF(const uint8_t f)
-{
-	this->Carry = f & 0b00000001;
-	this->Parity = f & 0b00000100;
-	this->AuxiliaryCarry = f & 0b00010000;
-	this->Zero = f & 0b01000000;
-	this->Sign = f & 0b10000000;
-}
-
-std::string Flags::toString()
+std::string Flags::toString() const
 {
 	std::string flags = "";
 	auto fun = [](bool b, std::string c) -> std::string
@@ -61,4 +15,26 @@ std::string Flags::toString()
 	flags += fun(AuxiliaryCarry, "AC");
 
 	return flags;
+}
+
+uint8_t Flags::getF() const
+{
+	uint8_t f = 0;
+	f |= Sign << 7;
+	f |= Zero << 6;
+	f |= AuxiliaryCarry << 4;
+	f |= Parity << 2;
+	f |= 1 << 1; 
+	f |= Carry << 0;
+
+	return f;
+}
+
+void Flags::setF(uint8_t f)
+{
+	Sign = (f >> 7) & 1;
+	Zero = (f >> 6) & 1;
+	AuxiliaryCarry = (f >> 4) & 1;
+	Parity = (f >> 2) & 1;
+	Carry = (f >> 0) & 1;
 }

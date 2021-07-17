@@ -15,8 +15,6 @@ struct State
 	uint8_t H = 0;
 	uint8_t L = 0;
 	uint8_t A = 0;
-	uint8_t F = 0;  // this "register" reflects flags state
-
 
 	// 16 bits Program counter
 	uint16_t PC = 0;

@@ -61,7 +61,7 @@ TEST_F(UtilitiesTest, ADD)
 	}
 }
 
-TEST_F(UtilitiesTest, ANI)
+TEST_F(UtilitiesTest, ANA)
 {
 	for (uint16_t a = 0; a <= 0xFF; ++a)
 	{
@@ -69,7 +69,7 @@ TEST_F(UtilitiesTest, ANI)
 		{
 			State state{};
 			state.A = (uint8_t)a;
-			Utilities::ANI(state, (uint8_t)v);
+			Utilities::ANA(state, (uint8_t)v);
 
 			auto c = std::make_shared<i8080>();
 			i8080_init(c.get());
@@ -88,17 +88,71 @@ TEST_F(UtilitiesTest, ANI)
 	}
 }
 
+TEST_F(UtilitiesTest, XRA)
+{
+	for (uint16_t a = 0; a <= 0xFF; ++a)
+	{
+		for (uint16_t v = 0; v <= 0xFF; ++v)
+		{
+			State state{};
+			state.A = (uint8_t)a;
+			Utilities::XRA(state, (uint8_t)v);
+
+			auto c = std::make_shared<i8080>();
+			i8080_init(c.get());
+			c->a = (uint8_t)a;
+			i8080_xra(c.get(), (uint8_t)v);
+
+			auto msg = "A=" + std::to_string(state.A) + "\t v=" + std::to_string(v);
+
+			EXPECT_EQ(state.A, c->a) << msg;
+			EXPECT_EQ(state.Flags.Sign, c->sf) << msg;
+			EXPECT_EQ(state.Flags.Zero, c->zf) << msg;
+			EXPECT_EQ(state.Flags.AuxiliaryCarry, c->hf) << msg;
+			EXPECT_EQ(state.Flags.Parity, c->pf) << msg;
+			EXPECT_EQ(state.Flags.Carry, c->cf) << msg;
+		}
+	}
+}
+
+TEST_F(UtilitiesTest, ORA)
+{
+	for (uint16_t a = 0; a <= 0xFF; ++a)
+	{
+		for (uint16_t v = 0; v <= 0xFF; ++v)
+		{
+			State state{};
+			state.A = (uint8_t)a;
+			Utilities::ORA(state, (uint8_t)v);
+
+			auto c = std::make_shared<i8080>();
+			i8080_init(c.get());
+			c->a = (uint8_t)a;
+			i8080_ora(c.get(), (uint8_t)v);
+
+			auto msg = "A=" + std::to_string(state.A) + "\t v=" + std::to_string(v);
+
+			EXPECT_EQ(state.A, c->a) << msg;
+			EXPECT_EQ(state.Flags.Sign, c->sf) << msg;
+			EXPECT_EQ(state.Flags.Zero, c->zf) << msg;
+			EXPECT_EQ(state.Flags.AuxiliaryCarry, c->hf) << msg;
+			EXPECT_EQ(state.Flags.Parity, c->pf) << msg;
+			EXPECT_EQ(state.Flags.Carry, c->cf) << msg;
+		}
+	}
+}
+
 TEST_F(UtilitiesTest, INR)
 {
 	for (uint16_t v = 0; v <= 0xFF; ++v)
 	{
 		State state{};
-		uint8_t value = v;
+		uint8_t value = (uint8_t)v;
 		Utilities::INR(state, value);
 
 		auto c = std::make_shared<i8080>();
 		i8080_init(c.get());
-		auto result=i8080_inr(c.get(), v);
+		auto result=i8080_inr(c.get(), (uint8_t)v);
 
 		auto msg = "v=" + std::to_string(v);
 
@@ -240,12 +294,12 @@ TEST_F(UtilitiesTest, DCR)
 	for (uint16_t v = 0; v <= 0xFF; ++v)
 	{
 		State state{};
-		uint8_t value = v;
+		uint8_t value = (uint8_t)v;
 		Utilities::DCR(state, value);
 
 		auto c = std::make_shared<i8080>();
 		i8080_init(c.get());
-		auto result = i8080_dcr(c.get(), v);
+		auto result = i8080_dcr(c.get(), (uint8_t)v);
 
 		auto msg = "v=" + std::to_string(v);
 
@@ -279,5 +333,32 @@ TEST_F(UtilitiesTest, DAA)
 		EXPECT_EQ(state.Flags.AuxiliaryCarry, c->hf) << msg;
 		EXPECT_EQ(state.Flags.Parity, c->pf) << msg;
 		EXPECT_EQ(state.Flags.Carry, c->cf) << msg;
+	}
+}
+
+TEST_F(UtilitiesTest, SUB)
+{
+	for (uint16_t a = 0; a <= 0xFF; ++a)
+	{
+		for (uint16_t v = 0; v <= 0xFF; ++v)
+		{
+			State state{};
+			state.A = (uint8_t)a;
+			Utilities::SUB(state, (uint8_t)v,0);
+
+			auto c = std::make_shared<i8080>();
+			i8080_init(c.get());
+			c->a = (uint8_t)a;
+			i8080_sub(c.get(), &c->a, (uint8_t)v, false);
+
+			auto msg = "A=" + std::to_string(state.A) + "\t v=" + std::to_string(v);
+
+			EXPECT_EQ(state.A, c->a) << msg;
+			EXPECT_EQ(state.Flags.Sign, c->sf) << msg;
+			EXPECT_EQ(state.Flags.Zero, c->zf) << msg;
+			EXPECT_EQ(state.Flags.AuxiliaryCarry, c->hf) << msg;
+			EXPECT_EQ(state.Flags.Parity, c->pf) << msg;
+			EXPECT_EQ(state.Flags.Carry, c->cf) << msg;
+		}
 	}
 }

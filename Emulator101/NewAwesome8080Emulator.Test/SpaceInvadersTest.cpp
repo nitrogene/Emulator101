@@ -3,9 +3,10 @@
 
 void SpaceInvadersTest::fun()
 {
+	auto& map = p_Processor->getMemoryMap();
 	auto& state = p_Processor->getState();
-	const auto& opCode = p_Processor->Peek(state.PC);
-	auto isl= p_Processor->getIsl(opCode);
+	auto opCode = map.getOpCode(p_Processor->getState().PC);
+	auto isl= p_Processor->getIsl(opCode[0]);
 
 	p_Processor->RunStep();
 	state = p_Processor->getState();
@@ -33,7 +34,12 @@ void SpaceInvadersTest::fun()
 
 	// Program counter
 	EXPECT_EQ(state.PC, p_i8080State->pc) << msg;
+
+	// Stack pointer
 	EXPECT_EQ(state.SP, p_i8080State->sp) << msg;
+
+	// Cycles
+	EXPECT_EQ(state.Cycles, p_i8080State->cyc) << msg;
 }
 
 TEST_F(SpaceInvadersTest, Step10)

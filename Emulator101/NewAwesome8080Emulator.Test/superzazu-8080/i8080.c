@@ -178,7 +178,7 @@ void i8080_add(
 
 // substracts a byte (+ an optional carry flag) from a register
 // see https://stackoverflow.com/a/8037485
-static inline void i8080_sub(
+ inline void i8080_sub(
     i8080* const c, uint8_t* const reg, uint8_t val, bool cy) {
   i8080_add(c, reg, ~val, !cy);
   c->cf = !c->cf;
@@ -218,7 +218,7 @@ void i8080_ana(i8080* const c, uint8_t val) {
 
 // executes a logic "xor" between register A and a byte, then stores the
 // result in register A
-static inline void i8080_xra(i8080* const c, uint8_t val) {
+inline void i8080_xra(i8080* const c, uint8_t val) {
   c->a ^= val;
   c->cf = 0;
   c->hf = 0;
@@ -227,7 +227,7 @@ static inline void i8080_xra(i8080* const c, uint8_t val) {
 
 // executes a logic "or" between register A and a byte, then stores the
 // result in register A
-static inline void i8080_ora(i8080* const c, uint8_t val) {
+inline void i8080_ora(i8080* const c, uint8_t val) {
   c->a |= val;
   c->cf = 0;
   c->hf = 0;

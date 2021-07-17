@@ -171,7 +171,7 @@ int main(int /*argc*/, char** /*argv*/)
 		}
 
 
-		auto opCode = &processor->Peek(state.PC);
+		auto opCode = map.getOpCode(processor->getState().PC);
 		const auto& isl = processor->getIsl(opCode[0]);
 
 		if (opCode[0] == 0xCD)
@@ -184,7 +184,7 @@ int main(int /*argc*/, char** /*argv*/)
 					// C_WRITESTR
 					std::string output;
 					uint16_t adr = (state.D << 8) | state.E;
-					auto str = (const char*)&processor->Peek(adr);
+					auto str = (const char*)map.Peek(adr);
 					while (*str != '$')
 					{
 						output += *str++;

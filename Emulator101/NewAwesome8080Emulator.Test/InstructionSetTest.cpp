@@ -13,7 +13,7 @@ TEST_F(InstructionSetTest, NOP)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -42,7 +42,7 @@ TEST_F(InstructionSetTest, LXI_B)
 	EXPECT_EQ(m_State.C, 0x03);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -71,7 +71,7 @@ TEST_F(InstructionSetTest, LXI_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x01);
 	EXPECT_EQ(m_State.E, 0x03);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -100,7 +100,7 @@ TEST_F(InstructionSetTest, LXI_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x01);
 	EXPECT_EQ(m_State.L, 0x03);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -129,7 +129,7 @@ TEST_F(InstructionSetTest, LXI_SP)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -161,7 +161,7 @@ TEST_F(InstructionSetTest, STAX_B)
 	EXPECT_EQ(m_State.C, 0x16);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -193,7 +193,7 @@ TEST_F(InstructionSetTest, STAX_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x3F);
 	EXPECT_EQ(m_State.E, 0x16);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -222,7 +222,7 @@ TEST_F(InstructionSetTest, INX_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -251,7 +251,7 @@ TEST_F(InstructionSetTest, INX_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x39);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -280,7 +280,7 @@ TEST_F(InstructionSetTest, INX_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x39);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -308,7 +308,7 @@ TEST_F(InstructionSetTest, INX_SP)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -339,7 +339,7 @@ TEST_F(InstructionSetTest, INR_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -370,7 +370,7 @@ TEST_F(InstructionSetTest, INR_C)
 	EXPECT_EQ(m_State.C, 0x03);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -401,7 +401,7 @@ TEST_F(InstructionSetTest, INR_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x03);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -432,7 +432,7 @@ TEST_F(InstructionSetTest, INR_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x03);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -463,7 +463,7 @@ TEST_F(InstructionSetTest, INR_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0x03);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -494,7 +494,7 @@ TEST_F(InstructionSetTest, INR_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x03);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -530,7 +530,7 @@ TEST_F(InstructionSetTest, INR_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0x25);
 	EXPECT_EQ(m_State.L, 0x34);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -561,7 +561,7 @@ TEST_F(InstructionSetTest, INR_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -589,7 +589,7 @@ TEST_F(InstructionSetTest, RLC)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x03);
+	EXPECT_EQ(m_State.Flags.getF(), 0x03);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -617,7 +617,7 @@ TEST_F(InstructionSetTest, RRC)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -645,7 +645,7 @@ TEST_F(InstructionSetTest, RAL)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x03);
+	EXPECT_EQ(m_State.Flags.getF(), 0x03);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -674,7 +674,7 @@ TEST_F(InstructionSetTest, RAR)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -705,7 +705,7 @@ TEST_F(InstructionSetTest, DAD_B)
 	EXPECT_EQ(m_State.C,  0x339F & 0b0000000011111111);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0xD5);
 	EXPECT_EQ(m_State.L, 0x1A);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -736,7 +736,7 @@ TEST_F(InstructionSetTest, DAD_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, (0x339F & 0b1111111100000000) >> 8);
 	EXPECT_EQ(m_State.E, 0x339F & 0b0000000011111111);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0xD5);
 	EXPECT_EQ(m_State.L, 0x1A);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -765,7 +765,7 @@ TEST_F(InstructionSetTest, DAD_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x03);
+	EXPECT_EQ(m_State.Flags.getF(), 0x03);
 	EXPECT_EQ(m_State.H, (0x42F6 & 0b1111111100000000) >> 8);
 	EXPECT_EQ(m_State.L, 0x42F6 & 0b0000000011111111);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -795,7 +795,7 @@ TEST_F(InstructionSetTest, LDAX_B)
 	EXPECT_EQ(m_State.C, 0x8B);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -825,7 +825,7 @@ TEST_F(InstructionSetTest, LDAX_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x93);
 	EXPECT_EQ(m_State.E, 0x8B);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -853,7 +853,7 @@ TEST_F(InstructionSetTest, MVI_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -881,7 +881,7 @@ TEST_F(InstructionSetTest, MVI_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -909,7 +909,7 @@ TEST_F(InstructionSetTest, MVI_C)
 	EXPECT_EQ(m_State.C, 0x3C);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -937,7 +937,7 @@ TEST_F(InstructionSetTest, MVI_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x3C);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -965,7 +965,7 @@ TEST_F(InstructionSetTest, MVI_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x3C);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -993,7 +993,7 @@ TEST_F(InstructionSetTest, MVI_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x3C);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1021,7 +1021,7 @@ TEST_F(InstructionSetTest, MVI_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x3C);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1053,7 +1053,7 @@ TEST_F(InstructionSetTest, MVI_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x3C);
 	EXPECT_EQ(m_State.L, 0xF4);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1082,7 +1082,7 @@ TEST_F(InstructionSetTest, DCX_B)
 	EXPECT_EQ(m_State.C, 0xFF);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1111,7 +1111,7 @@ TEST_F(InstructionSetTest, DCX_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x97);
 	EXPECT_EQ(m_State.E, 0xFF);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1140,7 +1140,7 @@ TEST_F(InstructionSetTest, DCX_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x97);
 	EXPECT_EQ(m_State.L, 0xFF);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1168,7 +1168,7 @@ TEST_F(InstructionSetTest, DCX_SP)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1203,7 +1203,7 @@ TEST_F(InstructionSetTest, SHLD_adr)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0xAE);
 	EXPECT_EQ(m_State.L, 0x29);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1231,7 +1231,7 @@ TEST_F(InstructionSetTest, DAA)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x13);
+	EXPECT_EQ(m_State.Flags.getF(), 0x13);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1262,7 +1262,7 @@ TEST_F(InstructionSetTest, LHLD_adr)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x03);
 	EXPECT_EQ(m_State.L, 0xFF);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1290,7 +1290,7 @@ TEST_F(InstructionSetTest, CMA)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1322,7 +1322,7 @@ TEST_F(InstructionSetTest, STA_adr)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1350,7 +1350,7 @@ TEST_F(InstructionSetTest, DCR_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1378,7 +1378,7 @@ TEST_F(InstructionSetTest, DCR_C)
 	EXPECT_EQ(m_State.C, 0x3F);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1406,7 +1406,7 @@ TEST_F(InstructionSetTest, DCR_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x3F);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1434,7 +1434,7 @@ TEST_F(InstructionSetTest, DCR_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x3F);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1462,7 +1462,7 @@ TEST_F(InstructionSetTest, DCR_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0x3F);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1490,7 +1490,7 @@ TEST_F(InstructionSetTest, DCR_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x3F);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1522,7 +1522,7 @@ TEST_F(InstructionSetTest, DCR_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0x3A);
 	EXPECT_EQ(m_State.L, 0x7C);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1550,7 +1550,7 @@ TEST_F(InstructionSetTest, DCR_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1577,7 +1577,7 @@ TEST_F(InstructionSetTest, STC)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x03);
+	EXPECT_EQ(m_State.Flags.getF(), 0x03);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1607,7 +1607,7 @@ TEST_F(InstructionSetTest, LDA_adr)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1635,7 +1635,7 @@ TEST_F(InstructionSetTest, DAD_SP)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0xA1);
 	EXPECT_EQ(m_State.L, 0x7B);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1662,7 +1662,7 @@ TEST_F(InstructionSetTest, CMC)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x03);
+	EXPECT_EQ(m_State.Flags.getF(), 0x03);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1691,7 +1691,7 @@ TEST_F(InstructionSetTest, ADD_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x96);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1720,7 +1720,7 @@ TEST_F(InstructionSetTest, ADD_C)
 	EXPECT_EQ(m_State.C, 0x2E);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x96);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1749,7 +1749,7 @@ TEST_F(InstructionSetTest, ADD_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x2E);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x96);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1778,7 +1778,7 @@ TEST_F(InstructionSetTest, ADD_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x2E);
-	EXPECT_EQ(m_State.F, 0x96);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1807,7 +1807,7 @@ TEST_F(InstructionSetTest, ADD_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x96);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0x2E);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1836,7 +1836,7 @@ TEST_F(InstructionSetTest, ADD_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x96);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x2E);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1868,7 +1868,7 @@ TEST_F(InstructionSetTest, ADD_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x96);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0x2E);
 	EXPECT_EQ(m_State.L, 0x2E);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1896,7 +1896,7 @@ TEST_F(InstructionSetTest, ADD_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x96);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1925,7 +1925,7 @@ TEST_F(InstructionSetTest, ADC_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0X02);
+	EXPECT_EQ(m_State.Flags.getF(), 0X02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -1955,7 +1955,7 @@ TEST_F(InstructionSetTest, ADC_B2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x92);
+	EXPECT_EQ(m_State.Flags.getF(), 0x92);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -1984,7 +1984,7 @@ TEST_F(InstructionSetTest, ADC_C)
 	EXPECT_EQ(m_State.C, 0x3D);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2014,7 +2014,7 @@ TEST_F(InstructionSetTest, ADC_C2)
 	EXPECT_EQ(m_State.C, 0x3D);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x92);
+	EXPECT_EQ(m_State.Flags.getF(), 0x92);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2043,7 +2043,7 @@ TEST_F(InstructionSetTest, ADC_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x3D);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2073,7 +2073,7 @@ TEST_F(InstructionSetTest, ADC_D2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x3D);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x92);
+	EXPECT_EQ(m_State.Flags.getF(), 0x92);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2102,7 +2102,7 @@ TEST_F(InstructionSetTest, ADC_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x3D);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2132,7 +2132,7 @@ TEST_F(InstructionSetTest, ADC_E2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x3D);
-	EXPECT_EQ(m_State.F, 0x92);
+	EXPECT_EQ(m_State.Flags.getF(), 0x92);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2161,7 +2161,7 @@ TEST_F(InstructionSetTest, ADC_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x3D);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2191,7 +2191,7 @@ TEST_F(InstructionSetTest, ADC_H2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x92);
+	EXPECT_EQ(m_State.Flags.getF(), 0x92);
 	EXPECT_EQ(m_State.H, 0x3D);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2220,7 +2220,7 @@ TEST_F(InstructionSetTest, ADC_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x3D);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2250,7 +2250,7 @@ TEST_F(InstructionSetTest, ADC_L2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x92);
+	EXPECT_EQ(m_State.Flags.getF(), 0x92);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x3D);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2278,7 +2278,7 @@ TEST_F(InstructionSetTest, ADC_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x86);
+	EXPECT_EQ(m_State.Flags.getF(), 0x86);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2310,7 +2310,7 @@ TEST_F(InstructionSetTest, ADC_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x2E);
 	EXPECT_EQ(m_State.L, 0x2E);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2343,7 +2343,7 @@ TEST_F(InstructionSetTest, ADC_M2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x92);
+	EXPECT_EQ(m_State.Flags.getF(), 0x92);
 	EXPECT_EQ(m_State.H, 0x2E);
 	EXPECT_EQ(m_State.L, 0x2E);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2372,7 +2372,7 @@ TEST_F(InstructionSetTest, SUB_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2401,7 +2401,7 @@ TEST_F(InstructionSetTest, SUB_C)
 	EXPECT_EQ(m_State.C, 0x3D);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2430,7 +2430,7 @@ TEST_F(InstructionSetTest, SUB_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x3D);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2459,7 +2459,7 @@ TEST_F(InstructionSetTest, SUB_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x3D);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2488,7 +2488,7 @@ TEST_F(InstructionSetTest, SUB_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0x3D);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2517,7 +2517,7 @@ TEST_F(InstructionSetTest, SUB_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x3D);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2545,7 +2545,7 @@ TEST_F(InstructionSetTest, SUB_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x56);
+	EXPECT_EQ(m_State.Flags.getF(), 0x56);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2577,7 +2577,7 @@ TEST_F(InstructionSetTest, SUB_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0x12);
 	EXPECT_EQ(m_State.L, 0x12);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2607,7 +2607,7 @@ TEST_F(InstructionSetTest, SBB_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x12);
+	EXPECT_EQ(m_State.Flags.getF(), 0x12);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2637,7 +2637,7 @@ TEST_F(InstructionSetTest, SBB_C)
 	EXPECT_EQ(m_State.C, 0x02);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x12);
+	EXPECT_EQ(m_State.Flags.getF(), 0x12);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2667,7 +2667,7 @@ TEST_F(InstructionSetTest, SBB_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x02);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x12);
+	EXPECT_EQ(m_State.Flags.getF(), 0x12);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2697,7 +2697,7 @@ TEST_F(InstructionSetTest, SBB_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x02);
-	EXPECT_EQ(m_State.F, 0x12);
+	EXPECT_EQ(m_State.Flags.getF(), 0x12);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2727,7 +2727,7 @@ TEST_F(InstructionSetTest, SBB_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x12);
+	EXPECT_EQ(m_State.Flags.getF(), 0x12);
 	EXPECT_EQ(m_State.H, 0x02);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2757,7 +2757,7 @@ TEST_F(InstructionSetTest, SBB_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x12);
+	EXPECT_EQ(m_State.Flags.getF(), 0x12);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x02);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2790,7 +2790,7 @@ TEST_F(InstructionSetTest, SBB_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x12);
+	EXPECT_EQ(m_State.Flags.getF(), 0x12);
 	EXPECT_EQ(m_State.H, 0x12);
 	EXPECT_EQ(m_State.L, 0x12);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -2819,7 +2819,7 @@ TEST_F(InstructionSetTest, SBB_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x87);
+	EXPECT_EQ(m_State.Flags.getF(), 0x87);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -2848,10 +2848,10 @@ TEST_F(InstructionSetTest, ANA_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 4);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -2877,10 +2877,10 @@ TEST_F(InstructionSetTest, ANA_C)
 	EXPECT_EQ(m_State.C, 0x0F);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 4);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -2906,10 +2906,10 @@ TEST_F(InstructionSetTest, ANA_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x0F);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 4);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -2935,10 +2935,10 @@ TEST_F(InstructionSetTest, ANA_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x0F);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 4);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -2965,10 +2965,10 @@ TEST_F(InstructionSetTest, ANA_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0x0F);
 	EXPECT_EQ(m_State.L, 0);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 4);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -2994,10 +2994,10 @@ TEST_F(InstructionSetTest, ANA_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x0F);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 4);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -3026,10 +3026,10 @@ TEST_F(InstructionSetTest, ANA_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0x12);
 	EXPECT_EQ(m_State.L, 0x12);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 7);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -3054,10 +3054,10 @@ TEST_F(InstructionSetTest, ANA_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x86);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 4);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -3083,7 +3083,7 @@ TEST_F(InstructionSetTest, XRA_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x86);
+	EXPECT_EQ(m_State.Flags.getF(), 0x86);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3112,7 +3112,7 @@ TEST_F(InstructionSetTest, XRA_C)
 	EXPECT_EQ(m_State.C, 0x0F);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x86);
+	EXPECT_EQ(m_State.Flags.getF(), 0x86);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3141,7 +3141,7 @@ TEST_F(InstructionSetTest, XRA_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x0F);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x86);
+	EXPECT_EQ(m_State.Flags.getF(), 0x86);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3170,7 +3170,7 @@ TEST_F(InstructionSetTest, XRA_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x0F);
-	EXPECT_EQ(m_State.F, 0x86);
+	EXPECT_EQ(m_State.Flags.getF(), 0x86);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3199,7 +3199,7 @@ TEST_F(InstructionSetTest, XRA_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x86);
+	EXPECT_EQ(m_State.Flags.getF(), 0x86);
 	EXPECT_EQ(m_State.H, 0x0F);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3228,7 +3228,7 @@ TEST_F(InstructionSetTest, XRA_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x86);
+	EXPECT_EQ(m_State.Flags.getF(), 0x86);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x0F);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3260,7 +3260,7 @@ TEST_F(InstructionSetTest, XRA_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x86);
+	EXPECT_EQ(m_State.Flags.getF(), 0x86);
 	EXPECT_EQ(m_State.H, 0x12);
 	EXPECT_EQ(m_State.L, 0x12);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3289,7 +3289,7 @@ TEST_F(InstructionSetTest, ORA_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3318,7 +3318,7 @@ TEST_F(InstructionSetTest, ORA_C)
 	EXPECT_EQ(m_State.C, 0x0F);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3347,7 +3347,7 @@ TEST_F(InstructionSetTest, ORA_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x0F);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3376,7 +3376,7 @@ TEST_F(InstructionSetTest, ORA_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x0F);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3405,7 +3405,7 @@ TEST_F(InstructionSetTest, ORA_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0x0F);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3434,7 +3434,7 @@ TEST_F(InstructionSetTest, ORA_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x0F);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3466,7 +3466,7 @@ TEST_F(InstructionSetTest, ORA_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0x12);
 	EXPECT_EQ(m_State.L, 0x12);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3494,7 +3494,7 @@ TEST_F(InstructionSetTest, ORA_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3523,7 +3523,7 @@ TEST_F(InstructionSetTest, CMP_B)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x16);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -3552,7 +3552,7 @@ TEST_F(InstructionSetTest, CMP_B2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x83);
+	EXPECT_EQ(m_State.Flags.getF(), 0x83);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3581,7 +3581,7 @@ TEST_F(InstructionSetTest, CMP_C)
 	EXPECT_EQ(m_State.C, 0x05);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x16);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -3610,7 +3610,7 @@ TEST_F(InstructionSetTest, CMP_C2)
 	EXPECT_EQ(m_State.C, 0x05);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x83);
+	EXPECT_EQ(m_State.Flags.getF(), 0x83);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3639,7 +3639,7 @@ TEST_F(InstructionSetTest, CMP_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x05);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x16);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -3668,7 +3668,7 @@ TEST_F(InstructionSetTest, CMP_D2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x05);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x83);
+	EXPECT_EQ(m_State.Flags.getF(), 0x83);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3697,7 +3697,7 @@ TEST_F(InstructionSetTest, CMP_E)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x05);
-	EXPECT_EQ(m_State.F, 0x16);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -3726,7 +3726,7 @@ TEST_F(InstructionSetTest, CMP_E2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0x05);
-	EXPECT_EQ(m_State.F, 0x83);
+	EXPECT_EQ(m_State.Flags.getF(), 0x83);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3755,7 +3755,7 @@ TEST_F(InstructionSetTest, CMP_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x16);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0x05);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -3784,7 +3784,7 @@ TEST_F(InstructionSetTest, CMP_H2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x83);
+	EXPECT_EQ(m_State.Flags.getF(), 0x83);
 	EXPECT_EQ(m_State.H, 0x05);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3813,7 +3813,7 @@ TEST_F(InstructionSetTest, CMP_L)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x16);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x05);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -3842,7 +3842,7 @@ TEST_F(InstructionSetTest, CMP_L2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x83);
+	EXPECT_EQ(m_State.Flags.getF(), 0x83);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0x05);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3874,7 +3874,7 @@ TEST_F(InstructionSetTest, CMP_M)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x16);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0x12);
 	EXPECT_EQ(m_State.L, 0x12);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -3906,7 +3906,7 @@ TEST_F(InstructionSetTest, CMP_M2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x83);
+	EXPECT_EQ(m_State.Flags.getF(), 0x83);
 	EXPECT_EQ(m_State.H, 0x12);
 	EXPECT_EQ(m_State.L, 0x12);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -3934,7 +3934,7 @@ TEST_F(InstructionSetTest, CMP_A)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x56);
+	EXPECT_EQ(m_State.Flags.getF(), 0x56);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -3962,7 +3962,7 @@ TEST_F(InstructionSetTest, CMP_A2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x56);
+	EXPECT_EQ(m_State.Flags.getF(), 0x56);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -3990,7 +3990,7 @@ TEST_F(InstructionSetTest, SUI_D8)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x87);
+	EXPECT_EQ(m_State.Flags.getF(), 0x87);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4018,7 +4018,7 @@ TEST_F(InstructionSetTest, SBI_D8)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x87);
+	EXPECT_EQ(m_State.Flags.getF(), 0x87);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4047,7 +4047,7 @@ TEST_F(InstructionSetTest, SBI_D8_2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x83);
+	EXPECT_EQ(m_State.Flags.getF(), 0x83);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4076,7 +4076,7 @@ TEST_F(InstructionSetTest, ORI_D8)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x82);
+	EXPECT_EQ(m_State.Flags.getF(), 0x82);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4105,7 +4105,7 @@ TEST_F(InstructionSetTest, XRI_D8)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x82);
+	EXPECT_EQ(m_State.Flags.getF(), 0x82);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4137,7 +4137,7 @@ TEST_F(InstructionSetTest, PUSH_B)
 	EXPECT_EQ(m_State.C, 0x9D);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4169,7 +4169,7 @@ TEST_F(InstructionSetTest, PUSH_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x8F);
 	EXPECT_EQ(m_State.E, 0x9D);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4201,7 +4201,7 @@ TEST_F(InstructionSetTest, PUSH_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x8F);
 	EXPECT_EQ(m_State.L, 0x9D);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4226,7 +4226,6 @@ TEST_F(InstructionSetTest, PUSH_PSW)
 	m_State.Flags.Carry = true;
 	m_State.Flags.Zero = true;
 	m_State.Flags.Parity = true;
-	m_State.F = m_State.Flags.getF();
 	p_Processor->RunStep();
 
 	EXPECT_EQ(m_MemoryMap.Peek(0x5029), 0x1F);
@@ -4236,7 +4235,7 @@ TEST_F(InstructionSetTest, PUSH_PSW)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x47);
+	EXPECT_EQ(m_State.Flags.getF(), 0x47);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4265,7 +4264,7 @@ TEST_F(InstructionSetTest, CALL)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4296,7 +4295,7 @@ TEST_F(InstructionSetTest, XCHG)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x00);
 	EXPECT_EQ(m_State.E, 0xFF);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x33);
 	EXPECT_EQ(m_State.L, 0x55);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4326,7 +4325,7 @@ TEST_F(InstructionSetTest, POP_B)
 	EXPECT_EQ(m_State.C, 0x3D);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4356,7 +4355,7 @@ TEST_F(InstructionSetTest, POP_D)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0x93);
 	EXPECT_EQ(m_State.E, 0x3D);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4386,7 +4385,7 @@ TEST_F(InstructionSetTest, POP_H)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x93);
 	EXPECT_EQ(m_State.L, 0x3D);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4416,7 +4415,7 @@ TEST_F(InstructionSetTest, POP_PSW)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0xC3);
+	EXPECT_EQ(m_State.Flags.getF(), 0xC3);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4445,7 +4444,7 @@ TEST_F(InstructionSetTest, CPI)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x16);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -4473,10 +4472,10 @@ TEST_F(InstructionSetTest, CPI_1)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x46);
+	EXPECT_EQ(m_State.Flags.getF(), 0x56);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 7);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -4501,10 +4500,10 @@ TEST_F(InstructionSetTest, CPI_2)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x97);
+	EXPECT_EQ(m_State.Flags.getF(), 0x87);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
-	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_TRUE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 7);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -4529,11 +4528,11 @@ TEST_F(InstructionSetTest, CPI_3)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x97);
+	EXPECT_EQ(m_State.Flags.getF(), 0x96);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
-	EXPECT_TRUE(m_State.Flags.Carry);
+	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 7);
 	EXPECT_TRUE(m_State.Flags.Parity);
 	EXPECT_EQ(m_State.PC, 2);
@@ -4563,7 +4562,7 @@ TEST_F(InstructionSetTest, XTHL)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x0D);
 	EXPECT_EQ(m_State.L, 0xF0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4591,7 +4590,7 @@ TEST_F(InstructionSetTest, ADI)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x06);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4611,7 +4610,7 @@ TEST_F(InstructionSetTest, ADI)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x17);
+	EXPECT_EQ(m_State.Flags.getF(), 0x17);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -4639,7 +4638,7 @@ TEST_F(InstructionSetTest, ACI)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x17);
+	EXPECT_EQ(m_State.Flags.getF(), 0x17);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
@@ -4659,7 +4658,7 @@ TEST_F(InstructionSetTest, ACI)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4687,7 +4686,7 @@ TEST_F(InstructionSetTest, SUI)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x87);
+	EXPECT_EQ(m_State.Flags.getF(), 0x87);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4715,10 +4714,10 @@ TEST_F(InstructionSetTest, ANI)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x06);
+	EXPECT_EQ(m_State.Flags.getF(), 0x16);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
-	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
+	EXPECT_TRUE(m_State.Flags.AuxiliaryCarry);
 	EXPECT_FALSE(m_State.Flags.Carry);
 	EXPECT_EQ(m_State.Cycles, 7);
 	EXPECT_TRUE(m_State.Flags.Parity);
@@ -4744,7 +4743,7 @@ TEST_F(InstructionSetTest, SPHL)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0x50);
 	EXPECT_EQ(m_State.L, 0x6C);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4777,7 +4776,7 @@ TEST_F(InstructionSetTest, CALL_RET_HLT)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4800,7 +4799,7 @@ TEST_F(InstructionSetTest, CALL_RET_HLT)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);
@@ -4823,7 +4822,7 @@ TEST_F(InstructionSetTest, CALL_RET_HLT)
 	EXPECT_EQ(m_State.C, 0);
 	EXPECT_EQ(m_State.D, 0);
 	EXPECT_EQ(m_State.E, 0);
-	EXPECT_EQ(m_State.F, 0x02);
+	EXPECT_EQ(m_State.Flags.getF(), 0x02);
 	EXPECT_EQ(m_State.H, 0);
 	EXPECT_EQ(m_State.L, 0);
 	EXPECT_FALSE(m_State.Flags.AuxiliaryCarry);

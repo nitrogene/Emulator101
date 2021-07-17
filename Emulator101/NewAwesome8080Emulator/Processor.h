@@ -67,9 +67,6 @@ public:
 
 	void setPC(const uint16_t pc);
 
-	// Return the memory content at address =idx
-	const uint8_t& Peek(const uint16_t idx) const;
-
 	const InstructionSetLine& getIsl(const uint8_t idx) const;
 
 	MemoryMap& getMemoryMap();

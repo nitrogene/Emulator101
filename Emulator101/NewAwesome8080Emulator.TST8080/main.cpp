@@ -63,7 +63,7 @@ int main(int /*argc*/, char** /*argv*/)
 			Under CP/M 3 and above, the terminating character can be changed using BDOS function 110.
 		*/
 
-		auto opCode = &processor->Peek(processor->getState().PC);
+		auto opCode = map.getOpCode(processor->getState().PC);
 		auto& state = processor->getState();
 		const auto& isl = processor->getIsl(opCode[0]);
 
@@ -90,7 +90,7 @@ int main(int /*argc*/, char** /*argv*/)
 					// C_WRITESTR
 					std::string output;
 					uint16_t adr = (state.D << 8) | state.E;
-					auto str = (const char*)&processor->Peek(adr);
+					auto str = (const char*)map.Peek(adr);
 					while (*str != '$')
 					{
 						output += *str++;
@@ -129,7 +129,7 @@ int main(int /*argc*/, char** /*argv*/)
 		processor->RunStep();
 		i8080_step(p_i8080State.get());
 
-		opCode = &processor->Peek(processor->getState().PC);
+		opCode = map.getOpCode(processor->getState().PC);
 		state = processor->getState();
 		const auto& isl2 = processor->getIsl(opCode[0]);
 
