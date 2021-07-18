@@ -1,14 +1,11 @@
 #include <iostream>
-#include <fstream>
 #include <windows.h> 
 #ifdef max 
 #undef max
 #endif
 #include <fmt/core.h>
 #include "Processor.h"
-#include <SDL.h>
-
-using namespace std::chrono_literals;
+#include "../../Emulator101/NewAwesome8080Emulator.Test/superzazu-8080/i8080.h"
 
 const static std::vector<std::filesystem::path> roms
 {
@@ -16,60 +13,14 @@ const static std::vector<std::filesystem::path> roms
 };
 
 const static std::filesystem::path instructions = "InstructionSet.csv";
-
-bool quit = false;
-bool trace = false;
-bool file = false;
-
-void handleInput(bool& quit)
-{
-	SDL_Event event;
-
-	while (SDL_PollEvent(&event))
-	{
-		switch (event.type)
-		{
-		case SDL_QUIT:
-			quit = true;
-			break;
-
-		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_d)
-			{
-				trace = !trace;
-			}
-			else if (event.key.keysym.sym == SDLK_f)
-			{
-				file = !file;
-			}
-			break;
-		}
-	}
-}
-
 int main(int /*argc*/, char** /*argv*/)
 {
-	SDL_Event event{};
-	SDL_Renderer* renderer = nullptr;
-	SDL_Window* window = nullptr;
-
-	SDL_Init(SDL_INIT_VIDEO);
-	SDL_CreateWindowAndRenderer(224, 256, 0, &window, &renderer);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
-
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
 	// This roms should start at 0x100, thus we need empty NOP vector
 	// and settinf PC to 0x100.
 	auto bytes = std::vector<uint8_t>(0x100, 0x0);
 
 	auto processor = std::make_shared<Processor>(instructions);
-	auto& state = processor->getState();
 
-	// This rom use temporary variables:
-	// THus, we have to allow writing to ROM
 	processor->Initialize(roms, 0xFFFF, bytes, true);
 
 	auto& map = processor->getMemoryMap();
@@ -77,66 +28,31 @@ int main(int /*argc*/, char** /*argv*/)
 	// the original assembly code has a ORG 00100H, thus we set PC to 0x100
 	processor->setPC(0x100);
 
-	//{
-	//	std::ofstream outs("CPUTEST.HEX");
-	//	processor->DisassembleRomStacksize(0x100, map.romSize() + 0x100, outs);
-	//	outs.close();
-	//}
-
-	std::ofstream debugFile("debug.log");
-
-	while (!processor->getState().HLT && !quit)
+	auto p_i8080State = std::make_shared<i8080>();
+	i8080_init(p_i8080State.get());
+	auto m_i8080Memory = processor->getMemoryMap();
+	p_i8080State->read_byte = [](void* mem, uint16_t addr)->uint8_t
 	{
-		handleInput(quit);
+		auto map = (MemoryMap*)mem;
+		return map->Peek(addr);
+	};
+	p_i8080State->write_byte = [](void* mem, uint16_t addr, uint8_t value)
+	{
+		auto map = (MemoryMap*)mem;
+		map->Poke(addr, value);
+	};
+	p_i8080State->port_in = [](void*, uint8_t)->uint8_t {return 0; };
+	p_i8080State->port_out = [](void*, uint8_t, uint8_t) {};
+	p_i8080State->userdata = &m_i8080Memory;
+	p_i8080State->pc = 0x100;
 
-		// as explained in http://emulator101.com/, CPUDIAG is a binary for 8080 processor and CP/M
+	while (!processor->getState().HLT)
+	{
+		// THis test is a binary for 8080 processor and CP/M
 		// running the binary without tweaks won't be usefull, because it is looking for CP/M instructions
 		// at lower address $0005 to display test informations.
 		// After each emulator step, we'll detect such a call
 		/*
-		Here is an excert os CPUDIAG assembled code:
-				;***********************************************************************
-				; MICROCOSM ASSOCIATES  8080/8085 CPU DIAGNOSTIC VERSION 1.0  (C) 1980
-				;***********************************************************************
-				;
-				;DONATED TO THE "SIG/M" CP/M USER'S GROUP BY:
-				;KELLY SMITH, MICROCOSM ASSOCIATES
-				;3055 WACO AVENUE
-				;SIMI VALLEY, CALIFORNIA, 93065
-				;(805) 527-9321 (MODEM, CP/M-NET (TM))
-				;(805) 527-0518 (VERBAL)
-				;
-				;
-				;
-				;
-				;
-				;
-
-						ORG	00100H
-				;
-				;
-				;
-					JMP	CPU	;JUMP TO 8080 CPU DIAGNOSTIC
-				;
-				;
-				;
-					DB	'MICROCOSM ASSOCIATES 8080/8085 CPU DIAGNOSTIC'
-					DB	' VERSION 1.0  (C) 1980'
-				;
-				;
-				;
-				BDOS	EQU	00005H	;BDOS ENTRY TO CP/M
-				WBOOT	EQU	00000H	;RE-ENTRY TO CP/M WARM BOOT
-		*/
-		/*
-		This is the print function:
-				MSG:	PUSH	D	;EXILE D REG.
-				XCHG				;SWAP H&L REGS. TO D&E REGS.
-				MVI	C,9				;LET BDOS KNOW WE WANT TO SEND A MESSAGE
-				CALL	BDOS
-				POP	D				;BACK FROM EXILE
-				RET
-
 		You can find more information on what it does here https://www.seasip.info/Cpm/bdos.html
 			BDOS function 9 (C_WRITESTR) - Output string
 			Supported by: All versions
@@ -146,34 +62,16 @@ int main(int /*argc*/, char** /*argv*/)
 			Under CP/M 3 and above, the terminating character can be changed using BDOS function 110.
 		*/
 
-		if (trace || file)
-		{
-			auto stateStr = state.toString();
-			std::stringstream ss;
-			processor->DisassembleRomStacksize(state.PC, 1, ss);
-			auto dissStr = ss.str();
-
-			if (trace)
-			{
-				SetConsoleTextAttribute(hConsole, 10);
-				std::cout << stateStr;
-
-				SetConsoleTextAttribute(hConsole, 11);
-				std::cout << ss.str();
-			}
-
-			if (debugFile)
-			{
-				debugFile << stateStr << ss.str();
-			}
-
-
-		}
-
-
 		auto opCode = map.getOpCode(processor->getState().PC);
+		auto& state = processor->getState();
 		const auto& isl = processor->getIsl(opCode[0]);
 
+		/*	processor->DisassembleRomStacksize(state.PC, 1);
+
+			std::cout << state.Flags.toString() << fmt::format("\tA={0:04X}",state.A) << std::endl;*/
+
+
+			// CDA006
 		if (opCode[0] == 0xCD)
 		{
 			// Detect CALL	BDOS
@@ -184,27 +82,30 @@ int main(int /*argc*/, char** /*argv*/)
 					// C_WRITESTR
 					std::string output;
 					uint16_t adr = (state.D << 8) | state.E;
-					auto str = (const char*)map.Peek(adr);
-					while (*str != '$')
+					auto str = (const char)map.Peek(adr);
+					while (str != '$')
 					{
-						output += *str++;
+						output += str;
+						++adr;
+						str = (const char)map.Peek(adr);
 					}
 
 					// Remove line feed (for printer?)
 					output.erase(std::remove(output.begin(), output.end(), '\f'), output.end());
 
-					OutputDebugStringA(output.c_str());
+					std::cout << output;
 				}
 				else
 				{
 					// C_WRITE
-					std::string output = { (char)state.E };
-					OutputDebugStringA(output.c_str());
+					std::cout << (char)state.E;
 				}
 
 				// With real CP/M, there is a RET, let's just go to next instruction
 				state.PC += isl.Size;
 				state.Cycles += 17;
+				p_i8080State->pc += isl.Size;
+				p_i8080State->cyc += 17;
 				continue;
 			}
 		}
@@ -220,13 +121,24 @@ int main(int /*argc*/, char** /*argv*/)
 		}
 
 		processor->RunStep();
+		i8080_step(p_i8080State.get());
+
+		opCode = map.getOpCode(processor->getState().PC);
+		state = processor->getState();
+		const auto& isl2 = processor->getIsl(opCode[0]);
+
+		if (state.A != p_i8080State->a || state.B != p_i8080State->b || state.C != p_i8080State->c || state.D != p_i8080State->d
+			|| state.E != p_i8080State->e || state.H != p_i8080State->h || state.L != p_i8080State->l
+			|| state.Flags.AuxiliaryCarry != p_i8080State->hf || state.Flags.Carry != p_i8080State->cf
+			|| state.Flags.Parity != p_i8080State->pf || state.Flags.Sign != p_i8080State->sf
+			|| state.Flags.Zero != p_i8080State->zf
+			|| state.PC != p_i8080State->pc || state.SP != p_i8080State->sp
+			|| state.Cycles != p_i8080State->cyc
+			)
+		{
+			std::cout << "Difference with superzazu code" << std::endl;
+		}
 	}
-
-	debugFile.close();
-
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
 
 	return 0;
 }

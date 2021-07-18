@@ -67,21 +67,14 @@ int main(int /*argc*/, char** /*argv*/)
 		auto& state = processor->getState();
 		const auto& isl = processor->getIsl(opCode[0]);
 
-		processor->DisassembleRomStacksize(state.PC, 1);
+	/*	processor->DisassembleRomStacksize(state.PC, 1);
 
-		std::cout << state.Flags.toString() << fmt::format("\tA={0:04X}",state.A) << std::endl;
+		std::cout << state.Flags.toString() << fmt::format("\tA={0:04X}",state.A) << std::endl;*/
 
 
 		// CDA006
-
 		if (opCode[0] == 0xCD)
 		{
-			if (opCode[1] == 0xA0 && opCode[2] == 0x06)
-			{
-				// CALL CPUER
-				std::cout << "CALL CPUER" << std::endl;
-			}
-
 			// Detect CALL	BDOS
 			if (5 == ((opCode[2] << 8) | opCode[1]))
 			{
@@ -90,10 +83,12 @@ int main(int /*argc*/, char** /*argv*/)
 					// C_WRITESTR
 					std::string output;
 					uint16_t adr = (state.D << 8) | state.E;
-					auto str = (const char*)map.Peek(adr);
-					while (*str != '$')
+					auto str = (const char)map.Peek(adr);
+					while (str != '$')
 					{
-						output += *str++;
+						output += str;
+						++adr;
+						str = (const char)map.Peek(adr);
 					}
 
 					// Remove line feed (for printer?)
@@ -135,11 +130,14 @@ int main(int /*argc*/, char** /*argv*/)
 
 		if (state.A != p_i8080State->a || state.B != p_i8080State->b || state.C != p_i8080State->c || state.D != p_i8080State->d
 			|| state.E != p_i8080State->e || state.H != p_i8080State->h || state.L != p_i8080State->l
-			/*|| state.Flags.AuxiliaryCarry != p_i8080State->hf */|| state.Flags.Carry != p_i8080State->cf
+			|| state.Flags.AuxiliaryCarry != p_i8080State->hf || state.Flags.Carry != p_i8080State->cf
 			|| state.Flags.Parity != p_i8080State->pf || state.Flags.Sign != p_i8080State->sf
-			|| state.Flags.Zero != p_i8080State->zf)
+			|| state.Flags.Zero != p_i8080State->zf 
+			|| state.PC != p_i8080State->pc || state.SP != p_i8080State->sp
+			|| state.Cycles != p_i8080State->cyc
+			)
 		{
-			std::cout << "oups" << std::endl;
+			std::cout << "Difference with superzazu code" << std::endl;
 		}
 	}
 

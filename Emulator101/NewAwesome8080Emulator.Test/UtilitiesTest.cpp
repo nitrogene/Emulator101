@@ -314,25 +314,35 @@ TEST_F(UtilitiesTest, DCR)
 
 TEST_F(UtilitiesTest, DAA)
 {
-	for (uint16_t a = 0; a <= 0xFF; ++a)
+	for (auto hf = 0; hf<2; ++hf)
 	{
-		State state{};
-		state.A = (uint8_t)a;
-		Utilities::DAA(state);
+		for (auto cf = 0; cf<2; ++cf)
+		{
+			for (uint16_t a = 0; a <= 0xFF; ++a)
+			{
+				State state{};
+				state.A = (uint8_t)a;
+				state.Flags.AuxiliaryCarry = hf;
+				state.Flags.Carry = cf;
+				Utilities::DAA(state);
 
-		auto c = std::make_shared<i8080>();
-		i8080_init(c.get());
-		c->a = (uint8_t)a;
-		i8080_daa(c.get());
+				auto c = std::make_shared<i8080>();
+				i8080_init(c.get());
+				c->a = (uint8_t)a;
+				c->hf = hf;
+				c->cf = cf;
+				i8080_daa(c.get());
 
-		auto msg = "A=" + std::to_string(state.A);
+				auto msg = "A=" + std::to_string(state.A) + " hf=" + std::to_string(hf) + " cf=" + std::to_string(cf);
 
-		EXPECT_EQ(state.A, c->a) << msg;
-		EXPECT_EQ(state.Flags.Sign, c->sf) << msg;
-		EXPECT_EQ(state.Flags.Zero, c->zf) << msg;
-		EXPECT_EQ(state.Flags.AuxiliaryCarry, c->hf) << msg;
-		EXPECT_EQ(state.Flags.Parity, c->pf) << msg;
-		EXPECT_EQ(state.Flags.Carry, c->cf) << msg;
+				EXPECT_EQ(state.A, c->a) << msg;
+				EXPECT_EQ(state.Flags.Sign, c->sf) << msg;
+				EXPECT_EQ(state.Flags.Zero, c->zf) << msg;
+				EXPECT_EQ(state.Flags.AuxiliaryCarry, c->hf) << msg;
+				EXPECT_EQ(state.Flags.Parity, c->pf) << msg;
+				EXPECT_EQ(state.Flags.Carry, c->cf) << msg;
+			}
+		}
 	}
 }
 

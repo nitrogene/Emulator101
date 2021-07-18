@@ -2,6 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\NewAwesome8080Emulator.Test\superzazu-8080\i8080.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

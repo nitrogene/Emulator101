@@ -1895,6 +1895,7 @@ void Processor::RunStep()
 		}
 		else
 		{
+			m_State.PC += isl.Size;
 			m_State.Cycles += isl.ClockCycle.A;
 		}
 		
@@ -2191,13 +2192,14 @@ void Processor::RunStep()
 		if (!m_State.Flags.Parity)
 		{
 			Utilities::RET(m_State, m_MemoryMap);
+			m_State.Cycles += isl.ClockCycle.B;
 		}
 		else
 		{
 			m_State.PC += isl.Size;
+			m_State.Cycles += isl.ClockCycle.A;
 		}
-		m_State.Cycles += isl.ClockCycle.A;
-
+		
 		break;
 	}
 	case 0xE1:
@@ -2246,12 +2248,14 @@ void Processor::RunStep()
 		if (!m_State.Flags.Parity)
 		{
 			Utilities::CALL(m_State, adr, m_MemoryMap);
+			m_State.Cycles += isl.ClockCycle.B;
 		}
 		else
 		{
 			m_State.PC += isl.Size;
+			m_State.Cycles += isl.ClockCycle.A;
 		}
-		m_State.Cycles += isl.ClockCycle.A;
+		
 		break;
 	}
 	case 0xE5:
@@ -2302,7 +2306,6 @@ void Processor::RunStep()
 		// PCHL
 		m_State.PC = Utilities::getWordFromBytes(m_State.H, m_State.L);
 
-		m_State.PC += isl.Size;
 		m_State.Cycles += isl.ClockCycle.A;
 		break;
 	}
@@ -2326,12 +2329,14 @@ void Processor::RunStep()
 		if (m_State.Flags.Parity)
 		{
 			Utilities::CALL(m_State, adr, m_MemoryMap);
+			m_State.Cycles += isl.ClockCycle.B;
 		}
 		else
 		{
 			m_State.PC += isl.Size;
+			m_State.Cycles += isl.ClockCycle.A;
 		}
-		m_State.Cycles += isl.ClockCycle.A;
+		
 		break;
 	}
 	case 0xEE:
@@ -2358,13 +2363,14 @@ void Processor::RunStep()
 		if (!m_State.Flags.Sign)
 		{
 			Utilities::RET(m_State, m_MemoryMap);
+			m_State.Cycles += isl.ClockCycle.B;
 		}
 		else
 		{
 			m_State.PC += isl.Size;
+			m_State.Cycles += isl.ClockCycle.A;
 		}
-		m_State.Cycles += isl.ClockCycle.A;
-
+		
 		break;
 	}
 	case 0xF1:
@@ -2408,12 +2414,14 @@ void Processor::RunStep()
 		if (!m_State.Flags.Sign)
 		{
 			Utilities::CALL(m_State, adr, m_MemoryMap);
+			m_State.Cycles += isl.ClockCycle.B;
 		}
 		else
 		{
 			m_State.PC += isl.Size;
+			m_State.Cycles += isl.ClockCycle.A;
 		}
-		m_State.Cycles += isl.ClockCycle.A;
+		
 		break;
 	}
 	case 0xF5:
@@ -2449,13 +2457,14 @@ void Processor::RunStep()
 		if (m_State.Flags.Sign)
 		{
 			Utilities::RET(m_State, m_MemoryMap);
+			m_State.Cycles += isl.ClockCycle.B;
 		}
 		else
 		{
 			m_State.PC += isl.Size;
+			m_State.Cycles += isl.ClockCycle.A;
 		}
-		m_State.Cycles += isl.ClockCycle.A;
-
+		
 		break;
 	}
 	case 0xFA:
@@ -2487,12 +2496,14 @@ void Processor::RunStep()
 		if (m_State.Flags.Sign)
 		{
 			Utilities::CALL(m_State, adr, m_MemoryMap);
+			m_State.Cycles += isl.ClockCycle.B;
 		}
 		else
 		{
 			m_State.PC += isl.Size;
+			m_State.Cycles += isl.ClockCycle.A;
 		}
-		m_State.Cycles += isl.ClockCycle.A;
+		
 		break;
 	}
 	case 0xFE:

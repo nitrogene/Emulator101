@@ -155,36 +155,44 @@ void Utilities::DAD(State& state, const uint8_t h, const uint8_t l)
 void Utilities::DAA(State& state)
 {
 	auto& flags = state.Flags;
+	uint8_t correction = 0;
+	auto lsb = state.A & 0x0F;
+	auto msb = state.A >> 4;
+	auto carry = state.Flags.Carry;
 
-	uint8_t a3_0 = state.A & 0b00001111;
-	uint8_t a7_4 = (state.A & 0b11110000) >> 4;
-
-	if (a3_0 > 9 || flags.AuxiliaryCarry)
+	/*
+	(1) If the least significant four bits of the accumulator
+	represents a number greater than 9, or if the Auxiliary Carry bit is equal 
+	to one, the accumulator is incremented by six. Otherwise, no incrementing 
+	occurs.
+	*/
+	if (lsb > 9 || state.Flags.AuxiliaryCarry)
 	{
-		a3_0 += 6;
+		correction = 6;
 	}
 
-	if (a3_0 & 0b00010000)
+	/*
+	(2) If the most significant four bits of the accumulator
+	now represent a number greater than 9, or if the normal carry bit is equal 
+	to one, the most sign ificant four bits of the accumulator are incremented 
+	by six. Otherwise, no incrementing occurs.
+	*/
+	if (msb > 9 || state.Flags.Carry || (correction==6 && lsb >9 && msb>=9))
 	{
-		flags.AuxiliaryCarry = true;
-		a3_0 &= 0b00001111;
-		a7_4++;
+		correction += 0x60;
+		carry = true;
 	}
 
-	if (a7_4 > 9 || flags.Carry)
-	{
-		a7_4 += 6;
-	}
+	ADD(state, correction, 0);
 
-	if (a7_4 & 0b00010000)
-	{
-		flags.Carry = true;
-		a7_4 &= 0b00001111;
-	}
-
-	state.A = (a7_4 << 4) | a3_0;
-
-	setZeroSignAndParity(flags, state.A);
+	/*
+	If a carry out of the least significant four bits occurs
+	during Step (1), the Auxiliary Carry bit is set; otherwise it is
+	reset. Likewise, if a carry out of the most significant four
+	bits occurs during Step (2). the normal Carry bit is set;
+	otherwise, it is unaffected:
+	*/
+	state.Flags.Carry = carry;
 }
 
 void Utilities::ADD(State& state, const uint8_t value, const bool carry)

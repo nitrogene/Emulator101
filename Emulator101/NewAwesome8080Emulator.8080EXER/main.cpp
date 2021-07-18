@@ -6,7 +6,6 @@
 #include <fmt/core.h>
 #include "Processor.h"
 #include "../../Emulator101/NewAwesome8080Emulator.Test/superzazu-8080/i8080.h"
-#include <Utilities.h>
 
 const static std::vector<std::filesystem::path> roms
 {
@@ -69,6 +68,11 @@ int main(int /*argc*/, char** /*argv*/)
 		auto& state = processor->getState();
 		const auto& isl = processor->getIsl(opCode[0]);
 
+		/*processor->DisassembleRomStacksize(state.PC, 1);
+
+		std::cout << state.Flags.toString() << fmt::format("\tA={0:04X}",state.A) << std::endl;*/
+		
+		// CDA006
 		if (opCode[0] == 0xCD)
 		{
 			// Detect CALL	BDOS
@@ -79,10 +83,12 @@ int main(int /*argc*/, char** /*argv*/)
 					// C_WRITESTR
 					std::string output;
 					uint16_t adr = (state.D << 8) | state.E;
-					auto str = (const char*)map.Peek(adr);
-					while (*str != '$')
+					auto str = (const char)map.Peek(adr);
+					while (str != '$')
 					{
-						output += *str++;
+						output += str;
+						++adr;
+						str = (const char)map.Peek(adr);
 					}
 
 					// Remove line feed (for printer?)
@@ -116,66 +122,22 @@ int main(int /*argc*/, char** /*argv*/)
 		}
 
 		processor->RunStep();
-
 		i8080_step(p_i8080State.get());
 
-		for (auto i = 0; i < map.size(); ++i)
-		{
-			if (map.Peek(i) != m_i8080Memory.Peek(i))
-			{
-				std::cout << "aaa" << std::endl;
-			}
-		}
+		opCode = map.getOpCode(processor->getState().PC);
+		state = processor->getState();
+		const auto& isl2 = processor->getIsl(opCode[0]);
 
-		
-
-		if (state.A != p_i8080State->a)
+		if (state.A != p_i8080State->a || state.B != p_i8080State->b || state.C != p_i8080State->c || state.D != p_i8080State->d
+			|| state.E != p_i8080State->e || state.H != p_i8080State->h || state.L != p_i8080State->l
+			|| state.Flags.AuxiliaryCarry != p_i8080State->hf || state.Flags.Carry != p_i8080State->cf
+			|| state.Flags.Parity != p_i8080State->pf || state.Flags.Sign != p_i8080State->sf
+			|| state.Flags.Zero != p_i8080State->zf
+			|| state.PC != p_i8080State->pc || state.SP != p_i8080State->sp
+			|| state.Cycles != p_i8080State->cyc
+			)
 		{
-			std::cout << "pb" << std::endl;
-		} 
-		if(state.B != p_i8080State->b)
-		{
-			std::cout << "pb" << std::endl;
-		}
-		if(state.C != p_i8080State->c)
-		{
-			std::cout << "pb" << std::endl;
-		}
-		if(state.D != p_i8080State->d)
-		{
-			std::cout << "pb" << std::endl;
-		}
-		if(state.E != p_i8080State->e)
-		{
-			std::cout << "pb" << std::endl;
-		}
-		if(state.H != p_i8080State->h)
-		{
-			std::cout << "pb" << std::endl;
-		} 
-		if(state.L != p_i8080State->l)
-		{
-			std::cout << "pb" << std::endl;
-		}
-		if(state.Flags.AuxiliaryCarry != p_i8080State->hf)
-		{
-			std::cout << "pb" << std::endl;
-		} 
-		if(state.Flags.Carry != p_i8080State->cf)
-		{
-			std::cout << "pb" << std::endl;
-		}
-		if(state.Flags.Parity != p_i8080State->pf)
-		{
-			std::cout << "pb" << std::endl;
-		}
-		if(state.Flags.Sign != p_i8080State->sf)
-		{
-			std::cout << "pb" << std::endl;
-		} 
-		if(state.Flags.Zero != p_i8080State->zf)
-		{
-			std::cout << "pb" << std::endl;
+			std::cout << "Difference with superzazu code" << std::endl;
 		}
 	}
 
