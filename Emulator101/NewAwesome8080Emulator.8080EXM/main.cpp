@@ -111,15 +111,13 @@ int main(int /*argc*/, char** /*argv*/)
 				continue;
 			}
 		}
-		else if (opCode[0] == 0xC3)
+		else if ((opCode[0] == 0xC3 && opCode[1] == 0x00 && opCode[2] == 0x00) ||	// JMP 0X0000
+			opCode[0] == 0xC7)														// RST 0
 		{
-			if (opCode[1] == 0x00 && opCode[2] == 0x00)
-			{
-				// Detect EXIT TO CP/M WARM BOOT (JMP 0x0000)
-				std::cout << "\nCP/M WARM BOOT exit" << std::endl;
-				processor->getState().HLT = true;
-				continue;
-			}
+			// Detect EXIT TO CP/M WARM BOOT (JMP 0x0000)
+			std::cout << "\nCP/M WARM BOOT exit" << std::endl;
+			processor->getState().HLT = true;
+			continue;
 		}
 
 		processor->RunStep();
@@ -138,7 +136,23 @@ int main(int /*argc*/, char** /*argv*/)
 			|| state.Cycles != p_i8080State->cyc
 			)
 		{
-			std::cout << "Difference with superzazu code" << std::endl;
+			fmt::print("\nMnemonic={0}\n", isl.Mnemonic);
+			fmt::print("state.A={0} p_i8080State->a={1}\n", state.A, p_i8080State->a);
+			fmt::print("state.B={0} p_i8080State->b={1}\n", state.B, p_i8080State->b);
+			fmt::print("state.C={0} p_i8080State->c={1}\n", state.C, p_i8080State->c);
+			fmt::print("state.D={0} p_i8080State->d={1}\n", state.D, p_i8080State->d);
+			fmt::print("state.E={0} p_i8080State->e={1}\n", state.E, p_i8080State->e);
+			fmt::print("state.H={0} p_i8080State->h={1}\n", state.H, p_i8080State->h);
+			fmt::print("state.L={0} p_i8080State->l={1}\n", state.L, p_i8080State->l);
+
+			fmt::print("state.Flags.AuxiliaryCarry={0} p_i8080State->hf={1}\n", std::to_string(state.Flags.AuxiliaryCarry), std::to_string(p_i8080State->hf));
+			fmt::print("state.Flags.Carry={0} p_i8080State->cf={1}\n", std::to_string(state.Flags.Carry), std::to_string(p_i8080State->cf));
+			fmt::print("state.Flags.Parity={0} p_i8080State->pf={1}\n", std::to_string(state.Flags.Parity), std::to_string(p_i8080State->pf));
+			fmt::print("state.Flags.Sign={0} p_i8080State->sf={1}\n", std::to_string(state.Flags.Sign), std::to_string(p_i8080State->sf));
+			fmt::print("state.Flags.Zero={0} p_i8080State->zf={1}\n", std::to_string(state.Flags.Zero), std::to_string(p_i8080State->zf));
+			fmt::print("state.PC={0} p_i8080State->pc={1}\n", state.PC, p_i8080State->pc);
+			fmt::print("state.SP={0} p_i8080State->sp={1}\n", state.SP, p_i8080State->sp);
+			fmt::print("state.Cycles={0} p_i8080State->cyc={1}\n", state.Cycles, p_i8080State->cyc);
 		}
 	}
 

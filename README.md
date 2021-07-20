@@ -1,4 +1,4 @@
-# Emulator101
+# NewAwesome8080Emulator
 A tryout to understand how emulators works
 
 All technical background comes from here: 
@@ -9,10 +9,13 @@ Usefull information about the Space Invaders rom:
 
 Online 8080 assembler & simulator: 
 	http://sensi.org/~svo/i8080/
+	
+BDOS System Calls:
+	http://members.iinet.net.au/~daveb/cpm/bdos.html
 
 
 TODO:
 * Memory breakpoints
 * Put memory map in State ?
 * Implement a state operator==?
-* void Processor::RunStep() get isl and use it to update cycles & size
+* Make a CPM/Loader check for more BDOS calls (ie RST in CPUTEST) 

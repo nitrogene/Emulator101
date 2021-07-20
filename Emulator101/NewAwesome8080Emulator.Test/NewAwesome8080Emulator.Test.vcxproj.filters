@@ -3,10 +3,10 @@
   <ItemGroup>
     <ClCompile Include="SpaceInvadersTest.cpp" />
     <ClCompile Include="InstructionSetTest.cpp" />
+    <ClCompile Include="UtilitiesTest.cpp" />
     <ClCompile Include="superzazu-8080\i8080.c">
       <Filter>superzazu-8080</Filter>
     </ClCompile>
-    <ClCompile Include="UtilitiesTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="superzazu-8080">
@@ -16,10 +16,10 @@
   <ItemGroup>
     <ClInclude Include="SpaceInvadersTest.h" />
     <ClInclude Include="InstructionSetTest.h" />
+    <ClInclude Include="UtilitiesTest.h" />
     <ClInclude Include="superzazu-8080\i8080.h">
       <Filter>superzazu-8080</Filter>
     </ClInclude>
-    <ClInclude Include="UtilitiesTest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

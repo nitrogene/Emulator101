@@ -111,15 +111,13 @@ int main(int /*argc*/, char** /*argv*/)
 				continue;
 			}
 		}
-		else if (opCode[0] == 0xC3)
+		else if ((opCode[0] == 0xC3 && opCode[1] == 0x00 && opCode[2] == 0x00) ||	// JMP 0X0000
+			opCode[0] == 0xC7)														// RST 0
 		{
-			if (opCode[1] == 0x00 && opCode[2] == 0x00)
-			{
-				// Detect EXIT TO CP/M WARM BOOT (JMP 0x0000)
-				std::cout << "\nCP/M WARM BOOT exit" << std::endl;
-				processor->getState().HLT = true;
-				continue;
-			}
+			// Detect EXIT TO CP/M WARM BOOT (JMP 0x0000)
+			std::cout << "\nCP/M WARM BOOT exit" << std::endl;
+			processor->getState().HLT = true;
+			continue;
 		}
 
 		processor->RunStep();

@@ -13,7 +13,7 @@ typedef struct i8080 {
   void (*port_out)(void*, uint8_t, uint8_t); // same for writing to port
   void* userdata; // user custom pointer
 
-  unsigned long cyc; // cycle count
+  uint64_t cyc; // cycle count
 
   uint16_t pc, sp; // program counter, stack pointer
   uint8_t a, b, c, d, e, h, l; // registers

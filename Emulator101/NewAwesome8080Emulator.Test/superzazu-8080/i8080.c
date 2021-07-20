@@ -178,20 +178,20 @@ void i8080_add(
 
 // substracts a byte (+ an optional carry flag) from a register
 // see https://stackoverflow.com/a/8037485
- inline void i8080_sub(
+ void i8080_sub(
     i8080* const c, uint8_t* const reg, uint8_t val, bool cy) {
   i8080_add(c, reg, ~val, !cy);
   c->cf = !c->cf;
 }
 
 // adds a word to HL
- inline void i8080_dad(i8080* const c, uint16_t val) {
+ void i8080_dad(i8080* const c, uint16_t val) {
   c->cf = ((i8080_get_hl(c) + val) >> 16) & 1;
   i8080_set_hl(c, i8080_get_hl(c) + val);
 }
 
 // increments a byte
-inline uint8_t i8080_inr(i8080* const c, uint8_t val) {
+uint8_t i8080_inr(i8080* const c, uint8_t val) {
   uint8_t result = val + 1;
   c->hf = (result & 0xF) == 0;
   SET_ZSP(c, result);
@@ -199,7 +199,7 @@ inline uint8_t i8080_inr(i8080* const c, uint8_t val) {
 }
 
 // decrements a byte
-inline uint8_t i8080_dcr(i8080* const c, uint8_t val) {
+uint8_t i8080_dcr(i8080* const c, uint8_t val) {
   uint8_t result = val - 1;
   c->hf = !((result & 0xF) == 0xF);
   SET_ZSP(c, result);
@@ -311,26 +311,26 @@ static inline void i8080_pop_psw(i8080* const c) {
 }
 
 // rotate register A left
- inline void i8080_rlc(i8080* const c) {
+ void i8080_rlc(i8080* const c) {
   c->cf = c->a >> 7;
   c->a = (c->a << 1) | (c->cf?1:0);
 }
 
 // rotate register A right
- inline void i8080_rrc(i8080* const c) {
+ void i8080_rrc(i8080* const c) {
   c->cf = c->a & 1;
   c->a = (c->a >> 1) | (c->cf << 7);
 }
 
 // rotate register A left with the carry flag
-inline void i8080_ral(i8080* const c) {
+void i8080_ral(i8080* const c) {
   bool cy = c->cf;
   c->cf = c->a >> 7;
   c->a = (c->a << 1) | (cy?1:0);
 }
 
 // rotate register A right with the carry flag
-inline void i8080_rar(i8080* const c) {
+void i8080_rar(i8080* const c) {
   bool cy = c->cf;
   c->cf = c->a & 1;
   c->a = (c->a >> 1) | (cy << 7);
@@ -339,7 +339,7 @@ inline void i8080_rar(i8080* const c) {
 // Decimal Adjust Accumulator: the eight-bit number in register A is adjusted
 // to form two four-bit binary-coded-decimal digits.
 // For example, if A=$2B and DAA is executed, A becomes $31.
-inline void i8080_daa(i8080* const c) {
+void i8080_daa(i8080* const c) {
   bool cy = c->cf;
   uint8_t correction = 0;
 
