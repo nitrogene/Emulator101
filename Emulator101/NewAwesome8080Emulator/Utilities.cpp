@@ -259,8 +259,7 @@ void Utilities::CMP(State& state, const uint8_t value)
 
 void Utilities::CALL(State& state, const uint16_t adr, MemoryMap& pMap)
 {
-	// For me PC is the program counter before executing step
-	PushStack(state, state.PC+3, pMap);
+	PushStack(state, state.PC, pMap);
 	JMP(state, adr);
 }
 

@@ -125,7 +125,6 @@ int main(int /*argc*/, char** /*argv*/)
 
 		opCode = map.getOpCode(processor->getState().PC);
 		state = processor->getState();
-		const auto& isl2 = processor->getIsl(opCode[0]);
 
 		if (state.A != p_i8080State->a || state.B != p_i8080State->b || state.C != p_i8080State->c || state.D != p_i8080State->d
 			|| state.E != p_i8080State->e || state.H != p_i8080State->h || state.L != p_i8080State->l

@@ -25,11 +25,16 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="..\NewAwesome8080Emulator.SpaceInvaders\SpaceInvaders.cpp" />
     <ClCompile Include="InstructionSetTest.cpp" />
     <ClCompile Include="SpaceInvadersTest.cpp" />
     <ClCompile Include="superzazu-8080\i8080.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
+    <ClCompile Include="superzazu-8080\invaders.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
     <ClCompile Include="UtilitiesTest.cpp" />
   </ItemGroup>
@@ -45,6 +50,7 @@
     <ClInclude Include="InstructionSetTest.h" />
     <ClInclude Include="SpaceInvadersTest.h" />
     <ClInclude Include="superzazu-8080\i8080.h" />
+    <ClInclude Include="superzazu-8080\invaders.h" />
     <ClInclude Include="UtilitiesTest.h" />
   </ItemGroup>
   <ItemDefinitionGroup />

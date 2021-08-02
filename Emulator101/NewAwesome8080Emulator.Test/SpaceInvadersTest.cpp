@@ -1,5 +1,6 @@
 #include <fmt/core.h>
 #include "SpaceInvadersTest.h"
+#include "../NewAwesome8080Emulator.SpaceInvaders/SpaceInvaders.h"
 
 void SpaceInvadersTest::fun()
 {
@@ -40,6 +41,9 @@ void SpaceInvadersTest::fun()
 
 	// Cycles
 	EXPECT_EQ(state.Cycles, p_i8080State->cyc) << msg;
+
+	// Interrupt
+	EXPECT_EQ(state.INTE, p_i8080State->iff) << msg;
 }
 
 TEST_F(SpaceInvadersTest, Step10)
@@ -85,6 +89,25 @@ TEST_F(SpaceInvadersTest, Step10000)
 TEST_F(SpaceInvadersTest, Step50000)
 {
 	for (auto i = 0; i < 50000; ++i)
+	{
+		fun();
+	}
+}
+
+TEST_F(SpaceInvadersTest, Step5000_interrupt)
+{
+	for (auto i = 0; i < 5000; ++i)
+	{
+		fun();
+	}
+
+	p_i8080State->iff = 1;
+	i8080_interrupt(p_i8080State.get(), 0xcf);
+
+	p_Processor->getState().INTE = true;
+	p_Processor->setInterrupt({ 0xcf ,0x00,0x00 });
+
+	for (auto i = 0; i < 1000; ++i)
 	{
 		fun();
 	}

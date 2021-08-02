@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SpaceInvaders.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -20,6 +21,9 @@
     <ProjectReference Include="..\NewAwesome8080Emulator\NewAwesome8080Emulator.vcxproj">
       <Project>{80da3b96-8d45-4060-b254-fe34ec90bad4}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SpaceInvaders.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

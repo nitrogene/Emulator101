@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <string>
 #include <deque>
@@ -30,12 +31,15 @@ private:
 	// Load into buffer hopefully valid 8080 assembly code
 	static void LoadIntoBuffer(const std::filesystem::path& pathToRomFile, std::vector<uint8_t>& buffer);
 
-	std::function<void(State&, const uint8_t)> m_machineIN;
-	std::function<void(State&, const uint8_t)> m_machineOUT;
+	void incrementeProgramCounter(const uint8_t* opCodes);
+	void handleOpcode(const uint8_t* opCodes);
 
-	std::vector<uint8_t> m_OpCodeInterrupt{};
+	std::function<uint8_t(const uint8_t, void* data)> m_IN;
+	std::function<void(const uint8_t, void* data)> m_OUT;
 
-	std::deque<std::pair<State,InstructionSetLine>> m_AllStates;
+	std::array<uint8_t,3> m_OpCodeInterrupt;
+	bool m_Interrupt = false;
+	void* p_Data = nullptr;
 
 public:
 	Processor() = delete;
@@ -51,9 +55,6 @@ public:
 
 	// dissassemble stackSize instructions starting at PC=offset
 	void DisassembleRomStacksize(const uint16_t offset, const uint16_t stackSize, std::ostream& outs = std::cout);
-
-	// run until not HLT
-	void Run(std::function<void(void)> preProcessFunc=nullptr, std::function<void(void)> postProcessFunc = nullptr);
 
 	// run one step and return
 	void RunStep();
@@ -72,9 +73,10 @@ public:
 	MemoryMap& getMemoryMap();
 
 	// IN / OUT
-	void setMachineIN(std::function<void(State&, const uint8_t)> machineIN) { m_machineIN = machineIN; }
-	void setMachineOUT(std::function<void(State&, const uint8_t)> machineOUT) { m_machineOUT = machineOUT; }
+	void setIN(std::function<uint8_t(const uint8_t, void* data)> a_IN) { m_IN = a_IN; }
+	void setOUT(std::function<void(const uint8_t, void* data)> a_OUT) { m_OUT= a_OUT; }
+	void setData(void* data) { p_Data = data; }
 
-	void setInterrupt(const std::vector<uint8_t> opCodeInterrupt);
+	void setInterrupt(const std::array<uint8_t, 3>& opCode);
 
 };

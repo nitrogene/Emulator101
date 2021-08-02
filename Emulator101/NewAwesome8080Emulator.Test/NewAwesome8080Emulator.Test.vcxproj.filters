@@ -7,6 +7,10 @@
     <ClCompile Include="superzazu-8080\i8080.c">
       <Filter>superzazu-8080</Filter>
     </ClCompile>
+    <ClCompile Include="..\NewAwesome8080Emulator.SpaceInvaders\SpaceInvaders.cpp" />
+    <ClCompile Include="superzazu-8080\invaders.c">
+      <Filter>superzazu-8080</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="superzazu-8080">
@@ -18,6 +22,9 @@
     <ClInclude Include="InstructionSetTest.h" />
     <ClInclude Include="UtilitiesTest.h" />
     <ClInclude Include="superzazu-8080\i8080.h">
+      <Filter>superzazu-8080</Filter>
+    </ClInclude>
+    <ClInclude Include="superzazu-8080\invaders.h">
       <Filter>superzazu-8080</Filter>
     </ClInclude>
   </ItemGroup>

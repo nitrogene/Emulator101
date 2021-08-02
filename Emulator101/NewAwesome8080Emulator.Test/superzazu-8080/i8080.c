@@ -765,7 +765,7 @@ void i8080_debug_output(i8080* const c, bool print_disassembly) {
   f |= 1 << 1; // bit 1 is always 1
   f |= c->cf << 0;
 
-  printf("PC: %04X, AF: %04X, BC: %04X, DE: %04X, HL: %04X, SP: %04X, CYC: %lu",
+  printf("PC: %04X, AF: %04X, BC: %04X, DE: %04X, HL: %04X, SP: %04X, CYC: %Lu",
       c->pc, c->a << 8 | f, i8080_get_bc(c), i8080_get_de(c), i8080_get_hl(c),
       c->sp, c->cyc);
 

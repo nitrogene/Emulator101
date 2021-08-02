@@ -29,7 +29,7 @@ struct State
 	uint64_t Steps = 0;
 
 	// Interrupt enable ?
-	bool EI=false;
+	bool INTE=false;
 
 	// ToString
 	std::string toString();
